@@ -799,7 +799,7 @@ html[lang="ar"] .person__excerpt { line-height: 1.75; }
   box-shadow: 0 0 80px rgba(194, 155, 94, 0.55);
   animation: intro-coin 1.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
-.intro__mark svg { position: absolute; inset: -22px; width: calc(100% + 44px); height: calc(100% + 44px); fill: none; stroke: var(--gold-400); stroke-width: 1; }
+.intro__mark svg { position: absolute; inset: -22px; width: calc(100% + 44px); height: calc(100% + 44px); max-width: none; fill: none; stroke: var(--gold-400); stroke-width: 1; }
 .intro__mark circle { stroke-dasharray: 520; stroke-dashoffset: 520; animation: intro-ring 1.1s 0.15s var(--ease) forwards; transform: rotate(-90deg); transform-origin: center; }
 @keyframes intro-coin { from { transform: rotateY(-200deg) scale(0.55); opacity: 0; } 60% { opacity: 1; } to { transform: none; } }
 @keyframes intro-ring { to { stroke-dashoffset: 0; } }
