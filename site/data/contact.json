@@ -1,0 +1,21 @@
+{
+  "company": "Alliance Investment",
+  "website": "https://alliance.sa/",
+  "email": "Ksa@alliance.sa",
+  "phone": "0539503000",
+  "location": "Riyadh, Saudi Arabia",
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/alliance-investment-as/",
+    "x": "https://x.com/KSA_Alliance"
+  },
+  "contactFormFields": [
+    "Full Name",
+    "Email Address",
+    "Mobile Number with country code",
+    "Organization",
+    "Position / Title",
+    "Sector",
+    "Purpose",
+    "Message"
+  ]
+}

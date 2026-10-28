@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://alliance.sa/</loc><lastmod>2026-10-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/about-us/</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/about-us/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/about-us/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/business-model/</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/business-model/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/business-model/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/privacy-policy/</loc><lastmod>2026-10-28</lastmod><priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/privacy-policy/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/ar/</loc><lastmod>2026-10-28</lastmod><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/ar/about-us/</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/about-us/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/about-us/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/ar/business-model/</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/business-model/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/business-model/"/>
+  </url>
+  <url>
+    <loc>https://alliance.sa/ar/privacy-policy/</loc><lastmod>2026-10-28</lastmod><priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alliance.sa/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://alliance.sa/ar/privacy-policy/"/>
+  </url>
+</urlset>

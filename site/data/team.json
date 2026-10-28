@@ -1,0 +1,134 @@
+{
+  "_note": "Edit this file to update the team on the About page (English and Arabic). Fields ending in _ar are shown on the Arabic site; if one is missing the English text is used. Photos live in assets/img (square, 400x400).",
+  "ceo": {
+    "name": "Eng. Turki Al-Qahtani",
+    "name_ar": "م. تركي القحطاني",
+    "title": "Chief Executive Officer",
+    "title_ar": "الرئيس التنفيذي",
+    "shortTitle": "CEO",
+    "image": "assets/img/team-turki-al-qahtani.webp",
+    "bio": [
+      "Founder of several specialized companies in Saudi Arabia across investment, technology, and real estate sectors",
+      "Advisor at the Saudi-European Chamber of Commerce under the European Union umbrella",
+      "Member of the Saudi-American Chamber of Commerce under the US umbrella",
+      "Member of the Saudi Business Councils with Spain, France, China, and South Korea"
+    ],
+    "bio_ar": [
+      "تأسيس عدد من الشركات المتخصصة في المملكة العربية السعودية في قطاعات الاستثمار والتقنية والعقار",
+      "دور استشاري في غرفة التجارة السعودية الأوروبية تحت مظلة الاتحاد الأوروبي",
+      "عضوية غرفة التجارة السعودية الأمريكية تحت المظلة الأمريكية",
+      "عضوية مجالس الأعمال السعودية مع إسبانيا وفرنسا والصين وكوريا الجنوبية"
+    ],
+    "quote": "We Are Proud Of Our Heritage And Excited About The Future, Focusing On Sustainable Growth, Innovation, Value Creation, And Positive Social Impact. We Are Committed To Achieving Our Strategy For Vision 2030 And Expanding Opportunities.",
+    "quote_ar": "نفخر بإرثنا ونتطلع بحماس إلى المستقبل، مع التركيز على النمو المستدام والابتكار وخلق القيمة والأثر الاجتماعي الإيجابي. ونلتزم بتحقيق استراتيجيتنا لرؤية 2030 وتوسيع الفرص."
+  },
+  "boardMembers": [
+    {
+      "name": "Dragana Linden",
+      "name_ar": "دراغانا ليندن",
+      "title": null,
+      "image": "assets/img/team-dragana-linden.webp",
+      "bio": "A highly accomplished Strategic Advisor with 20+ years of experience driving complex international projects, forging impactful public–private partnerships, and advising on major global initiatives. She specializes in multi-stakeholder collaboration, strategic frameworks, and navigating geopolitical landscapes with a strong focus on execution, sustainability, and efficiency",
+      "bio_ar": "مستشارة استراتيجية متميزة بخبرة تزيد على 20 عامًا في قيادة مشاريع دولية معقدة، وبناء شراكات مؤثرة بين القطاعين العام والخاص، وتقديم المشورة في مبادرات عالمية كبرى. تتخصص في التعاون متعدد الأطراف، والأطر الاستراتيجية، والتعامل مع المشهد الجيوسياسي، مع تركيز قوي على التنفيذ والاستدامة والكفاءة."
+    },
+    {
+      "name": "Usama T. Aziz",
+      "name_ar": "أسامة ت. عزيز",
+      "title": null,
+      "image": "assets/img/team-usama-aziz.jpg",
+      "bio": "Board Member with a background in Astronomy from UT Austin. He held executive roles at The Bengal Group, led sustainable projects in the UAE, and sits on the boards of C Cheng Holdings, GBRC, and Alliance Investment. He co-founded the CARES Foundation.",
+      "bio_ar": "عضو مجلس إدارة يحمل خلفية في علم الفلك من جامعة تكساس في أوستن. شغل مناصب تنفيذية في The Bengal Group، وقاد مشاريع مستدامة في الإمارات، ويشغل عضوية مجالس إدارة C Cheng Holdings وGBRC وتحالف للاستثمار. وهو أحد مؤسسي مؤسسة CARES."
+    },
+    {
+      "name": "Abdullah Almosa",
+      "name_ar": "عبدالله الموسى",
+      "title": null,
+      "image": "assets/img/team-abdullah-almosa.webp",
+      "bio": "A strategic leader in real estate development, organizational transformation, and business strategy, with diverse expertise in transformative initiatives at ROSHN (PIF), regional leadership at Bureau Veritas, and PMO establishment with AECOM. Unites project delivery excellence and entrepreneurial vision with global insight to advance sustainable investment growth in line with Saudi Vision 2030",
+      "bio_ar": "خبرة قيادية استراتيجية في التطوير العقاري والتحول المؤسسي واستراتيجية الأعمال، تشمل المبادرات التحولية لدى روشن (صندوق الاستثمارات العامة)، والقيادة الإقليمية في بيورو فيريتاس، وتأسيس مكاتب إدارة المشاريع مع AECOM. وتجمع هذه الخبرة بين التميّز في تنفيذ المشاريع والرؤية الريادية والمنظور العالمي لدفع نمو الاستثمار المستدام بما يتوافق مع رؤية المملكة 2030."
+    },
+    {
+      "name": "Metab Altawill",
+      "name_ar": "متعب الطويل",
+      "title": "CEO, JOSSOR Digital",
+      "title_ar": "الرئيس التنفيذي لـ JOSSOR Digital",
+      "image": "assets/img/team-metab-altawill.webp",
+      "bio": "American graduate with master's degree from Tokyo. Founded his company in Japan and has extensive experience in establishing companies.",
+      "bio_ar": "خريج جامعة أمريكية وحاصل على درجة الماجستير من طوكيو. أسّس شركته في اليابان، ويمتلك خبرة واسعة في تأسيس الشركات."
+    },
+    {
+      "name": "Oscar Fernandez (KOPPEN)",
+      "name_ar": "أوسكار فرنانديز (KOPPEN)",
+      "title": null,
+      "image": "assets/img/team-oscar-fernandez.webp",
+      "bio": "Oscar is a C level director with over 30 years of experience as advisor & board member at several international companies in Advertising, Logistics and Operations. He has one foot in the middle east, and another in Europe. In KSA, as CEO at Brandship, he has worked for Ministry of Investment, Made in Saudi, KAFD, King Salman Park, Riyadh Digital city, Ministry of Sports, Shareek (PIF), Havas, and BCG among others.",
+      "bio_ar": "مدير تنفيذي بخبرة تتجاوز 30 عامًا مستشارًا وعضوًا في مجالس إدارة عدد من الشركات الدولية في مجالات الإعلان والخدمات اللوجستية والعمليات، وتتوزع خبرته بين الشرق الأوسط وأوروبا. وفي المملكة، عمل بصفته الرئيس التنفيذي لـ Brandship مع وزارة الاستثمار، وصُنع في السعودية، ومركز الملك عبدالله المالي، وحديقة الملك سلمان، ومدينة الرياض الرقمية، ووزارة الرياضة، وبرنامج شريك (صندوق الاستثمارات العامة)، وHavas، وBCG وغيرها."
+    }
+  ],
+  "advisors": [
+    {
+      "name": "Kazuteru Arimura",
+      "name_ar": "كازوتيرو أريمورا",
+      "title": null,
+      "image": "assets/img/team-kazuteru-arimura.webp",
+      "bio": "Founded his own IT company and a blockchain company in Estonia. Currently involved in management across IT, AI, finance, and healthcare fields.",
+      "bio_ar": "أسّس شركته الخاصة في مجال تقنية المعلومات وشركة للبلوك تشين في إستونيا، ويعمل حاليًا في الإدارة عبر مجالات تقنية المعلومات والذكاء الاصطناعي والمالية والرعاية الصحية."
+    },
+    {
+      "name": "Yuliia Katsianova",
+      "name_ar": "يوليا كاتسيانوفا",
+      "title": null,
+      "image": "assets/img/team-yuliia-katsianova.webp",
+      "bio": "Yuliia Katsianova de Reine is a Ukrainian architect, designer, and entrepreneur with 25+ years of experience across fashion, arts, media, and international business. She is the founder of Fashion House VoleeYu, owner of InterBridge, and co-founder of International Center NEO 7 in Saudi Arabia.",
+      "bio_ar": "يوليا كاتسيانوفا دي رين مهندسة معمارية ومصممة ورائدة أعمال أوكرانية، تمتلك أكثر من 25 عامًا من الخبرة في مجالات الأزياء والفنون والإعلام والأعمال الدولية. وهي مؤسسة دار الأزياء VoleeYu، ومالكة InterBridge، وشريكة مؤسِّسة في المركز الدولي NEO 7 في المملكة العربية السعودية."
+    },
+    {
+      "name": "Wine Mizuno",
+      "name_ar": "وين ميزونو",
+      "title": null,
+      "image": "assets/img/team-wine-mizuno.webp",
+      "bio": "Former aviation company executive specializing in private jets. Founded a medical tourism company in Japan. Owns two companies in medical tourism and food & beverage fields.",
+      "bio_ar": "خبرة تنفيذية سابقة في شركة طيران متخصصة في الطائرات الخاصة، وتأسيس شركة للسياحة العلاجية في اليابان، إلى جانب ملكية شركتين في مجالي السياحة العلاجية والأغذية والمشروبات."
+    },
+    {
+      "name": "Terence TC Shen",
+      "name_ar": "تيرينس تي سي شين",
+      "title": null,
+      "image": "assets/img/team-terence-shen.webp",
+      "bio": [
+        "Deputy General Manager, Master Transportation Manufacturing Co., Ltd, Taiwan",
+        "Deputy General Manager, National Trading Co., Saudi Arabia",
+        "Deputy General Manager, Fujian Daimler Manufacturing Co., Ltd, China"
+      ],
+      "bio_ar": [
+        "نائب المدير العام، Master Transportation Manufacturing Co., Ltd، تايوان",
+        "نائب المدير العام، National Trading Co.، المملكة العربية السعودية",
+        "نائب المدير العام، Fujian Daimler Manufacturing Co., Ltd، الصين"
+      ]
+    },
+    {
+      "name": "Bassam Nehme",
+      "name_ar": "بسام نعمة",
+      "title": null,
+      "image": "assets/img/team-bassam-nehme.webp",
+      "bio": "More than 20 years in the hospitality and international events management field. Executed major national and international events including international summits and sports events such as the Olympics and FIFA World Cup.",
+      "bio_ar": "خبرة تتجاوز 20 عامًا في مجال الضيافة وإدارة الفعاليات الدولية، تشمل تنفيذ فعاليات وطنية ودولية كبرى، من بينها قمم دولية وأحداث رياضية مثل الألعاب الأولمبية وكأس العالم لكرة القدم."
+    },
+    {
+      "name": "Jardine Omar",
+      "name_ar": "جاردين عمر",
+      "title": null,
+      "image": "assets/img/team-jardine-omar.webp",
+      "bio": "Dynamic professional with expertise in strategic and international business management. Significant experience in investment promotion across Africa, Middle-East, and South-East Asia.",
+      "bio_ar": "كفاءة مهنية ديناميكية تتمتع بخبرة في الإدارة الاستراتيجية وإدارة الأعمال الدولية، وتجربة واسعة في الترويج للاستثمار في أفريقيا والشرق الأوسط وجنوب شرق آسيا."
+    },
+    {
+      "name": "Ernesto",
+      "name_ar": "إرنستو",
+      "title": null,
+      "image": "assets/img/team-ernesto.webp",
+      "bio": "Senior executive with extensive international experience in logistics, management, and top-level leadership across European and Latin American markets. Distinguished by an engineering background.",
+      "bio_ar": "خبرة تنفيذية عليا واسعة على المستوى الدولي في الخدمات اللوجستية والإدارة والقيادة العليا عبر الأسواق الأوروبية وأسواق أمريكا اللاتينية، مدعومة بخلفية هندسية."
+    }
+  ]
+}
