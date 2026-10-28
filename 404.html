@@ -6,23 +6,33 @@
   <title>Page not found | Alliance Investment</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0b3b2e">
-  <link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <script>
+    // This page is shown for missing URLs at any depth, so links resolve from the site root:
+    // "/" on a custom domain, "/<repo>/" on a GitHub Pages project address (user.github.io/repo/).
+    // Assets are written by script (after <base>) so the browser never pre-fetches them from the wrong folder.
+    (function () {
+      var first = location.pathname.split('/')[1];
+      var base = /\.github\.io$/.test(location.hostname) && first ? '/' + first + '/' : '/';
+      document.write('<base href="' + base + '">' +
+        '<link rel="icon" href="assets/img/favicon-32.png" sizes="32x32">' +
+        '<link rel="stylesheet" href="assets/css/styles.css">');
+    })();
+  </script>
 </head>
 <body>
   <main class="notfound">
     <div>
-      <a href="/"><img src="/assets/img/logo-light.webp" alt="Alliance Investment Holding" width="200" height="87" style="margin:0 auto 48px"></a>
+      <a href="./"><script>document.write('<img src="assets/img/logo-light.webp" alt="Alliance Investment Holding" width="200" height="87" style="margin:0 auto 48px">')</script></a>
       <strong>404</strong>
       <h1>This page could not be found</h1>
       <p>The page you are looking for may have moved. Explore our business model or return to the home page.</p>
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-        <a class="btn" href="/">Back to Home</a>
-        <a class="btn btn--ghost" href="/business-model/">Business Model</a>
+        <a class="btn" href="./">Back to Home</a>
+        <a class="btn btn--ghost" href="business-model/">Business Model</a>
       </div>
       <div lang="ar" dir="rtl" style="margin-top:56px;padding-top:32px;border-top:1px solid rgba(255,255,255,.14);font-family:Cairo,sans-serif">
         <p style="margin:0 auto 20px">عذرًا، الصفحة التي تبحث عنها غير موجودة.</p>
-        <a class="btn btn--ghost" href="/ar/" style="font-family:Cairo,sans-serif">العودة إلى الرئيسية</a>
+        <a class="btn btn--ghost" href="ar/" style="font-family:Cairo,sans-serif">العودة إلى الرئيسية</a>
       </div>
     </div>
   </main>

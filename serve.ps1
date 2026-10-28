@@ -1,7 +1,8 @@
-# Local preview server: powershell -ExecutionPolicy Bypass -File serve.ps1 [-Port 8080] [-Folder site|original]
-param([int]$Port = 8080, [string]$Folder = 'site')
+# Local preview server: powershell -ExecutionPolicy Bypass -File serve.ps1 [-Port 8080] [-Folder original]
+# The website lives in the repo root (same layout GitHub Pages serves).
+param([int]$Port = 8080, [string]$Folder = '.')
 
-$root = Join-Path $PSScriptRoot $Folder
+$root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot $Folder)).TrimEnd('\')
 $mime = @{
   '.html' = 'text/html; charset=utf-8'; '.css' = 'text/css'; '.js' = 'application/javascript'
   '.json' = 'application/json'; '.png' = 'image/png'; '.jpg' = 'image/jpeg'; '.jpeg' = 'image/jpeg'
