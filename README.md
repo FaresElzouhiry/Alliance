@@ -130,3 +130,8 @@ desktop only, after the page has loaded.
 3. The old URLs (`/about-us/`, `/business-model/`, `/privacy-policy/`) are unchanged,
    so existing links and Google results keep working. The other languages are new
    URLs under `/ar/`, `/es/`, `/ja/`, `/zh/` and `/ko/`.
+4. The share preview tags (`og:url` and `og:image`, the picture and link that WhatsApp,
+   LinkedIn, X, etc. show when someone shares a page) point to the GitHub Pages copy
+   `https://faresElzouhiry.github.io/Alliance/` while alliance.sa still runs the old site.
+   Once alliance.sa serves this site, replace `https://faresElzouhiry.github.io/Alliance/`
+   with `https://alliance.sa/` in those two tags in all 24 pages.
