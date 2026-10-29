@@ -730,18 +730,6 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 
 /* =========================================================
-   Language switch
-   ========================================================= */
-.nav__lang {
-  margin-inline-start: 6px; padding: 9px 15px; border-radius: 999px; border: 1px solid currentColor;
-  font: 700 0.88rem/1 "Cairo", var(--font-head); opacity: 0.88; transition: background 0.25s, color 0.25s, border-color 0.25s, opacity 0.25s;
-}
-.nav__lang:hover { opacity: 1; background: var(--gold-500); border-color: var(--gold-500); color: var(--green-900); }
-@media (max-width: 960px) {
-  .nav__lang { align-self: flex-start; margin: 24px 0 0; padding: 11px 20px; font-size: 1.05rem; }
-}
-
-/* =========================================================
    Arabic / right-to-left
    ========================================================= */
 html[lang="ar"] {
@@ -974,3 +962,73 @@ html[lang="ar"] .hero--globe .hero__title { font-size: clamp(2.3rem, 1.2rem + 3.
   @view-transition { navigation: none; }
 }
 [data-tilt].is-tilting { transition: transform 0.12s ease-out, box-shadow 0.4s, border-color 0.4s; }
+
+/* =========================================================
+   Language menu (6 languages)
+   ========================================================= */
+.lang { position: relative; margin-inline-start: 6px; }
+.lang__btn {
+  list-style: none; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px;
+  border: 1px solid currentColor; border-radius: 999px; cursor: pointer; opacity: 0.88;
+  font: 700 0.8rem/1 var(--font-head); letter-spacing: 0.08em; text-transform: uppercase;
+  transition: background 0.25s, color 0.25s, border-color 0.25s, opacity 0.25s;
+}
+.lang__btn::-webkit-details-marker { display: none; }
+.lang__btn .icon { width: 16px; height: 16px; }
+.lang__btn::after { content: ""; width: 6px; height: 6px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); transition: transform 0.25s; }
+.lang[open] .lang__btn::after { transform: translateY(1px) rotate(-135deg); }
+.lang__btn:hover, .lang[open] .lang__btn { opacity: 1; background: var(--gold-500); border-color: var(--gold-500); color: var(--green-900); }
+.lang__list {
+  position: absolute; top: calc(100% + 12px); inset-inline-end: 0; z-index: 5; min-width: 200px;
+  padding: 8px; border-radius: 16px; background: #fff; color: var(--ink);
+  border: 1px solid var(--line); box-shadow: 0 24px 60px -24px rgba(4, 23, 15, 0.45);
+  animation: pop 0.25s var(--ease);
+}
+.lang__list a {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; line-height: 1.2;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; transition: background 0.2s, color 0.2s;
+}
+.lang__list a small { font: 700 0.68rem/1 var(--font-head); letter-spacing: 0.1em; color: var(--muted); }
+.lang__list a:hover { background: var(--cream); }
+.lang__list a[aria-current] { color: var(--gold-600); background: var(--gold-100); }
+.lang__list a[aria-current] small { color: var(--gold-600); }
+@media (max-width: 960px) {
+  .lang { margin: 24px 0 0; }
+  .lang__btn { padding: 11px 18px; font-size: 0.9rem; }
+  .lang__list {
+    position: static; margin-top: 14px; padding: 0; min-width: 0; background: none; border: 0; box-shadow: none; color: #fff;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px; animation: none;
+  }
+  .lang__list a { border: 1px solid var(--line-light); padding: 12px 14px; }
+  .lang__list a:hover { background: rgba(255, 255, 255, 0.06); }
+  .lang__list a small { color: rgba(255, 255, 255, 0.5); }
+  .lang__list a[aria-current] { background: rgba(194, 155, 94, 0.18); border-color: var(--gold-500); color: var(--gold-300); }
+}
+
+/* =========================================================
+   Japanese, Chinese, Korean typography (system fonts, nothing to download)
+   ========================================================= */
+html[lang="ja"] {
+  --font-head: "Montserrat", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Meiryo", "Noto Sans JP", sans-serif;
+  --font-body: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Meiryo", "Noto Sans JP", sans-serif;
+}
+html[lang="zh-Hans"] {
+  --font-head: "Montserrat", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Hiragino Sans GB", sans-serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", "Hiragino Sans GB", sans-serif;
+}
+html[lang="ko"] {
+  --font-head: "Montserrat", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --font-body: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+}
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) body { line-height: 1.85; }
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) :is(h1, h2, h3, h4) { line-height: 1.4; letter-spacing: 0; }
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) .hero__title { line-height: 1.25; }
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) .hero--globe .hero__title { font-size: clamp(2.2rem, 1.1rem + 2.9vw, 3.9rem); }
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) .eyebrow { letter-spacing: 0.12em; }
+html:is([lang="ja"], [lang="zh-Hans"]) :is(h1, h2, h3, .lead, p) { line-break: strict; }
+html[lang="ja"] :is(h1, h2, h3, h4) { word-break: auto-phrase; }
+html[lang="ko"] :is(h1, h2, h3, h4, p) { word-break: keep-all; }
+/* long CJK phrases (no spaces) may wrap anywhere rather than overflow on narrow screens */
+html:is([lang="ja"], [lang="zh-Hans"], [lang="ko"]) :is(h1, h2, h3, h4) { overflow-wrap: anywhere; }
+.w, .w > span { max-width: 100%; }

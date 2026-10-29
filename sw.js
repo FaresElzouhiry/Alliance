@@ -6,7 +6,7 @@
  * Pages (HTML) always try the network first, so text changes show up right away.
  * Files (CSS, JS, images, fonts) load instantly from the cache and refresh quietly in the background.
  */
-const VERSION = 'v2';
+const VERSION = 'v5';
 const CACHE = `alliance-${VERSION}`;
 
 // Downloaded on install so the site also opens offline
@@ -80,7 +80,8 @@ async function networkFirst(request, url) {
     return response;
   } catch {
     // offline: the cached copy of this page, or the home page in the same language
-    const home = new URL(url.pathname.includes('/ar/') ? './ar/' : './', self.registration.scope);
+    const lang = (url.pathname.match(/\/(ar|es|ja|zh|ko)\//) || [])[1];
+    const home = new URL(lang ? `./${lang}/` : './', self.registration.scope);
     return (await cache.match(request, { ignoreSearch: true })) || (await cache.match(home.href)) || Response.error();
   }
 }

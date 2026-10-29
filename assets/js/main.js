@@ -14,23 +14,58 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const body = document.body;
 
-  // Interface text in the page language (<html lang="ar"> for Arabic pages)
-  const AR = document.documentElement.lang === 'ar';
-  const T = AR ? {
-    openMenu: 'افتح القائمة',
-    closeMenu: 'أغلق القائمة',
-    sent: 'شكرًا لك — تم إرسال رسالتك، وسيتواصل معك فريقنا قريبًا.',
-    failed: (email) => `عذرًا، تعذّر إرسال الرسالة. يرجى مراسلتنا على ${email}.`,
-    mailOpened: 'تم فتح تطبيق البريد الإلكتروني والرسالة جاهزة — فقط اضغط إرسال.',
-    subject: 'استفسار من الموقع',
-  } : {
-    openMenu: 'Open menu',
-    closeMenu: 'Close menu',
-    sent: 'Thank you — your message has been sent. Our team will get back to you shortly.',
-    failed: (email) => `Sorry, the message could not be sent. Please email us at ${email}.`,
-    mailOpened: 'Your email app has opened with the message ready — just press send.',
-    subject: 'Website enquiry',
+  // Interface text in the page language (from <html lang="…">)
+  const STRINGS = {
+    en: {
+      openMenu: 'Open menu',
+      closeMenu: 'Close menu',
+      sent: 'Thank you — your message has been sent. Our team will get back to you shortly.',
+      failed: (email) => `Sorry, the message could not be sent. Please email us at ${email}.`,
+      mailOpened: 'Your email app has opened with the message ready — just press send.',
+      subject: 'Website enquiry',
+    },
+    ar: {
+      openMenu: 'افتح القائمة',
+      closeMenu: 'أغلق القائمة',
+      sent: 'شكرًا لك — تم إرسال رسالتك، وسيتواصل معك فريقنا قريبًا.',
+      failed: (email) => `عذرًا، تعذّر إرسال الرسالة. يرجى مراسلتنا على ${email}.`,
+      mailOpened: 'تم فتح تطبيق البريد الإلكتروني والرسالة جاهزة — فقط اضغط إرسال.',
+      subject: 'استفسار من الموقع',
+    },
+    es: {
+      openMenu: 'Abrir menú',
+      closeMenu: 'Cerrar menú',
+      sent: 'Gracias: su mensaje ha sido enviado. Nuestro equipo se pondrá en contacto con usted en breve.',
+      failed: (email) => `Lo sentimos, no se pudo enviar el mensaje. Escríbanos a ${email}.`,
+      mailOpened: 'Se ha abierto su aplicación de correo con el mensaje listo: solo tiene que pulsar enviar.',
+      subject: 'Consulta desde el sitio web',
+    },
+    ja: {
+      openMenu: 'メニューを開く',
+      closeMenu: 'メニューを閉じる',
+      sent: 'ありがとうございます。メッセージを送信しました。担当者より追ってご連絡いたします。',
+      failed: (email) => `申し訳ありません。メッセージを送信できませんでした。${email} までメールでご連絡ください。`,
+      mailOpened: 'メールアプリが開き、メッセージが入力されています。送信ボタンを押してください。',
+      subject: 'ウェブサイトからのお問い合わせ',
+    },
+    'zh-hans': {
+      openMenu: '打开菜单',
+      closeMenu: '关闭菜单',
+      sent: '谢谢！您的留言已发送，我们的团队将尽快与您联系。',
+      failed: (email) => `抱歉，消息未能发送。请发送邮件至 ${email}。`,
+      mailOpened: '已为您打开邮件应用并填好内容，只需点击发送即可。',
+      subject: '网站咨询',
+    },
+    ko: {
+      openMenu: '메뉴 열기',
+      closeMenu: '메뉴 닫기',
+      sent: '감사합니다. 메시지가 전송되었습니다. 담당자가 곧 연락드리겠습니다.',
+      failed: (email) => `죄송합니다. 메시지를 보내지 못했습니다. ${email}(으)로 이메일을 보내 주세요.`,
+      mailOpened: '메일 앱이 열렸으며 메시지가 작성되어 있습니다. 보내기만 누르시면 됩니다.',
+      subject: '웹사이트 문의',
+    },
   };
+  const T = STRINGS[(document.documentElement.lang || 'en').toLowerCase()] || STRINGS.en;
 
   /* ---------- Header: solid background after scrolling ---------- */
   const header = document.querySelector('.site-header');
@@ -38,6 +73,15 @@
     const onScroll = () => header.classList.toggle('is-solid', window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ---------- Language menu: close on outside click / Escape ---------- */
+  const langMenu = document.querySelector('details.lang');
+  if (langMenu) {
+    document.addEventListener('click', (e) => { if (langMenu.open && !langMenu.contains(e.target)) langMenu.open = false; });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && langMenu.open) { langMenu.open = false; langMenu.querySelector('summary').focus(); }
+    });
   }
 
   /* ---------- Mobile navigation ---------- */

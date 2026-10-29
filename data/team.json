@@ -1,10 +1,14 @@
 {
-  "_note": "Edit this file to update the team on the About page (English and Arabic). Fields ending in _ar are shown on the Arabic site; if one is missing the English text is used. Photos live in assets/img (square, 400x400).",
+  "_note": "Edit this file to update the team on the About pages. Fields ending in _ar, _es, _ja, _zh or _ko are shown on that language’s site; if one is missing the English text is used. Names stay as written in \"name\" unless a name_xx field is added. Photos live in assets/img (square, 400x400).",
   "ceo": {
     "name": "Eng. Turki Al-Qahtani",
     "name_ar": "م. تركي القحطاني",
     "title": "Chief Executive Officer",
     "title_ar": "الرئيس التنفيذي",
+    "title_es": "Consejero delegado",
+    "title_ja": "最高経営責任者（CEO）",
+    "title_zh": "首席执行官",
+    "title_ko": "최고경영자(CEO)",
     "shortTitle": "CEO",
     "image": "assets/img/team-turki-al-qahtani.webp",
     "bio": [
@@ -19,6 +23,30 @@
       "عضوية غرفة التجارة السعودية الأمريكية تحت المظلة الأمريكية",
       "عضوية مجالس الأعمال السعودية مع إسبانيا وفرنسا والصين وكوريا الجنوبية"
     ],
+    "bio_es": [
+      "Fundación de diversas empresas especializadas en Arabia Saudí en los sectores de la inversión, la tecnología y el inmobiliario",
+      "Labor de asesoría en la Cámara de Comercio Saudí-Europea, bajo el paraguas de la Unión Europea",
+      "Membresía en la Cámara de Comercio Saudí-Estadounidense, bajo el paraguas de EE. UU.",
+      "Membresía en los Consejos Empresariales Saudíes con España, Francia, China y Corea del Sur"
+    ],
+    "bio_ja": [
+      "サウジアラビアで投資・テクノロジー・不動産分野の専門企業を複数設立",
+      "欧州連合（EU）傘下のサウジ・欧州商工会議所アドバイザー",
+      "米国傘下のサウジ・米国商工会議所メンバー",
+      "スペイン、フランス、中国、韓国との各サウジ・ビジネス評議会メンバー"
+    ],
+    "bio_zh": [
+      "在沙特阿拉伯创立多家投资、科技和房地产领域的专业公司",
+      "欧盟框架下沙特—欧洲商会顾问",
+      "美国框架下沙特—美国商会成员",
+      "沙特与西班牙、法国、中国、韩国商业理事会成员"
+    ],
+    "bio_ko": [
+      "사우디아라비아에서 투자·기술·부동산 분야의 전문 기업 다수 설립",
+      "유럽연합(EU) 산하 사우디-유럽 상공회의소 자문",
+      "미국 산하 사우디-미국 상공회의소 회원",
+      "스페인, 프랑스, 중국, 대한민국과의 사우디 비즈니스 협의회 회원"
+    ],
     "quote": "We Are Proud Of Our Heritage And Excited About The Future, Focusing On Sustainable Growth, Innovation, Value Creation, And Positive Social Impact. We Are Committed To Achieving Our Strategy For Vision 2030 And Expanding Opportunities.",
     "quote_ar": "نفخر بإرثنا ونتطلع بحماس إلى المستقبل، مع التركيز على النمو المستدام والابتكار وخلق القيمة والأثر الاجتماعي الإيجابي. ونلتزم بتحقيق استراتيجيتنا لرؤية 2030 وتوسيع الفرص."
   },
@@ -29,7 +57,11 @@
       "title": null,
       "image": "assets/img/team-dragana-linden.webp",
       "bio": "A highly accomplished Strategic Advisor with 20+ years of experience driving complex international projects, forging impactful public–private partnerships, and advising on major global initiatives. She specializes in multi-stakeholder collaboration, strategic frameworks, and navigating geopolitical landscapes with a strong focus on execution, sustainability, and efficiency",
-      "bio_ar": "مستشارة استراتيجية متميزة بخبرة تزيد على 20 عامًا في قيادة مشاريع دولية معقدة، وبناء شراكات مؤثرة بين القطاعين العام والخاص، وتقديم المشورة في مبادرات عالمية كبرى. تتخصص في التعاون متعدد الأطراف، والأطر الاستراتيجية، والتعامل مع المشهد الجيوسياسي، مع تركيز قوي على التنفيذ والاستدامة والكفاءة."
+      "bio_ar": "مستشارة استراتيجية متميزة بخبرة تزيد على 20 عامًا في قيادة مشاريع دولية معقدة، وبناء شراكات مؤثرة بين القطاعين العام والخاص، وتقديم المشورة في مبادرات عالمية كبرى. تتخصص في التعاون متعدد الأطراف، والأطر الاستراتيجية، والتعامل مع المشهد الجيوسياسي، مع تركيز قوي على التنفيذ والاستدامة والكفاءة.",
+      "bio_es": "Asesora estratégica de gran prestigio con más de 20 años de experiencia dirigiendo proyectos internacionales complejos, forjando alianzas público-privadas de impacto y asesorando en grandes iniciativas globales. Está especializada en la colaboración entre múltiples actores, los marcos estratégicos y la gestión de entornos geopolíticos, con un fuerte enfoque en la ejecución, la sostenibilidad y la eficiencia.",
+      "bio_ja": "20年以上にわたり、複雑な国際プロジェクトの推進、影響力のある官民パートナーシップの構築、主要なグローバル・イニシアチブへの助言に携わってきた卓越した戦略アドバイザー。マルチステークホルダーの協働、戦略フレームワーク、地政学的環境への対応を専門とし、実行力、持続可能性、効率性を重視しています。",
+      "bio_zh": "资深战略顾问，拥有20多年经验，主导复杂的国际项目，建立有影响力的公私合作伙伴关系，并为重大全球倡议提供咨询。她专长于多方利益相关者协作、战略框架以及应对地缘政治格局，高度重视执行力、可持续性和效率。",
+      "bio_ko": "20년 이상 복잡한 국제 프로젝트를 이끌고, 영향력 있는 민관 파트너십을 구축하며, 주요 글로벌 이니셔티브에 자문을 제공해 온 탁월한 전략 자문가입니다. 다자간 협력, 전략 프레임워크, 지정학적 환경 대응을 전문으로 하며 실행력, 지속 가능성, 효율성을 중시합니다."
     },
     {
       "name": "Usama T. Aziz",
@@ -37,7 +69,11 @@
       "title": null,
       "image": "assets/img/team-usama-aziz.jpg",
       "bio": "Board Member with a background in Astronomy from UT Austin. He held executive roles at The Bengal Group, led sustainable projects in the UAE, and sits on the boards of C Cheng Holdings, GBRC, and Alliance Investment. He co-founded the CARES Foundation.",
-      "bio_ar": "عضو مجلس إدارة يحمل خلفية في علم الفلك من جامعة تكساس في أوستن. شغل مناصب تنفيذية في The Bengal Group، وقاد مشاريع مستدامة في الإمارات، ويشغل عضوية مجالس إدارة C Cheng Holdings وGBRC وتحالف للاستثمار. وهو أحد مؤسسي مؤسسة CARES."
+      "bio_ar": "عضو مجلس إدارة يحمل خلفية في علم الفلك من جامعة تكساس في أوستن. شغل مناصب تنفيذية في The Bengal Group، وقاد مشاريع مستدامة في الإمارات، ويشغل عضوية مجالس إدارة C Cheng Holdings وGBRC وتحالف للاستثمار. وهو أحد مؤسسي مؤسسة CARES.",
+      "bio_es": "Consejero con formación en Astronomía por la Universidad de Texas en Austin. Ha ocupado cargos ejecutivos en The Bengal Group, ha dirigido proyectos sostenibles en los EAU y forma parte de los consejos de C Cheng Holdings, GBRC y Alliance Investment. Es cofundador de la CARES Foundation.",
+      "bio_ja": "テキサス大学オースティン校で天文学を専攻した取締役。The Bengal Groupで経営幹部を務め、UAEで持続可能なプロジェクトを率いたほか、C Cheng Holdings、GBRC、Alliance Investmentの取締役を務めています。CARES Foundationの共同創設者でもあります。",
+      "bio_zh": "董事会成员，毕业于德克萨斯大学奥斯汀分校天文学专业。曾在 The Bengal Group 担任高管，在阿联酋领导可持续发展项目，现任 C Cheng Holdings、GBRC 及 Alliance Investment 董事会成员，并与他人共同创立了 CARES 基金会。",
+      "bio_ko": "텍사스 대학교 오스틴 캠퍼스에서 천문학을 전공한 이사로, The Bengal Group에서 임원직을 역임하고 UAE에서 지속 가능한 프로젝트를 이끌었으며, C Cheng Holdings, GBRC, Alliance Investment의 이사회에 참여하고 있습니다. CARES 재단의 공동 설립자이기도 합니다."
     },
     {
       "name": "Abdullah Almosa",
@@ -45,16 +81,28 @@
       "title": null,
       "image": "assets/img/team-abdullah-almosa.webp",
       "bio": "A strategic leader in real estate development, organizational transformation, and business strategy, with diverse expertise in transformative initiatives at ROSHN (PIF), regional leadership at Bureau Veritas, and PMO establishment with AECOM. Unites project delivery excellence and entrepreneurial vision with global insight to advance sustainable investment growth in line with Saudi Vision 2030",
-      "bio_ar": "خبرة قيادية استراتيجية في التطوير العقاري والتحول المؤسسي واستراتيجية الأعمال، تشمل المبادرات التحولية لدى روشن (صندوق الاستثمارات العامة)، والقيادة الإقليمية في بيورو فيريتاس، وتأسيس مكاتب إدارة المشاريع مع AECOM. وتجمع هذه الخبرة بين التميّز في تنفيذ المشاريع والرؤية الريادية والمنظور العالمي لدفع نمو الاستثمار المستدام بما يتوافق مع رؤية المملكة 2030."
+      "bio_ar": "خبرة قيادية استراتيجية في التطوير العقاري والتحول المؤسسي واستراتيجية الأعمال، تشمل المبادرات التحولية لدى روشن (صندوق الاستثمارات العامة)، والقيادة الإقليمية في بيورو فيريتاس، وتأسيس مكاتب إدارة المشاريع مع AECOM. وتجمع هذه الخبرة بين التميّز في تنفيذ المشاريع والرؤية الريادية والمنظور العالمي لدفع نمو الاستثمار المستدام بما يتوافق مع رؤية المملكة 2030.",
+      "bio_es": "Liderazgo estratégico en desarrollo inmobiliario, transformación organizativa y estrategia empresarial, con experiencia diversa en iniciativas transformadoras en ROSHN (PIF), liderazgo regional en Bureau Veritas y creación de oficinas de gestión de proyectos (PMO) con AECOM. Une la excelencia en la ejecución de proyectos y la visión emprendedora con una perspectiva global para impulsar un crecimiento sostenible de la inversión en línea con la Visión Saudí 2030.",
+      "bio_ja": "不動産開発、組織変革、事業戦略に精通した戦略的リーダー。ROSHN（PIF）での変革イニシアチブ、Bureau Veritasでの地域統括、AECOMでのPMO立ち上げなど幅広い経験を持ち、プロジェクト遂行の卓越性と起業家的ビジョン、グローバルな視点を融合させ、サウジ・ビジョン2030に沿った持続的な投資成長を推進しています。",
+      "bio_zh": "房地产开发、组织转型和企业战略领域的战略领导者，曾在 ROSHN（公共投资基金旗下）推动转型举措、在 Bureau Veritas 担任区域领导，并与 AECOM 共同建立项目管理办公室（PMO），经验丰富。融合卓越的项目交付能力、创业视野与全球洞察，推动契合沙特2030愿景的可持续投资增长。",
+      "bio_ko": "부동산 개발, 조직 혁신, 사업 전략 분야의 전략적 리더로서 ROSHN(PIF)의 혁신 이니셔티브, Bureau Veritas의 지역 총괄, AECOM과의 PMO 구축 등 다양한 경험을 보유하고 있습니다. 프로젝트 수행 역량과 기업가적 비전, 글로벌 통찰을 결합하여 사우디 비전 2030에 부합하는 지속 가능한 투자 성장을 이끌고 있습니다."
     },
     {
       "name": "Metab Altawill",
       "name_ar": "متعب الطويل",
       "title": "CEO, JOSSOR Digital",
       "title_ar": "الرئيس التنفيذي لـ JOSSOR Digital",
+      "title_es": "CEO de JOSSOR Digital",
+      "title_ja": "JOSSOR Digital CEO",
+      "title_zh": "JOSSOR Digital 首席执行官",
+      "title_ko": "JOSSOR Digital CEO",
       "image": "assets/img/team-metab-altawill.webp",
       "bio": "American graduate with master's degree from Tokyo. Founded his company in Japan and has extensive experience in establishing companies.",
-      "bio_ar": "خريج جامعة أمريكية وحاصل على درجة الماجستير من طوكيو. أسّس شركته في اليابان، ويمتلك خبرة واسعة في تأسيس الشركات."
+      "bio_ar": "خريج جامعة أمريكية وحاصل على درجة الماجستير من طوكيو. أسّس شركته في اليابان، ويمتلك خبرة واسعة في تأسيس الشركات.",
+      "bio_es": "Graduado en Estados Unidos y con un máster en Tokio. Fundó su empresa en Japón y cuenta con amplia experiencia en la creación de empresas.",
+      "bio_ja": "米国の大学を卒業し、東京で修士号を取得。日本で自らの会社を設立し、企業設立に関する豊富な経験を有しています。",
+      "bio_zh": "毕业于美国大学，并在东京获得硕士学位。他在日本创立了自己的公司，在企业创设方面拥有丰富经验。",
+      "bio_ko": "미국에서 학부를 졸업하고 도쿄에서 석사 학위를 취득했습니다. 일본에서 자신의 회사를 설립했으며 기업 설립 분야에서 폭넓은 경험을 보유하고 있습니다."
     },
     {
       "name": "Oscar Fernandez (KOPPEN)",
@@ -62,7 +110,11 @@
       "title": null,
       "image": "assets/img/team-oscar-fernandez.webp",
       "bio": "Oscar is a C level director with over 30 years of experience as advisor & board member at several international companies in Advertising, Logistics and Operations. He has one foot in the middle east, and another in Europe. In KSA, as CEO at Brandship, he has worked for Ministry of Investment, Made in Saudi, KAFD, King Salman Park, Riyadh Digital city, Ministry of Sports, Shareek (PIF), Havas, and BCG among others.",
-      "bio_ar": "مدير تنفيذي بخبرة تتجاوز 30 عامًا مستشارًا وعضوًا في مجالس إدارة عدد من الشركات الدولية في مجالات الإعلان والخدمات اللوجستية والعمليات، وتتوزع خبرته بين الشرق الأوسط وأوروبا. وفي المملكة، عمل بصفته الرئيس التنفيذي لـ Brandship مع وزارة الاستثمار، وصُنع في السعودية، ومركز الملك عبدالله المالي، وحديقة الملك سلمان، ومدينة الرياض الرقمية، ووزارة الرياضة، وبرنامج شريك (صندوق الاستثمارات العامة)، وHavas، وBCG وغيرها."
+      "bio_ar": "مدير تنفيذي بخبرة تتجاوز 30 عامًا مستشارًا وعضوًا في مجالس إدارة عدد من الشركات الدولية في مجالات الإعلان والخدمات اللوجستية والعمليات، وتتوزع خبرته بين الشرق الأوسط وأوروبا. وفي المملكة، عمل بصفته الرئيس التنفيذي لـ Brandship مع وزارة الاستثمار، وصُنع في السعودية، ومركز الملك عبدالله المالي، وحديقة الملك سلمان، ومدينة الرياض الرقمية، ووزارة الرياضة، وبرنامج شريك (صندوق الاستثمارات العامة)، وHavas، وBCG وغيرها.",
+      "bio_es": "Oscar es un alto directivo con más de 30 años de experiencia como asesor y consejero en varias empresas internacionales de publicidad, logística y operaciones. Tiene un pie en Oriente Medio y otro en Europa. En Arabia Saudí, como CEO de Brandship, ha trabajado para el Ministerio de Inversión, Made in Saudi, KAFD, King Salman Park, Riyadh Digital City, el Ministerio de Deporte, Shareek (PIF), Havas y BCG, entre otros.",
+      "bio_ja": "広告、物流、オペレーション分野の複数の国際企業で、アドバイザーや取締役として30年以上の経験を持つCレベルの経営者。中東と欧州の双方を拠点に活動しています。サウジアラビアではBrandshipのCEOとして、投資省、Made in Saudi、KAFD、キング・サルマン・パーク、リヤド・デジタル・シティ、スポーツ省、Shareek（PIF）、Havas、BCGなどの案件に携わってきました。",
+      "bio_zh": "Oscar 是一位资深高管，在广告、物流和运营领域的多家国际公司担任顾问和董事会成员，拥有30多年经验，业务横跨中东与欧洲。在沙特，他以 Brandship 首席执行官的身份，曾服务于投资部、Made in Saudi、阿卜杜拉国王金融区（KAFD）、萨勒曼国王公园、利雅得数字城、体育部、Shareek（公共投资基金）、Havas 和 BCG 等机构。",
+      "bio_ko": "광고, 물류, 운영 분야의 여러 국제 기업에서 자문위원 및 이사로 30년 이상 경력을 쌓은 최고경영진입니다. 중동과 유럽을 오가며 활동하고 있습니다. 사우디아라비아에서는 Brandship의 CEO로서 투자부, Made in Saudi, KAFD, 킹 살만 파크, 리야드 디지털 시티, 체육부, Shareek(PIF), Havas, BCG 등과 함께 일했습니다."
     }
   ],
   "advisors": [
@@ -72,7 +124,11 @@
       "title": null,
       "image": "assets/img/team-kazuteru-arimura.webp",
       "bio": "Founded his own IT company and a blockchain company in Estonia. Currently involved in management across IT, AI, finance, and healthcare fields.",
-      "bio_ar": "أسّس شركته الخاصة في مجال تقنية المعلومات وشركة للبلوك تشين في إستونيا، ويعمل حاليًا في الإدارة عبر مجالات تقنية المعلومات والذكاء الاصطناعي والمالية والرعاية الصحية."
+      "bio_ar": "أسّس شركته الخاصة في مجال تقنية المعلومات وشركة للبلوك تشين في إستونيا، ويعمل حاليًا في الإدارة عبر مجالات تقنية المعلومات والذكاء الاصطناعي والمالية والرعاية الصحية.",
+      "bio_es": "Fundó su propia empresa de TI y una empresa de blockchain en Estonia. Actualmente participa en la gestión de los ámbitos de TI, IA, finanzas y salud.",
+      "bio_ja": "自身のIT企業と、エストニアでブロックチェーン企業を創業。現在はIT、AI、金融、ヘルスケアの各分野で経営に携わっています。",
+      "bio_zh": "创立了自己的IT公司，并在爱沙尼亚创办了一家区块链公司。目前参与IT、人工智能、金融和医疗健康等领域的管理工作。",
+      "bio_ko": "자신의 IT 기업과 에스토니아의 블록체인 기업을 창업했습니다. 현재 IT, AI, 금융, 헬스케어 분야의 경영에 참여하고 있습니다."
     },
     {
       "name": "Yuliia Katsianova",
@@ -80,7 +136,11 @@
       "title": null,
       "image": "assets/img/team-yuliia-katsianova.webp",
       "bio": "Yuliia Katsianova de Reine is a Ukrainian architect, designer, and entrepreneur with 25+ years of experience across fashion, arts, media, and international business. She is the founder of Fashion House VoleeYu, owner of InterBridge, and co-founder of International Center NEO 7 in Saudi Arabia.",
-      "bio_ar": "يوليا كاتسيانوفا دي رين مهندسة معمارية ومصممة ورائدة أعمال أوكرانية، تمتلك أكثر من 25 عامًا من الخبرة في مجالات الأزياء والفنون والإعلام والأعمال الدولية. وهي مؤسسة دار الأزياء VoleeYu، ومالكة InterBridge، وشريكة مؤسِّسة في المركز الدولي NEO 7 في المملكة العربية السعودية."
+      "bio_ar": "يوليا كاتسيانوفا دي رين مهندسة معمارية ومصممة ورائدة أعمال أوكرانية، تمتلك أكثر من 25 عامًا من الخبرة في مجالات الأزياء والفنون والإعلام والأعمال الدولية. وهي مؤسسة دار الأزياء VoleeYu، ومالكة InterBridge، وشريكة مؤسِّسة في المركز الدولي NEO 7 في المملكة العربية السعودية.",
+      "bio_es": "Yuliia Katsianova de Reine es una arquitecta, diseñadora y empresaria ucraniana con más de 25 años de experiencia en moda, arte, medios de comunicación y negocios internacionales. Es fundadora de la casa de moda VoleeYu, propietaria de InterBridge y cofundadora del International Center NEO 7 en Arabia Saudí.",
+      "bio_ja": "Yuliia Katsianova de Reineは、ファッション、アート、メディア、国際ビジネスの分野で25年以上の経験を持つウクライナ出身の建築家、デザイナー、起業家です。ファッションハウスVoleeYuの創設者、InterBridgeのオーナーであり、サウジアラビアのInternational Center NEO 7の共同創設者でもあります。",
+      "bio_zh": "Yuliia Katsianova de Reine 是一位乌克兰建筑师、设计师和企业家，在时尚、艺术、媒体和国际商业领域拥有25年以上经验。她是时装品牌 VoleeYu 的创始人、InterBridge 的所有者，并共同创立了位于沙特阿拉伯的 International Center NEO 7。",
+      "bio_ko": "Yuliia Katsianova de Reine는 패션, 예술, 미디어, 국제 비즈니스 분야에서 25년 이상의 경험을 쌓은 우크라이나 출신의 건축가, 디자이너이자 기업가입니다. 패션 하우스 VoleeYu의 창립자이자 InterBridge의 소유주이며, 사우디아라비아의 International Center NEO 7을 공동 설립했습니다."
     },
     {
       "name": "Wine Mizuno",
@@ -88,7 +148,11 @@
       "title": null,
       "image": "assets/img/team-wine-mizuno.webp",
       "bio": "Former aviation company executive specializing in private jets. Founded a medical tourism company in Japan. Owns two companies in medical tourism and food & beverage fields.",
-      "bio_ar": "خبرة تنفيذية سابقة في شركة طيران متخصصة في الطائرات الخاصة، وتأسيس شركة للسياحة العلاجية في اليابان، إلى جانب ملكية شركتين في مجالي السياحة العلاجية والأغذية والمشروبات."
+      "bio_ar": "خبرة تنفيذية سابقة في شركة طيران متخصصة في الطائرات الخاصة، وتأسيس شركة للسياحة العلاجية في اليابان، إلى جانب ملكية شركتين في مجالي السياحة العلاجية والأغذية والمشروبات.",
+      "bio_es": "Experiencia ejecutiva previa en una compañía de aviación especializada en jets privados, fundación de una empresa de turismo médico en Japón y propiedad de dos empresas en los sectores del turismo médico y la alimentación y bebidas.",
+      "bio_ja": "プライベートジェットを専門とする航空会社の元経営幹部。日本で医療ツーリズム会社を設立し、医療ツーリズムと飲食分野で2社を所有しています。",
+      "bio_zh": "曾任专注私人飞机业务的航空公司高管，在日本创立了一家医疗旅游公司，并拥有医疗旅游和餐饮领域的两家公司。",
+      "bio_ko": "프라이빗 제트기 전문 항공사의 임원 출신으로, 일본에서 의료 관광 회사를 설립했으며 의료 관광 및 식음료 분야의 회사 두 곳을 소유하고 있습니다."
     },
     {
       "name": "Terence TC Shen",
@@ -104,6 +168,26 @@
         "نائب المدير العام، Master Transportation Manufacturing Co., Ltd، تايوان",
         "نائب المدير العام، National Trading Co.، المملكة العربية السعودية",
         "نائب المدير العام، Fujian Daimler Manufacturing Co., Ltd، الصين"
+      ],
+      "bio_es": [
+        "Subdirección general, Master Transportation Manufacturing Co., Ltd, Taiwán",
+        "Subdirección general, National Trading Co., Arabia Saudí",
+        "Subdirección general, Fujian Daimler Manufacturing Co., Ltd, China"
+      ],
+      "bio_ja": [
+        "副総経理（Master Transportation Manufacturing Co., Ltd／台湾）",
+        "副総経理（National Trading Co.／サウジアラビア）",
+        "副総経理（Fujian Daimler Manufacturing Co., Ltd／中国）"
+      ],
+      "bio_zh": [
+        "Master Transportation Manufacturing Co., Ltd（台湾）副总经理",
+        "National Trading Co.（沙特阿拉伯）副总经理",
+        "Fujian Daimler Manufacturing Co., Ltd（中国）副总经理"
+      ],
+      "bio_ko": [
+        "부총괄 관리자, Master Transportation Manufacturing Co., Ltd(대만)",
+        "부총괄 관리자, National Trading Co.(사우디아라비아)",
+        "부총괄 관리자, Fujian Daimler Manufacturing Co., Ltd(중국)"
       ]
     },
     {
@@ -112,7 +196,11 @@
       "title": null,
       "image": "assets/img/team-bassam-nehme.webp",
       "bio": "More than 20 years in the hospitality and international events management field. Executed major national and international events including international summits and sports events such as the Olympics and FIFA World Cup.",
-      "bio_ar": "خبرة تتجاوز 20 عامًا في مجال الضيافة وإدارة الفعاليات الدولية، تشمل تنفيذ فعاليات وطنية ودولية كبرى، من بينها قمم دولية وأحداث رياضية مثل الألعاب الأولمبية وكأس العالم لكرة القدم."
+      "bio_ar": "خبرة تتجاوز 20 عامًا في مجال الضيافة وإدارة الفعاليات الدولية، تشمل تنفيذ فعاليات وطنية ودولية كبرى، من بينها قمم دولية وأحداث رياضية مثل الألعاب الأولمبية وكأس العالم لكرة القدم.",
+      "bio_es": "Más de 20 años en el sector de la hospitalidad y la gestión de eventos internacionales, con la ejecución de grandes eventos nacionales e internacionales, incluidas cumbres internacionales y acontecimientos deportivos como los Juegos Olímpicos y la Copa Mundial de la FIFA.",
+      "bio_ja": "ホスピタリティと国際イベント運営の分野で20年以上の経験。国際サミットのほか、オリンピックやFIFAワールドカップなどのスポーツイベントを含む、国内外の大規模イベントを手がけてきました。",
+      "bio_zh": "在酒店服务和国际活动管理领域拥有20多年经验，曾执行多项重大国家级和国际活动，包括国际峰会以及奥运会、国际足联世界杯等体育赛事。",
+      "bio_ko": "호스피탈리티 및 국제 행사 운영 분야에서 20년 이상의 경험을 보유하고 있으며, 국제 정상회의와 올림픽, FIFA 월드컵 등 스포츠 행사를 포함한 국내외 대형 행사를 수행했습니다."
     },
     {
       "name": "Jardine Omar",
@@ -120,7 +208,11 @@
       "title": null,
       "image": "assets/img/team-jardine-omar.webp",
       "bio": "Dynamic professional with expertise in strategic and international business management. Significant experience in investment promotion across Africa, Middle-East, and South-East Asia.",
-      "bio_ar": "كفاءة مهنية ديناميكية تتمتع بخبرة في الإدارة الاستراتيجية وإدارة الأعمال الدولية، وتجربة واسعة في الترويج للاستثمار في أفريقيا والشرق الأوسط وجنوب شرق آسيا."
+      "bio_ar": "كفاءة مهنية ديناميكية تتمتع بخبرة في الإدارة الاستراتيجية وإدارة الأعمال الدولية، وتجربة واسعة في الترويج للاستثمار في أفريقيا والشرق الأوسط وجنوب شرق آسيا.",
+      "bio_es": "Perfil profesional dinámico con experiencia en gestión estratégica y de negocios internacionales, y amplia trayectoria en la promoción de inversiones en África, Oriente Medio y el Sudeste Asiático.",
+      "bio_ja": "戦略経営と国際ビジネスマネジメントに精通したプロフェッショナル。アフリカ、中東、東南アジアにおける投資促進で豊富な経験を持っています。",
+      "bio_zh": "富有活力的专业人士，精通战略管理与国际商业管理，在非洲、中东和东南亚的投资促进方面经验丰富。",
+      "bio_ko": "전략 경영과 국제 비즈니스 관리에 전문성을 갖춘 역동적인 전문가로, 아프리카, 중동, 동남아시아에서 투자 유치 분야의 풍부한 경험을 보유하고 있습니다."
     },
     {
       "name": "Ernesto",
@@ -128,7 +220,11 @@
       "title": null,
       "image": "assets/img/team-ernesto.webp",
       "bio": "Senior executive with extensive international experience in logistics, management, and top-level leadership across European and Latin American markets. Distinguished by an engineering background.",
-      "bio_ar": "خبرة تنفيذية عليا واسعة على المستوى الدولي في الخدمات اللوجستية والإدارة والقيادة العليا عبر الأسواق الأوروبية وأسواق أمريكا اللاتينية، مدعومة بخلفية هندسية."
+      "bio_ar": "خبرة تنفيذية عليا واسعة على المستوى الدولي في الخدمات اللوجستية والإدارة والقيادة العليا عبر الأسواق الأوروبية وأسواق أمريكا اللاتينية، مدعومة بخلفية هندسية.",
+      "bio_es": "Amplia experiencia ejecutiva internacional en logística, gestión y alta dirección en mercados europeos y latinoamericanos, respaldada por una formación en ingeniería.",
+      "bio_ja": "欧州および中南米市場で、物流、経営、トップマネジメントに関する豊富な国際経験を持つシニアエグゼクティブ。エンジニアリングのバックグラウンドを強みとしています。",
+      "bio_zh": "资深高管，在欧洲和拉丁美洲市场的物流、管理和高层领导方面拥有丰富的国际经验，具备工程专业背景。",
+      "bio_ko": "유럽과 중남미 시장에서 물류, 경영, 최고 리더십 분야의 폭넓은 국제 경험을 갖춘 시니어 임원으로, 엔지니어링 배경을 지니고 있습니다."
     }
   ]
 }

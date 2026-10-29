@@ -5,27 +5,57 @@
   const root = document.getElementById('team-root');
   if (!root) return;
 
-  const AR = document.documentElement.lang === 'ar';
+  // page language → field suffix in team.json (name_ar, bio_es, title_ja, bio_zh, bio_ko …)
+  const LANG = (document.documentElement.lang || 'en').toLowerCase();
+  const SUFFIX = { ar: 'ar', es: 'es', ja: 'ja', 'zh-hans': 'zh', ko: 'ko' }[LANG];
   const base = root.dataset.base || '../';
   const ICONS = `${base}assets/img/icons.svg`;
   const icon = (name, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="${ICONS}#${name}"/></svg>`;
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const bioList = (bio) => (Array.isArray(bio) ? bio : [bio]).filter(Boolean);
   const img = (p) => `${base}${p}`;
-  // Arabic pages use the *_ar fields and fall back to English when one is missing
-  const field = (p, key) => (AR && p[`${key}_ar`]) || p[key];
+  // Other languages use the *_xx fields and fall back to English when one is missing
+  const field = (p, key) => (SUFFIX && p[`${key}_${SUFFIX}`]) || p[key];
 
-  const T = AR ? {
-    groups: { boardMembers: ['أعضاء مجلس الإدارة', 'عضو مجلس الإدارة'], advisors: ['المستشارون', 'مستشار'] },
-    count: (n) => (n === 1 ? 'عضو واحد' : n === 2 ? 'عضوان' : n <= 10 ? `${n} أعضاء` : `${n} عضوًا`),
-    more: 'عرض الملف',
-    error: 'تعذّر تحميل قائمة الفريق. افتح الموقع من خلال خادم ويب (راجع ملف README) بدلًا من فتح الملف مباشرة.',
-  } : {
-    groups: { boardMembers: ['Board Members', 'Board Member'], advisors: ['Advisors', 'Advisor'] },
-    count: (n) => `${n} ${n === 1 ? 'member' : 'members'}`,
-    more: 'View profile',
-    error: 'The team list could not be loaded. Open the site through a web server (see README) instead of double-clicking the file.',
+  const STRINGS = {
+    en: {
+      groups: { boardMembers: ['Board Members', 'Board Member'], advisors: ['Advisors', 'Advisor'] },
+      count: (n) => `${n} ${n === 1 ? 'member' : 'members'}`,
+      more: 'View profile',
+      error: 'The team list could not be loaded. Open the site through a web server (see README) instead of double-clicking the file.',
+    },
+    ar: {
+      groups: { boardMembers: ['أعضاء مجلس الإدارة', 'عضو مجلس الإدارة'], advisors: ['المستشارون', 'مستشار'] },
+      count: (n) => (n === 1 ? 'عضو واحد' : n === 2 ? 'عضوان' : n <= 10 ? `${n} أعضاء` : `${n} عضوًا`),
+      more: 'عرض الملف',
+      error: 'تعذّر تحميل قائمة الفريق. افتح الموقع من خلال خادم ويب (راجع ملف README) بدلًا من فتح الملف مباشرة.',
+    },
+    es: {
+      groups: { boardMembers: ['Consejo de Administración', 'Consejero'], advisors: ['Asesores', 'Asesor'] },
+      count: (n) => `${n} ${n === 1 ? 'miembro' : 'miembros'}`,
+      more: 'Ver perfil',
+      error: 'No se pudo cargar el equipo. Abra el sitio a través de un servidor web (consulte el README) en lugar de abrir el archivo directamente.',
+    },
+    ja: {
+      groups: { boardMembers: ['取締役会', '取締役'], advisors: ['アドバイザー', 'アドバイザー'] },
+      count: (n) => `${n}名`,
+      more: 'プロフィールを見る',
+      error: 'チーム情報を読み込めませんでした。ファイルを直接開くのではなく、ウェブサーバー経由でサイトを開いてください（README参照）。',
+    },
+    'zh-hans': {
+      groups: { boardMembers: ['董事会成员', '董事会成员'], advisors: ['顾问', '顾问'] },
+      count: (n) => `${n} 位成员`,
+      more: '查看简介',
+      error: '无法加载团队信息。请通过网页服务器打开网站（参见 README），不要直接双击文件。',
+    },
+    ko: {
+      groups: { boardMembers: ['이사회', '이사'], advisors: ['자문위원', '자문위원'] },
+      count: (n) => `${n}명`,
+      more: '프로필 보기',
+      error: '팀 정보를 불러올 수 없습니다. 파일을 직접 열지 말고 웹 서버를 통해 사이트를 열어 주세요(README 참고).',
+    },
   };
+  const T = STRINGS[LANG] || STRINGS.en;
 
   const dialog = document.getElementById('profile-dialog');
   const people = [];
