@@ -36,7 +36,7 @@ Don't double-click the HTML files: the team section and icons need a web server.
 | Images (all WebP, optimized) | `assets/img/` |
 | Icons | `assets/img/icons.svg` |
 | World map | `assets/img/world-map.svg` |
-| Design models for review (3 alternative home pages, hidden from Google) | `models/` — open `models/` to compare them; `models/1/`, `models/2/`, `models/3/` |
+| Design models for review (6 alternative one-page sites, hidden from Google) | `models/` — open `models/` to compare them. 1–3 are inspired by Invest Saudi, ADIO and AstroLabs; 4–6 are original 3D concepts. Shared content: `models/content.js`; shared effects: `models/models.js` / `models.css`; map data: `models/geo.js`; preview images: `models/img/`. The 3D models load three.js from cdn.jsdelivr.net. |
 
 The header and footer are repeated in each of the 24 HTML files (4 pages × 6 languages).
 If you change the phone number, email or menu, change it in all of them.

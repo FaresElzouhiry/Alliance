@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Constellation · Model 4 | Alliance Investment</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#020906">
+  <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+  <link rel="stylesheet" href="../models.css">
+  <script src="../content.js"></script>
+  <script src="../models.js" defer></script>
+  <style>
+    /* Model 4 — Constellation (original): one field of gold particles behind the whole page.
+       As you scroll it re-forms: emblem → globe → eight-sector constellation → partnership helix →
+       the Kingdom’s map → “2030” → a calm galaxy → the emblem again. */
+    :root {
+      --bg: #020906; --ink: #f1ede4; --muted: #a2aaa5; --line: rgba(255, 255, 255, .1); --gold: #e0b76c; --gold-2: #f6dfaa; --mint: #59d6a8;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --wrap: min(1300px, 100% - 56px); --cursor: #e0b76c;
+    }
+    body { background: radial-gradient(120% 80% at 70% 30%, #06231a 0%, var(--bg) 60%) fixed; color: var(--ink); font: 400 16px/1.7 var(--sans); }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    #gl { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+    .fallback { position: fixed; right: 6vw; top: 50%; translate: 0 -50%; width: min(40vw, 460px); opacity: .5; z-index: 0; filter: drop-shadow(0 0 60px rgba(224, 183, 108, .4)); }
+    .gl-ready .fallback { display: none; }
+    header, main, footer { position: relative; z-index: 1; }
+    .k { font: 600 11.5px/1 var(--sans); letter-spacing: .32em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 14px; }
+    .k::before { content: ""; width: 36px; height: 1px; background: currentColor; }
+    .h2 { font: 400 clamp(2.3rem, 5vw, 4.4rem)/1.02 var(--serif); letter-spacing: -.02em; margin: 22px 0 22px; }
+    .h2 i { color: var(--gold); }
+    .lead { color: rgba(241, 237, 228, .74); font-size: clamp(1rem, 1.25vw, 1.12rem); max-width: 52ch; }
+    .btn { display: inline-flex; align-items: center; gap: 12px; padding: 16px 26px; border-radius: 999px; border: 1px solid rgba(224, 183, 108, .55); font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; transition: background .35s, color .35s, border-color .35s; }
+    .btn:hover { background: var(--gold); color: #120d04; border-color: var(--gold); }
+    .btn--solid { background: var(--gold); color: #120d04; border-color: var(--gold); }
+    .btn--solid:hover { background: var(--gold-2); }
+
+    /* Loader */
+    .loader { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: grid; place-items: center; transition: opacity 1s .2s, visibility 1s .2s; }
+    .loader.is-done { opacity: 0; visibility: hidden; }
+    .loader div { text-align: center; }
+    .loader img { width: 74px; margin: 0 auto 22px; animation: breathe 1.8s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scale(.9); opacity: .6; } }
+    .loader span { display: block; width: 160px; height: 1px; background: rgba(255, 255, 255, .15); position: relative; overflow: hidden; }
+    .loader span::after { content: ""; position: absolute; inset: 0; background: var(--gold); transform: translateX(-100%); animation: load 1.6s ease-in-out infinite; }
+    @keyframes load { to { transform: translateX(100%); } }
+    .loader p { font: 600 11px var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+
+    /* Header */
+    .header { position: fixed; inset: 0 0 auto; z-index: 50; transition: background .4s; }
+    .header.is-scrolled { background: linear-gradient(180deg, rgba(2, 9, 6, .85), rgba(2, 9, 6, 0)); }
+    .header .wrap { display: flex; align-items: center; justify-content: space-between; height: 92px; }
+    .logo img { width: 136px; }
+    .nav { display: flex; align-items: center; gap: 34px; font: 500 13px var(--sans); letter-spacing: .08em; }
+    .nav a:not(.btn) { color: rgba(241, 237, 228, .75); transition: color .3s; }
+    .nav a:not(.btn):hover { color: var(--gold-2); }
+    .nav .btn { padding: 12px 20px; }
+    .burger { display: none; width: 46px; height: 46px; position: relative; z-index: 3; }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--ink); transition: transform .35s, opacity .35s; }
+    .burger::before { top: 17px; } .burger span { top: 22.5px; } .burger::after { top: 28px; }
+    .menu-open .burger::before { transform: translateY(5.5px) rotate(45deg); } .menu-open .burger span { opacity: 0; } .menu-open .burger::after { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Chapter index */
+    .index { position: fixed; z-index: 40; right: 22px; top: 50%; translate: 0 -50%; display: grid; gap: 14px; justify-items: end; }
+    .index a { display: flex; flex-direction: row-reverse; align-items: center; gap: 12px; font: 600 10.5px var(--sans); letter-spacing: .2em; color: rgba(241, 237, 228, .35); transition: color .4s; }
+    .index a::before { content: ""; width: 14px; height: 1px; background: currentColor; transition: width .4s; }
+    .index a span { opacity: 0; transform: translateX(6px); transition: opacity .4s, transform .4s; white-space: nowrap; }
+    .index a.is-on { color: var(--gold); } .index a.is-on::before { width: 30px; }
+    .index a.is-on span, .index:hover a span { opacity: 1; transform: none; }
+
+    /* Chapters */
+    .ch { min-height: 100vh; display: flex; align-items: center; padding: 140px 0; }
+    .ch .panel { max-width: 600px; }
+    .hero h1 { font: 400 clamp(2.8rem, 6vw, 5.8rem)/.98 var(--serif); letter-spacing: -.03em; margin: 26px 0 30px; }
+    .hero .panel { max-width: 720px; }
+    .hero h1 i { color: var(--gold); }
+    .hero__btns { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; }
+    .scroll-cue { position: absolute; left: 50%; bottom: 34px; translate: -50% 0; display: grid; justify-items: center; gap: 10px; font: 600 10px var(--sans); letter-spacing: .3em; color: var(--muted); }
+    .scroll-cue i { width: 1px; height: 56px; background: linear-gradient(var(--gold), transparent); animation: cue 2.2s ease-in-out infinite; transform-origin: top; }
+    @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 40px; border-radius: 4px; overflow: hidden; }
+    .stats div { background: rgba(2, 9, 6, .55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 22px; }
+    .stats strong { display: block; font: 400 2.8rem/1 var(--serif); color: var(--gold-2); }
+    .stats span { display: block; color: var(--muted); font-size: 13px; margin-top: 8px; }
+    .sector-list { margin-top: 30px; counter-reset: s; }
+    .sector-list li { border-top: 1px solid var(--line); }
+    .sector-list li:last-child { border-bottom: 1px solid var(--line); }
+    .sector-list button { width: 100%; text-align: left; display: flex; gap: 18px; align-items: baseline; padding: 14px 4px; font: 400 clamp(1.05rem, 1.6vw, 1.3rem)/1.3 var(--serif); color: rgba(241, 237, 228, .7); transition: color .3s, padding .4s; }
+    .sector-list button::before { counter-increment: s; content: "0" counter(s); font: 600 11px var(--sans); letter-spacing: .14em; color: var(--gold); }
+    .sector-list button:hover, .sector-list button.is-on { color: #fff; padding-left: 14px; }
+    .steps { margin-top: 30px; display: grid; gap: 12px; }
+    .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 6px; background: rgba(2, 9, 6, .5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .steps b { font: 400 1.6rem/1 var(--serif); color: var(--gold); }
+    .steps strong { display: block; font-weight: 600; font-size: 15px; } .steps p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+    .phases { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .phases span { padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(224, 183, 108, .35); font-size: 12.5px; color: var(--gold-2); }
+    .countries { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .countries li { padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px; font-size: 12.5px; color: rgba(241, 237, 228, .8); background: rgba(2, 9, 6, .4); }
+    .countries li:first-child { border-color: var(--gold); color: var(--gold-2); }
+    .parties { display: grid; gap: 10px; margin-top: 26px; }
+    .parties li { display: flex; gap: 14px; align-items: baseline; font-size: 15px; }
+    .parties b { color: var(--gold); font: 400 1.2rem var(--serif); }
+    .parties span { color: var(--muted); font-size: 13.5px; }
+    .why { margin-top: 30px; display: grid; gap: 2px; }
+    .why details { border-top: 1px solid var(--line); }
+    .why details:last-child { border-bottom: 1px solid var(--line); }
+    .why summary { list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 16px 0; font-weight: 600; }
+    .why summary::-webkit-details-marker { display: none; }
+    .why summary::after { content: "+"; color: var(--gold); transition: transform .3s; }
+    .why details[open] summary::after { transform: rotate(45deg); }
+    .why p { color: var(--muted); padding-bottom: 16px; font-size: 14.5px; }
+    .vision-quote { font: italic 400 clamp(1.4rem, 2.4vw, 2rem)/1.35 var(--serif); color: var(--gold-2); margin-top: 6px; }
+
+    /* Dense chapter (leaders, partners, FAQ) */
+    .dense { display: block; padding: 160px 0 120px; }
+    .dense .panel { max-width: none; }
+    .glass { background: rgba(2, 9, 6, .62); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 10px; }
+    .team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 40px; }
+    .member { padding: 14px; display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; transition: border-color .4s, transform .4s; }
+    .member:hover { border-color: rgba(224, 183, 108, .5); transform: translateY(-4px); }
+    .member img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; filter: saturate(.85); }
+    .member strong { display: block; font-weight: 600; font-size: 14.5px; line-height: 1.3; }
+    .member small { display: block; color: var(--gold); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; margin-top: 3px; }
+    .member p { grid-column: 1 / -1; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .member--ceo { grid-column: span 2; grid-row: span 2; grid-template-columns: 1fr; align-content: start; padding: 26px; }
+    .member--ceo img { width: 120px; height: 120px; }
+    .member--ceo strong { font: 400 1.8rem/1.2 var(--serif); margin-top: 8px; }
+    .member--ceo blockquote { font: italic 400 1.15rem/1.5 var(--serif); color: rgba(241, 237, 228, .85); margin-top: 6px; }
+    .logos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 40px; }
+    .logos li { height: 82px; border-radius: 8px; background: rgba(246, 240, 228, .94); display: grid; place-items: center; padding: 14px 18px; transition: transform .3s; }
+    .logos li:hover { transform: scale(1.05); }
+    .logos img { max-height: 46px; width: auto; object-fit: contain; }
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+    .faq details { padding: 0 22px; align-self: start; }
+    .faq summary { list-style: none; display: flex; justify-content: space-between; gap: 14px; padding: 20px 0; font-weight: 600; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; color: var(--gold); font-size: 1.3rem; line-height: 1; transition: transform .3s; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq p { color: var(--muted); padding-bottom: 20px; font-size: 15px; }
+    .block + .block { margin-top: 120px; }
+
+    /* Contact */
+    .contact { text-align: center; justify-content: center; }
+    .contact .panel { max-width: 860px; margin-inline: auto; }
+    .contact .k { justify-content: center; } .contact .k::after { content: ""; width: 36px; height: 1px; background: currentColor; }
+    .contact h2 { font: 400 clamp(2.6rem, 6.4vw, 6rem)/1 var(--serif); letter-spacing: -.03em; margin: 26px 0; }
+    .contact h2 i { color: var(--gold); }
+    .contact .lead { margin-inline: auto; }
+    .contact__links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+    footer { padding: 40px 0 110px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+    footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+    footer img { width: 110px; }
+    footer nav { display: flex; gap: 22px; flex-wrap: wrap; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 1100px) { .team { grid-template-columns: repeat(2, 1fr); } .index { display: none; } }
+    @media (max-width: 860px) {
+      .burger { display: block; }
+      .nav { position: fixed; inset: 0; z-index: 2; flex-direction: column; justify-content: center; gap: 26px; font: 400 1.8rem var(--serif); letter-spacing: 0; background: rgba(2, 9, 6, .97); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .nav .btn { font: 600 13px var(--sans); }
+      .menu-open .nav { opacity: 1; visibility: visible; } .menu-open { overflow: hidden; }
+      .ch { padding: 110px 0; min-height: 0; }
+      .ch:not(.dense):not(.hero) .panel { background: rgba(2, 9, 6, .58); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 12px; padding: 26px 22px; }
+      .hero { min-height: 100svh; }
+      .faq { grid-template-columns: 1fr; }
+      .fallback { width: 70vw; right: 15vw; opacity: .25; }
+    }
+    @media (max-width: 560px) {
+      :root { --wrap: calc(100% - 32px); }
+      .team { grid-template-columns: 1fr; } .member--ceo { grid-column: auto; grid-row: auto; }
+      .stats strong { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body data-cursor>
+  <div class="loader" id="loader"><div><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"><span></span><p>Alliance Investment</p></div></div>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <img class="fallback" src="../../assets/img/emblem.webp" alt="" width="240" height="240">
+
+  <header class="header" data-header>
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208"></a>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="#about">About</a><a href="#sectors">Sectors</a><a href="#model">Model</a><a href="#people">People</a><a href="../../ar/" lang="ar">العربية</a>
+        <a class="btn" href="#contact">Contact</a>
+      </nav>
+      <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </header>
+
+  <nav class="index" aria-label="Chapters" id="index">
+    <a href="#top">01<span>Origin</span></a><a href="#about">02<span>The world</span></a><a href="#sectors">03<span>Sectors</span></a><a href="#model">04<span>Model</span></a>
+    <a href="#kingdom">05<span>The Kingdom</span></a><a href="#vision">06<span>Vision</span></a><a href="#people">07<span>People</span></a><a href="#contact">08<span>Contact</span></a>
+  </nav>
+
+  <main>
+    <section class="ch hero" id="top" data-ch="0">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Alliance Investment Holding · Riyadh</p>
+        <h1 data-split>Where global ambition meets <i>the Kingdom.</i></h1>
+        <p class="lead" data-reveal style="--d:.5s">The strategic and trusted partner for foreign and local companies seeking success and sustainable expansion in the Saudi market.</p>
+        <div class="hero__btns" data-reveal style="--d:.65s"><a class="btn btn--solid" href="#contact" data-magnetic>Start a conversation</a><a class="btn" href="#about">Discover Alliance</a></div>
+      </div></div>
+      <div class="scroll-cue" aria-hidden="true"><i></i>SCROLL</div>
+    </section>
+
+    <section class="ch" id="about" data-ch="1">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 02 · Who we are</p>
+        <h2 class="h2" data-split>A Saudi company with a <i>global reach.</i></h2>
+        <p class="lead" data-reveal id="about-1"></p>
+        <div class="stats" data-reveal id="stats"></div>
+      </div></div>
+    </section>
+
+    <section class="ch" id="sectors" data-ch="2">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 03 · Sectors of success</p>
+        <h2 class="h2" data-split>Eight sectors. <i>One constellation.</i></h2>
+        <p class="lead" data-reveal>Strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities. Point at a sector to light it up.</p>
+        <ul class="sector-list" data-reveal id="sector-list"></ul>
+      </div></div>
+    </section>
+
+    <section class="ch" id="model" data-ch="3">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 04 · Business model</p>
+        <h2 class="h2" data-split>Partnership, <i>built to grow.</i></h2>
+        <p class="lead" data-reveal>Complete end-to-end solutions under unified management — from initial studies to final reporting.</p>
+        <ol class="steps" id="steps"></ol>
+        <div class="phases" data-reveal id="phases"></div>
+      </div></div>
+    </section>
+
+    <section class="ch" id="kingdom" data-ch="4">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 05 · The Kingdom</p>
+        <h2 class="h2" data-split>Rooted in Riyadh, connected to <i>16 countries.</i></h2>
+        <p class="lead" data-reveal>Our partnership model brings three parties together, with Alliance Investment at the centre.</p>
+        <ul class="parties" data-reveal id="parties"></ul>
+        <ul class="countries" data-reveal id="countries"></ul>
+      </div></div>
+    </section>
+
+    <section class="ch" id="vision" data-ch="5">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 06 · Vision &amp; mission</p>
+        <h2 class="h2" data-split>Building toward <i>2030.</i></h2>
+        <p class="vision-quote" data-reveal id="vision"></p>
+        <p class="lead" data-reveal style="margin-top:18px" id="mission"></p>
+        <div class="why" data-reveal id="why"></div>
+      </div></div>
+    </section>
+
+    <section class="ch dense" id="people" data-ch="6">
+      <div class="wrap"><div class="panel">
+        <div class="block">
+          <p class="k" data-reveal>Chapter 07 · People</p>
+          <h2 class="h2" data-split>Saudi leadership, <i>global advisors.</i></h2>
+          <div class="team" id="team"></div>
+        </div>
+        <div class="block">
+          <p class="k" data-reveal>Trusted network</p>
+          <h2 class="h2" data-split>Forty-one <i>partners.</i></h2>
+          <ul class="logos" id="logos" data-reveal></ul>
+        </div>
+        <div class="block">
+          <p class="k" data-reveal>Questions</p>
+          <h2 class="h2" data-split>What partners <i>ask us.</i></h2>
+          <div class="faq" id="faq" data-reveal></div>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="ch contact" id="contact" data-ch="7">
+      <div class="wrap"><div class="panel">
+        <p class="k" data-reveal>Chapter 08 · Contact</p>
+        <h2 data-split>Let’s write your <i>next chapter.</i></h2>
+        <p class="lead" data-reveal>Tell us about your organization and objectives — our team in Riyadh will get back to you.</p>
+        <div class="contact__links" data-reveal><a class="btn btn--solid" href="mailto:Ksa@alliance.sa" data-magnetic>Ksa@alliance.sa</a><a class="btn" href="tel:+966539503000">+966 53 950 3000</a></div>
+      </div></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy"><nav><a href="../../about-us/">About Us</a><a href="../../business-model/">Business Model</a><a href="../../privacy-policy/">Privacy Policy</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></nav><span>© <span data-year>2026</span> Alliance Investment</span></div>
+  </footer>
+
+  <script>
+    (function () {
+      var A = ALLIANCE, $ = A$;
+      $.fill('#about-1', A.about[0]);
+      $.fill('#stats', A.stats.map(function (s) { return '<div><strong data-count="' + s.n + '" data-suffix="' + s.s + '">' + s.n + s.s + '</strong><span>' + s.label + '</span></div>'; }).join(''));
+      $.fill('#sector-list', A.sectors.map(function (s, i) { return '<li><button type="button" data-sector="' + i + '">' + $.esc(s.t) + '</button></li>'; }).join(''));
+      $.fill('#steps', A.steps.map(function (s, i) { return '<li data-reveal style="--d:' + (i * 0.06) + 's"><b>' + $.pad(i + 1) + '</b><div><strong>' + $.esc(s.t) + '</strong><p>' + s.d + '</p></div></li>'; }).join(''));
+      $.fill('#phases', A.phases.map(function (p, i) { return '<span>Phase ' + (i + 1) + ' · ' + p.t + '</span>'; }).join(''));
+      $.fill('#parties', A.parties.map(function (p, i) { return '<li><b>' + $.pad(i + 1) + '</b><div>' + p.t + ' <span>— ' + p.d + '</span></div></li>'; }).join(''));
+      $.fill('#countries', A.countries.map(function (c, i) { return '<li>' + c + (i ? '' : ' · HQ') + '</li>'; }).join(''));
+      $.fill('#vision', '“' + A.vision + '”');
+      $.fill('#mission', A.mission);
+      $.fill('#why', A.why.map(function (w, i) { return '<details' + (i ? '' : ' open') + '><summary>' + w.t + '</summary><p>' + w.d + '</p></details>'; }).join(''));
+      $.fill('#team', '<article class="member member--ceo glass" data-reveal><img src="' + $.img(A.ceo.img) + '" alt="" loading="lazy"><div><small>Chief Executive Officer</small><strong>' + A.ceo.name + '</strong></div><blockquote>“' + A.ceo.quote.split('. ')[0] + '.”</blockquote></article>' +
+        A.team.map(function (p, i) { return '<article class="member glass" data-reveal style="--d:' + ((i % 4) * 0.05) + 's"><img src="' + $.img(p.img) + '" alt="" loading="lazy"><div><strong>' + p.name + '</strong><small>' + (p.group === 'Board' ? 'Board member' : 'Advisor') + '</small></div><p>' + p.focus + '</p></article>'; }).join(''));
+      $.fill('#logos', A.partners.map(function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; }).join(''));
+      $.fill('#faq', A.faq.map(function (f, i) { return '<details class="glass"' + (i ? '' : ' open') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join(''));
+      setTimeout(function () { document.getElementById('loader').classList.add('is-done'); }, 4000);
+      if (/poster/.test(location.search)) { // for preview screenshots: no loader, everything already in place
+        document.getElementById('loader').style.display = 'none';
+        document.querySelectorAll('[data-reveal], [data-split]').forEach(function (el) { el.classList.add('is-in'); });
+      }
+    })();
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { land, toXYZ, HQ } from '../geo.js';
+
+    const canvas = document.getElementById('gl');
+    const loader = document.getElementById('loader');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile = innerWidth < 860;
+    const N = mobile ? 9000 : 18000;
+    const rand = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
+
+    // ---------- shapes (each returns N xyz points) ----------
+    function fromPixels(img, w, h, scale, depth, draw) {
+      const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d', { willReadFrequently: true });
+      draw(x, img); const d = x.getImageData(0, 0, w, h).data, px = [];
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) if (d[(j * w + i) * 4 + 3] > 110) px.push(i, j);
+      const out = new Float32Array(N * 3), n = px.length / 2;
+      for (let k = 0; k < N; k++) { const p = Math.floor(rand() * n) * 2; out.set([((px[p] + rand()) / w - 0.5) * scale, -((px[p + 1] + rand()) / h - 0.5) * scale * (h / w), (rand() - 0.5) * depth], k * 3); }
+      return out;
+    }
+    // The emblem is a gold disc with the monogram cut in light lines: trace the lines and the rim
+    function emblemShape(img) {
+      const S = 300, c = document.createElement('canvas'); c.width = c.height = S; const x = c.getContext('2d', { willReadFrequently: true });
+      x.drawImage(img, 0, 0, S, S); const d = x.getImageData(0, 0, S, S).data, lines = [], rim = [];
+      for (let j = 0; j < S; j++) for (let i = 0; i < S; i++) {
+        const o = (j * S + i) * 4, a = d[o + 3], dist = Math.hypot(i - S / 2 + .5, j - S / 2 + .5) / (S / 2);
+        if (dist < 0.9 && (a < 110 || (d[o] > 215 && d[o + 1] > 205 && d[o + 2] > 185))) lines.push(i, j);
+        else if (dist > 0.9 && dist < 0.99 && a > 110) rim.push(i, j);
+      }
+      const out = new Float32Array(N * 3), pick = (arr) => Math.floor(rand() * arr.length / 2) * 2;
+      for (let k = 0; k < N; k++) {
+        const arr = rand() < 0.8 && lines.length ? lines : rim, p = pick(arr);
+        out.set([((arr[p] + rand()) / S - 0.5) * 3.9, -((arr[p + 1] + rand()) / S - 0.5) * 3.9, (rand() - 0.5) * (arr === rim ? 0.08 : 0.3)], k * 3);
+      }
+      return out;
+    }
+    function textShape(txt) {
+      return fromPixels(null, 600, 220, 5.4, 0.25, (x) => { x.fillStyle = '#fff'; x.font = '800 190px Montserrat, Arial, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(txt, 300, 118); });
+    }
+    function globeShape() {
+      const pts = land(true), out = new Float32Array(N * 3);
+      for (let k = 0; k < N; k++) {
+        if (k % 7 === 0) { const u = rand() * 2 - 1, a = rand() * Math.PI * 2, r = 2.0 + rand() * 0.5, s = Math.sqrt(1 - u * u); out.set([Math.cos(a) * s * r, u * r, Math.sin(a) * s * r], k * 3); continue; }
+        const p = pts[Math.floor(rand() * pts.length)]; out.set(toXYZ(p[0] + (rand() - 0.5) * 1.6, p[1] + (rand() - 0.5) * 1.6, 1.85), k * 3);
+      }
+      return out;
+    }
+    const cluster = new Float32Array(N).fill(-1);
+    function constellationShape() {
+      const out = new Float32Array(N * 3), R = 2.3, tilt = 0.42, centres = [];
+      for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; centres.push([Math.cos(a) * R, Math.sin(a) * R * Math.sin(tilt) * 0.9, Math.sin(a) * R * Math.cos(tilt)]); }
+      const sph = (r) => { const u = rand() * 2 - 1, a = rand() * Math.PI * 2, s = Math.sqrt(1 - u * u), q = Math.cbrt(rand()) * r; return [Math.cos(a) * s * q, u * q, Math.sin(a) * s * q]; };
+      for (let k = 0; k < N; k++) {
+        const t = rand();
+        if (t < 0.2) { out.set(sph(0.62), k * 3); }
+        else if (t < 0.76) { const i = k % 8, c = centres[i], p = sph(0.36); out.set([c[0] + p[0], c[1] + p[1], c[2] + p[2]], k * 3); cluster[k] = i; }
+        else if (t < 0.9) { const a = rand() * Math.PI * 2; out.set([Math.cos(a) * R, Math.sin(a) * R * Math.sin(tilt) * 0.9, Math.sin(a) * R * Math.cos(tilt)], k * 3); }
+        else { const c = centres[k % 8], f = rand(); out.set([c[0] * f, c[1] * f, c[2] * f], k * 3); }
+      }
+      return out;
+    }
+    function helixShape() {
+      const out = new Float32Array(N * 3), turns = 2.6, H = 4.4, r = 1.15;
+      for (let k = 0; k < N; k++) {
+        const t = rand(), a = t * turns * Math.PI * 2, y = (t - 0.5) * H, kind = rand();
+        if (kind < 0.72) { const off = kind < 0.36 ? 0 : Math.PI, j = 0.06; out.set([Math.cos(a + off) * r + (rand() - .5) * j, y + (rand() - .5) * j, Math.sin(a + off) * r + (rand() - .5) * j], k * 3); }
+        else { const tq = Math.round(t * 26) / 26, aq = tq * turns * Math.PI * 2, f = rand() * 2 - 1; out.set([Math.cos(aq) * r * f, (tq - 0.5) * H, Math.sin(aq) * r * f], k * 3); }
+      }
+      return out;
+    }
+    const KSA = [[36.5, 29.4], [37.9, 31.4], [39.2, 32.1], [42.1, 31.1], [44.7, 29.2], [46.5, 29.1], [47.6, 28.6], [48.6, 27.8], [50.0, 26.4], [50.8, 25.0], [51.6, 24.3], [52.6, 22.9], [55.6, 22.0], [55.2, 20.0], [52.0, 19.0], [49.0, 18.6], [46.6, 17.3], [44.5, 17.4], [43.2, 16.7], [42.6, 17.4], [41.4, 19.0], [39.6, 20.9], [38.9, 22.5], [37.6, 24.3], [36.5, 26.0], [35.2, 28.0], [34.6, 28.2]];
+    const inKSA = (x, y) => { let c = false; for (let i = 0, j = KSA.length - 1; i < KSA.length; j = i++) { const [xi, yi] = KSA[i], [xj, yj] = KSA[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
+    function kingdomShape() {
+      const out = new Float32Array(N * 3), S = 0.21, cx = 45.1, cy = 24.2;
+      for (let k = 0; k < N; k++) {
+        if (rand() < 0.14) { const a = rand() * Math.PI * 2, ring = [0.25, 0.55, 0.9][k % 3], r = ring + (rand() - .5) * 0.05; out.set([(HQ.lon - cx) * S + Math.cos(a) * r, (HQ.lat - cy) * S + Math.sin(a) * r, 0.05], k * 3); continue; }
+        let lo, la; do { lo = 34.5 + rand() * 21.2; la = 16.3 + rand() * 16; } while (!inKSA(lo, la));
+        out.set([(lo - cx) * S, (la - cy) * S, (rand() - .5) * 0.18], k * 3);
+      }
+      return out;
+    }
+    function galaxyShape() {
+      const out = new Float32Array(N * 3), tilt = 1.05;
+      for (let k = 0; k < N; k++) {
+        const arm = k % 3, r = Math.pow(rand(), 0.7) * 3.6, a = arm / 3 * Math.PI * 2 + r * 1.35 + (rand() - .5) * (0.9 - r * 0.12), y = (rand() - .5) * 0.22 * (1.2 - r / 3.6);
+        const x = Math.cos(a) * r, z = Math.sin(a) * r;
+        out.set([x, y * Math.cos(tilt) - z * Math.sin(tilt), y * Math.sin(tilt) + z * Math.cos(tilt)], k * 3);
+      }
+      return out;
+    }
+
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' }); } catch (e) { renderer = null; loader.classList.add('is-done'); }
+    const emblem = new Image();
+    if (renderer) {
+      emblem.src = '../../assets/img/emblem.webp';
+      Promise.all([emblem.decode(), document.fonts.load('800 190px Montserrat')]).catch(() => {}).then(start);
+    }
+
+    function start() {
+      renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.5 : 1.75));
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100); camera.position.set(0, 0, 9);
+
+      const shapes = [emblemShape(emblem), globeShape(), constellationShape(), helixShape(), kingdomShape(), textShape('2030'), galaxyShape()];
+      const geo = new THREE.BufferGeometry();
+      // scattered start so the emblem assembles on load
+      const scatter = new Float32Array(N * 3); for (let k = 0; k < N * 3; k++) scatter[k] = (rand() - 0.5) * 16;
+      geo.setAttribute('position', new THREE.BufferAttribute(scatter, 3));
+      shapes.forEach((s, i) => geo.setAttribute('s' + i, new THREE.BufferAttribute(s, 3)));
+      geo.setAttribute('seed', new THREE.BufferAttribute(Float32Array.from({ length: N }, rand), 1));
+      geo.setAttribute('cluster', new THREE.BufferAttribute(cluster, 1));
+
+      const uniforms = { uTime: { value: 0 }, uMix: { value: 0 }, uFrom: { value: 7 }, uTo: { value: 0 }, uSize: { value: 1 }, uPR: { value: renderer.getPixelRatio() }, uMouse: { value: new THREE.Vector3(99, 99, 0) }, uFocus: { value: -1 }, uDim: { value: 1 }, uIntro: { value: 0 } };
+      const mat = new THREE.ShaderMaterial({
+        uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: `
+          attribute vec3 s0; attribute vec3 s1; attribute vec3 s2; attribute vec3 s3; attribute vec3 s4; attribute vec3 s5; attribute vec3 s6;
+          attribute float seed; attribute float cluster;
+          uniform float uTime, uMix, uSize, uPR, uFocus, uDim, uIntro; uniform int uFrom, uTo; uniform vec3 uMouse;
+          varying float vA; varying vec3 vC;
+          vec3 shape(int i) { if (i == 0) return s0; if (i == 1) return s1; if (i == 2) return s2; if (i == 3) return s3; if (i == 4) return s4; if (i == 5) return s5; if (i == 6) return s6; return position; }
+          void main() {
+            float m = clamp((uMix - seed * 0.35) / 0.65, 0.0, 1.0); m = m * m * (3.0 - 2.0 * m);
+            vec3 p = mix(shape(uFrom), shape(uTo), m);
+            vec3 dir = normalize(vec3(sin(seed * 91.7), cos(seed * 53.3), sin(seed * 27.1)) + 1e-4);
+            p += dir * sin(m * 3.14159) * (0.5 + seed * 1.1);
+            p += 0.03 * vec3(sin(uTime * 0.7 + seed * 40.0), cos(uTime * 0.6 + seed * 31.0), sin(uTime * 0.5 + seed * 17.0));
+            float isC = (uFrom == 2 ? 1.0 - m : 0.0) + (uTo == 2 ? m : 0.0);
+            float focus = isC * (1.0 - step(0.5, abs(cluster - uFocus)));
+            vec4 w = modelMatrix * vec4(p, 1.0);
+            vec3 d = w.xyz - uMouse; float dl = length(d);
+            w.xyz += normalize(d + 1e-4) * smoothstep(1.1, 0.0, dl) * 0.55;
+            vec4 mv = viewMatrix * w;
+            gl_Position = projectionMatrix * mv;
+            gl_PointSize = uSize * uPR * (0.55 + seed * 0.9) * (1.0 + focus * 1.6) * (7.0 / -mv.z);
+            vC = mix(vec3(0.93, 0.74, 0.40), vec3(1.0, 0.92, 0.74), fract(seed * 13.1));
+            if (fract(seed * 3.7) < 0.07) vC = vec3(0.35, 0.84, 0.66);
+            vC = mix(vC, vec3(1.0, 0.95, 0.82), focus);
+            vA = (0.45 + 0.55 * fract(seed * 7.3)) * uDim * (1.0 + focus * 1.2) * (0.78 + 0.22 * sin(uTime * 2.0 + seed * 60.0)) * uIntro;
+          }`,
+        fragmentShader: `varying float vA; varying vec3 vC;
+          void main() { float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard; float a = pow(smoothstep(0.5, 0.0, r), 1.5); gl_FragColor = vec4(vC, a * vA); }`,
+      });
+      const points = new THREE.Points(geo, mat);
+      points.frustumCulled = false;
+      scene.add(points);
+
+      const sections = [...document.querySelectorAll('[data-ch]')];
+      const SEQ = [0, 1, 2, 3, 4, 5, 6, 0];
+      const FLAT = [1, 0, 0.3, 0.2, 1, 1, 0, 1]; // how much each chapter should face the camera
+      const index = [...document.querySelectorAll('#index a')];
+      let w = 0, h = 0;
+      function resize() {
+        w = innerWidth; h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+        camera.position.z = w < 860 ? 11.5 : 9; camera.updateProjectionMatrix();
+        uniforms.uSize.value = (h / 900) * (w < 860 ? 2.6 : 2.2);
+      }
+      resize(); addEventListener('resize', resize);
+
+      // pointer → world point on the z = 0 plane (particles move out of the way)
+      const mouse = new THREE.Vector3(99, 99, 0), ndc = new THREE.Vector3();
+      addEventListener('pointermove', (e) => {
+        ndc.set(e.clientX / w * 2 - 1, -(e.clientY / h) * 2 + 1, 0.5).unproject(camera).sub(camera.position).normalize();
+        mouse.copy(camera.position).add(ndc.multiplyScalar(-camera.position.z / ndc.z));
+      }, { passive: true });
+      document.querySelectorAll('[data-sector]').forEach((b) => {
+        const on = () => { uniforms.uFocus.value = +b.dataset.sector; document.querySelectorAll('[data-sector]').forEach((x) => x.classList.toggle('is-on', x === b)); };
+        b.addEventListener('mouseenter', on); b.addEventListener('focus', on); b.addEventListener('click', on);
+      });
+      document.getElementById('sector-list').addEventListener('mouseleave', () => { uniforms.uFocus.value = -1; document.querySelectorAll('[data-sector]').forEach((x) => x.classList.remove('is-on')); });
+
+      let holds = [], measured = -1e9;
+      function measure(now) {
+        measured = now;
+        holds = sections.map((el) => {
+          const top = el.getBoundingClientRect().top + scrollY, hh = el.offsetHeight;
+          return hh <= h ? [top + hh / 2 - h / 2, top + hh / 2 - h / 2] : [top, top + hh - h];
+        });
+        holds[0][0] = Math.min(holds[0][0], 0);
+      }
+      let spin = 0, last = performance.now(), introStart = /poster/.test(location.search) ? last - 9000 : last, chapter = 0;
+      const ease = (x) => x * x * (3 - 2 * x);
+      function tick(now) {
+        requestAnimationFrame(tick);
+        const dt = Math.min(0.05, (now - last) / 1000); last = now;
+        const t = now / 1000;
+        uniforms.uTime.value = calm ? 0 : t;
+        uniforms.uIntro.value = Math.min(1, (now - introStart) / 900);
+
+        // where are we in the story? c = chapter index + progress to the next one.
+        // Each chapter "holds" its shape while it fills the screen, and morphs in the gap to the next.
+        if (now - measured > 600) measure(now);
+        const s = scrollY; let c = 0;
+        for (let i = 0; i < holds.length; i++) {
+          if (s >= holds[i][0]) c = s <= holds[i][1] ? i : (i + 1 < holds.length ? i + Math.min(1, (s - holds[i][1]) / Math.max(1, holds[i + 1][0] - holds[i][1])) : i);
+        }
+        const from = Math.floor(c), to = Math.min(SEQ.length - 1, from + 1), f = c - from;
+        const introMix = Math.min(1, (now - introStart) / 2600);
+        if (introMix < 1 && c < 0.5) { uniforms.uFrom.value = 7; uniforms.uTo.value = 0; uniforms.uMix.value = calm ? 1 : ease(introMix); }
+        else { uniforms.uFrom.value = SEQ[from]; uniforms.uTo.value = SEQ[to]; uniforms.uMix.value = ease(Math.min(1, Math.max(0, (f - 0.2) / 0.6))); }
+        const k = Math.round(c); if (k !== chapter) { chapter = k; index.forEach((a, i) => a.classList.toggle('is-on', i === k)); }
+
+        // dim behind dense reading, place the shape beside the text on wide screens
+        const dense = (SEQ[from] === 6 ? 1 - f : 0) + (SEQ[to] === 6 ? f : 0);
+        const end = from === 7 ? 1 : from === 6 ? f : 0;
+        uniforms.uDim.value = 1 - dense * 0.55 - end * 0.4;
+        const side = w >= 860 ? (from >= 7 || (from === 6 && f > 0.5) ? 0 : Math.tan(20 * Math.PI / 180) * camera.position.z * camera.aspect * 0.6) : 0;
+        points.position.x += (side * (1 - dense * 0.5) - points.position.x) * 0.05;
+        const flat = FLAT[from] * (1 - f) + FLAT[to] * f;
+        spin += dt * (calm ? 0 : 0.18 + (1 - flat) * 0.22);
+        const wrapped = ((spin + Math.PI) % (Math.PI * 2)) - Math.PI;
+        points.rotation.y = wrapped * (1 - flat) + Math.sin(t * 0.35) * 0.22 * flat;
+        points.rotation.x = Math.sin(t * 0.2) * 0.06 + (SEQ[from] === 1 || SEQ[to] === 1 ? 0.18 : 0);
+        uniforms.uMouse.value.lerp(mouse, 0.15);
+        renderer.render(scene, camera);
+      }
+      requestAnimationFrame(tick);
+      document.documentElement.classList.add('gl-ready');
+      loader.classList.add('is-done');
+    }
+  </script>
+</body>
+</html>

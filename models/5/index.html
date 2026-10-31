@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riyadh Nights · Model 5 | Alliance Investment</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#03080a">
+  <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+  <link rel="stylesheet" href="../models.css">
+  <script src="../content.js"></script>
+  <script src="../models.js" defer></script>
+  <style>
+    /* Model 5 — Riyadh Nights (original): a procedural 3D city at night. Scrolling flies the camera down a
+       glowing avenue past moving traffic to a landmark tower, while the content floats over it on glass. */
+    :root {
+      --bg: #03080a; --ink: #eef2f0; --muted: #a3b0ab; --line: rgba(255, 255, 255, .12); --gold: #f0c06e; --gold-2: #ffe2a8; --teal: #5fd4c0;
+      --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --wrap: min(1280px, 100% - 48px); --cursor: #f0c06e;
+    }
+    body { background: var(--bg); color: var(--ink); font: 400 16px/1.65 var(--sans); }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    #city { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; }
+    .fallback { position: fixed; inset: 0; z-index: 0; background: linear-gradient(180deg, rgba(3, 8, 10, .3), var(--bg)), url(../../assets/img/hero-poster.webp) center / cover; }
+    .gl-ready .fallback { opacity: 0; transition: opacity 1.5s; }
+    .vignette { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(120% 100% at 50% 40%, transparent 50%, rgba(3, 8, 10, .75)); }
+    header, main, footer, .hud { position: relative; z-index: 2; }
+    .eyebrow { font: 600 12px/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+    .h2 { font: 800 clamp(2.2rem, 5vw, 4.2rem)/1 var(--sans); letter-spacing: -.045em; margin-top: 18px; filter: drop-shadow(0 8px 24px rgba(0, 0, 0, .5)); }
+    .h2 em { color: var(--gold); font-style: normal; }
+    .lead { color: rgba(238, 242, 240, .8); font-size: clamp(1rem, 1.25vw, 1.12rem); max-width: 56ch; margin-top: 18px; text-shadow: 0 2px 20px rgba(0, 0, 0, .6); }
+    .glass { background: rgba(6, 14, 16, .52); backdrop-filter: blur(18px) saturate(1.5); -webkit-backdrop-filter: blur(18px) saturate(1.5); border: 1px solid var(--line); border-radius: 22px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 26px; border-radius: 999px; background: var(--gold); color: #1a1205; font: 700 14px/1 var(--sans); transition: background .3s, box-shadow .3s; box-shadow: 0 0 40px -6px rgba(240, 192, 110, .6); }
+    .btn:hover { background: var(--gold-2); box-shadow: 0 0 60px -4px rgba(240, 192, 110, .85); }
+    .btn--ghost { background: rgba(255, 255, 255, .08); color: var(--ink); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .btn--ghost:hover { background: rgba(255, 255, 255, .16); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4); }
+    section { padding: clamp(90px, 12vw, 170px) 0; }
+
+    /* Header + HUD */
+    .header { position: fixed; inset: 0 0 auto; z-index: 50; }
+    .header .wrap { display: flex; align-items: center; gap: 24px; height: 88px; }
+    .header.is-scrolled .wrap { height: 72px; }
+    .header .wrap { transition: height .4s; }
+    .header.is-scrolled { background: linear-gradient(180deg, rgba(3, 8, 10, .8), transparent); }
+    .logo img { width: 134px; }
+    .nav { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; padding: 6px; border-radius: 999px; font: 600 13.5px var(--sans); }
+    .nav a:not(.btn) { padding: 10px 16px; border-radius: 999px; color: rgba(238, 242, 240, .8); transition: background .3s, color .3s; }
+    .nav a:not(.btn):hover { background: rgba(255, 255, 255, .1); color: #fff; }
+    .nav .btn { padding: 11px 18px; box-shadow: none; }
+    .burger { display: none; width: 46px; height: 46px; margin-inline-start: auto; position: relative; z-index: 3; border-radius: 50%; }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 13px; right: 13px; height: 1.5px; background: #fff; transition: transform .35s, opacity .35s; }
+    .burger::before { top: 17px; } .burger span { top: 22.5px; } .burger::after { top: 28px; }
+    .menu-open .burger::before { transform: translateY(5.5px) rotate(45deg); } .menu-open .burger span { opacity: 0; } .menu-open .burger::after { transform: translateY(-5.5px) rotate(-45deg); }
+    .hud { position: fixed; z-index: 40; right: 24px; bottom: 80px; width: 210px; padding: 14px 16px; font: 600 10.5px/1.6 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; color: var(--muted); }
+    .hud b { color: var(--gold-2); font-weight: 600; }
+    .hud i { display: block; height: 2px; background: rgba(255, 255, 255, .12); margin-top: 10px; border-radius: 2px; overflow: hidden; }
+    .hud i::after { content: ""; display: block; height: 100%; width: calc(var(--p, 0) * 100%); background: linear-gradient(90deg, var(--teal), var(--gold)); }
+
+    /* Hero */
+    .hero { min-height: 100svh; display: flex; align-items: flex-end; padding-bottom: 120px; background: linear-gradient(0deg, rgba(3, 8, 10, .9) 0%, rgba(3, 8, 10, .55) 35%, transparent 70%); }
+    .hero h1 { font: 800 clamp(2.9rem, 8vw, 7.6rem)/.92 var(--sans); letter-spacing: -.055em; max-width: 12ch; filter: drop-shadow(0 12px 30px rgba(0, 0, 0, .55)); }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero__row { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap; margin-top: 30px; }
+    .hero__btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* Statement + stats */
+    .stmt { max-width: 900px; }
+    .stmt p.big { font: 700 clamp(1.6rem, 3.4vw, 2.9rem)/1.2 var(--sans); letter-spacing: -.03em; text-shadow: 0 10px 40px rgba(0, 0, 0, .6); }
+    .stmt p.big b { color: var(--gold); font-weight: 700; }
+    .numbers { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 60px; }
+    .numbers div { padding: 26px 24px; border-left: 1px solid var(--line); }
+    .numbers strong { display: block; font: 800 clamp(2.8rem, 6vw, 5.2rem)/1 var(--sans); letter-spacing: -.06em; color: #fff; text-shadow: 0 0 30px rgba(240, 192, 110, .55), 0 0 80px rgba(240, 192, 110, .3); }
+    .numbers span { display: block; color: var(--muted); margin-top: 10px; font-size: 14px; max-width: 22ch; }
+
+    /* Phases */
+    .phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 50px; }
+    .phase { padding: 34px 30px; min-height: 380px; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: transform .5s cubic-bezier(.2,.7,.2,1), border-color .4s; }
+    .phase:hover { transform: translateY(-10px); border-color: rgba(240, 192, 110, .5); }
+    .phase::before { content: ""; position: absolute; inset: auto -30% -50% -30%; height: 70%; background: radial-gradient(closest-side, rgba(240, 192, 110, .25), transparent); opacity: 0; transition: opacity .5s; }
+    .phase:hover::before { opacity: 1; }
+    .phase b { font: 800 4.6rem/1 var(--sans); letter-spacing: -.06em; color: transparent; -webkit-text-stroke: 1px rgba(240, 192, 110, .7); }
+    .phase h3 { font: 800 2rem/1 var(--sans); letter-spacing: -.04em; margin-top: auto; }
+    .phase small { color: var(--gold); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; margin-top: 12px; }
+    .phase p { color: var(--muted); margin-top: 12px; font-size: 15px; position: relative; }
+
+    /* Services */
+    .svc { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 50px; }
+    .svc article { grid-column: span 2; padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+    .svc article:nth-child(4), .svc article:nth-child(5) { grid-column: span 3; }
+    .svc .ic { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; color: var(--gold); background: rgba(240, 192, 110, .12); box-shadow: 0 0 30px -8px rgba(240, 192, 110, .5); }
+    .svc h3 { font-size: 1.15rem; } .svc p { color: var(--muted); font-size: 14.5px; }
+
+    /* Sectors */
+    .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 50px; }
+    .tile { position: relative; aspect-ratio: 3 / 4; border-radius: 20px; overflow: hidden; isolation: isolate; border: 1px solid var(--line); }
+    .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); filter: saturate(.8) brightness(.8); }
+    .tile::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 30%, rgba(3, 8, 10, .92)); }
+    .tile:hover img { transform: scale(1.1); filter: none; }
+    .tile div { position: absolute; inset: auto 0 0; padding: 20px; }
+    .tile small { color: var(--gold); font-weight: 700; font-size: 11px; letter-spacing: .14em; }
+    .tile h3 { font-size: 1.05rem; line-height: 1.3; margin-top: 6px; }
+
+    /* Model */
+    .model { display: grid; grid-template-columns: 1.1fr 1fr; gap: 18px; margin-top: 50px; }
+    .model .glass { padding: clamp(24px, 3vw, 40px); }
+    .steps { display: grid; gap: 14px; margin-top: 10px; }
+    .steps li { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+    .steps b { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: rgba(95, 212, 192, .12); color: var(--teal); font-size: 14px; }
+    .steps strong { display: block; } .steps p { color: var(--muted); font-size: 14px; margin-top: 2px; }
+    .parties { display: grid; gap: 12px; }
+    .parties li { padding: 18px; border-radius: 16px; background: rgba(255, 255, 255, .05); border: 1px solid var(--line); }
+    .parties small { color: var(--gold); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+    .parties strong { display: block; margin-top: 4px; } .parties p { color: var(--muted); font-size: 14px; }
+
+    /* People */
+    .people { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 50px; }
+    .pp { padding: 14px; display: flex; gap: 14px; align-items: center; transition: border-color .4s, transform .4s; }
+    .pp:hover { border-color: rgba(240, 192, 110, .5); transform: translateY(-4px); }
+    .pp img { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
+    .pp strong { display: block; font-size: 14.5px; line-height: 1.3; } .pp small { color: var(--gold); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .pp--ceo { grid-column: span 2; grid-row: span 2; flex-direction: column; align-items: flex-start; padding: 26px; }
+    .pp--ceo img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: center 25%; border-radius: 14px; }
+    .pp--ceo strong { font-size: 1.4rem; } .pp--ceo p { color: var(--muted); font-size: 15px; }
+
+    /* Partners + FAQ */
+    .marquee { overflow: hidden; margin-top: 50px; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .marquee ul { display: flex; gap: 14px; width: max-content; animation: slide 80s linear infinite; }
+    .marquee li { width: 180px; height: 92px; border-radius: 16px; background: rgba(248, 244, 236, .95); display: grid; place-items: center; padding: 16px 20px; }
+    .marquee img { max-height: 52px; width: auto; object-fit: contain; }
+    @keyframes slide { to { transform: translateX(-50%); } }
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 50px; }
+    .faq details { padding: 0 22px; align-self: start; }
+    .faq summary { list-style: none; display: flex; justify-content: space-between; gap: 14px; padding: 20px 0; font-weight: 700; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; color: var(--gold); font-size: 1.4rem; line-height: 1; transition: transform .3s; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq p { color: var(--muted); padding-bottom: 20px; }
+
+    /* Finale */
+    .finale { min-height: 120vh; display: flex; align-items: center; text-align: center; }
+    .finale h2 { font: 800 clamp(2.8rem, 7vw, 6.4rem)/.95 var(--sans); letter-spacing: -.055em; filter: drop-shadow(0 12px 30px rgba(0, 0, 0, .6)); }
+    .finale h2 em { color: var(--gold); font-style: normal; }
+    .finale .lead { margin-inline: auto; }
+    .finale__btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+    footer { padding: 30px 0 110px; color: var(--muted); font-size: 13px; }
+    footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 26px; }
+    footer img { width: 110px; } footer nav { display: flex; gap: 20px; flex-wrap: wrap; } footer a:hover { color: var(--gold); }
+
+    @media (max-width: 1100px) { .tiles, .people { grid-template-columns: repeat(2, 1fr); } .svc article, .svc article:nth-child(4), .svc article:nth-child(5) { grid-column: span 3; } .hud { display: none; } }
+    @media (max-width: 860px) {
+      .burger { display: block; }
+      .nav { position: fixed; inset: 0; z-index: 2; flex-direction: column; justify-content: center; gap: 10px; font-size: 20px; background: rgba(3, 8, 10, .96); border-radius: 0; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .menu-open .nav { opacity: 1; visibility: visible; } .menu-open { overflow: hidden; }
+      .numbers { grid-template-columns: 1fr 1fr; } .numbers div:nth-child(3) { border-left: 0; }
+      .phases, .model, .faq { grid-template-columns: 1fr; } .phase { min-height: 0; } .phase h3 { margin-top: 18px; }
+      .svc article, .svc article:nth-child(4), .svc article:nth-child(5) { grid-column: span 6; }
+      .numbers div { background: rgba(3, 8, 10, .4); }
+    }
+    @media (max-width: 560px) {
+      :root { --wrap: calc(100% - 28px); }
+      .people { grid-template-columns: 1fr; } .pp--ceo { grid-column: auto; grid-row: auto; }
+      .tiles { gap: 10px; }
+      .numbers div { padding: 18px 12px; }
+    }
+  </style>
+</head>
+<body data-cursor>
+  <div class="fallback" aria-hidden="true"></div>
+  <canvas id="city" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="header" data-header>
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208"></a>
+      <nav class="nav glass" id="nav" aria-label="Main">
+        <a href="#journey">Journey</a><a href="#services">Services</a><a href="#sectors">Sectors</a><a href="#people">People</a><a href="../../ar/" lang="ar">العربية</a>
+        <a class="btn" href="#contact" data-magnetic>Contact</a>
+      </nav>
+      <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </header>
+  <div class="hud glass" id="hud" aria-hidden="true">RIYADH · <b>24.7136° N</b> · <b>46.6753° E</b><br>ROUTE <b id="hud-k">00</b> / 10 · <span id="hud-name">DEPARTURE</span><i></i></div>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Alliance Investment · Riyadh, Saudi Arabia</p>
+        <h1 data-split style="margin-top:22px">Your gateway to the <em>Kingdom’s rise.</em></h1>
+        <div class="hero__row">
+          <p class="lead" data-reveal style="--d:.5s">Enter the Saudi market with a trusted partner — business setup, investment strategy, local partnerships and Vision 2030-aligned growth. Scroll to take the ride.</p>
+          <div class="hero__btns" data-reveal style="--d:.6s"><a class="btn" href="#contact" data-magnetic>Start your journey</a><a class="btn btn--ghost" href="#journey">How we work</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" data-hud="City lights">
+      <div class="wrap stmt">
+        <p class="eyebrow" data-reveal>Who we are</p>
+        <p class="big" data-reveal style="margin-top:22px">A Saudi company with <b>over 10 years</b> in the market — the strategic and trusted partner for foreign and local companies building a <b>lasting presence</b> in the Kingdom.</p>
+      </div>
+      <div class="wrap numbers" id="numbers"></div>
+    </section>
+
+    <section id="journey" data-hud="The avenue">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Our work phases</p>
+        <h2 class="h2" data-split>Enter. Establish. <em>Expand.</em></h2>
+        <div class="phases" id="phases"></div>
+      </div>
+    </section>
+
+    <section id="services" data-hud="Business district">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Services &amp; solutions</p>
+        <h2 class="h2" data-split>Business development &amp; <em>investment solutions</em></h2>
+        <div class="svc" id="svc"></div>
+      </div>
+    </section>
+
+    <section id="sectors" data-hud="Eight districts">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Sectors of success</p>
+        <h2 class="h2" data-split>Eight sectors lighting up <em>Vision 2030</em></h2>
+        <div class="tiles" id="tiles"></div>
+      </div>
+    </section>
+
+    <section id="model" data-hud="Interchange">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Business model</p>
+        <h2 class="h2" data-split>One route, <em>three partners</em></h2>
+        <div class="model">
+          <div class="glass" data-reveal><ol class="steps" id="steps"></ol></div>
+          <div class="glass" data-reveal style="--d:.1s"><p class="eyebrow" style="margin-bottom:18px">Strategic operating model</p><ul class="parties" id="parties"></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="people" data-hud="Skyline">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Leadership</p>
+        <h2 class="h2" data-split>Saudi leadership, <em>global advisors</em></h2>
+        <div class="people" id="people-grid"></div>
+      </div>
+    </section>
+
+    <section id="partners" data-hud="Network">
+      <div class="wrap"><p class="eyebrow" data-reveal>Trusted network</p><h2 class="h2" data-split>Alongside the Kingdom’s <em>leading institutions</em></h2></div>
+      <div class="marquee" data-reveal><ul data-marquee id="logos"></ul></div>
+    </section>
+
+    <section id="faq" data-hud="Approach">
+      <div class="wrap"><p class="eyebrow" data-reveal>FAQ</p><h2 class="h2" data-split>Questions before <em>you arrive</em></h2><div class="faq" id="faq-list" data-reveal></div></div>
+    </section>
+
+    <section class="finale" id="contact" data-hud="Arrival">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Contact us</p>
+        <h2 data-split style="margin-top:22px">You’ve arrived. <em>Let’s build.</em></h2>
+        <p class="lead" data-reveal>Tell us about your organization and objectives — our team in Riyadh will get back to you.</p>
+        <div class="finale__btns" data-reveal><a class="btn" href="mailto:Ksa@alliance.sa" data-magnetic>Ksa@alliance.sa</a><a class="btn btn--ghost" href="tel:+966539503000">+966 53 950 3000</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy"><nav><a href="../../about-us/">About Us</a><a href="../../business-model/">Business Model</a><a href="../../privacy-policy/">Privacy Policy</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></nav><span>© <span data-year>2026</span> Alliance Investment</span></div>
+  </footer>
+
+  <script>
+    (function () {
+      var A = ALLIANCE, $ = A$;
+      $.fill('#numbers', A.stats.map(function (s, i) { return '<div data-reveal style="--d:' + (i * 0.08) + 's"><strong data-count="' + s.n + '" data-suffix="' + s.s + '">' + s.n + s.s + '</strong><span>' + s.label + '</span></div>'; }).join(''));
+      var names = ['Enter', 'Establish', 'Expand'];
+      $.fill('#phases', A.phases.map(function (p, i) { return '<article class="phase glass" data-reveal style="--d:' + (i * 0.1) + 's"><b>' + $.pad(i + 1) + '</b><h3>' + names[i] + '</h3><small>' + p.t + '</small><p>' + p.d + '</p></article>'; }).join(''));
+      $.fill('#svc', A.solutions.map(function (s, i) { return '<article class="glass" data-reveal style="--d:' + (i * 0.06) + 's"><span class="ic">' + $.icon(s.icon) + '</span><h3>' + $.esc(s.t) + '</h3><p>' + s.d + '</p></article>'; }).join(''));
+      $.fill('#tiles', A.sectors.map(function (s, i) { return '<article class="tile" data-reveal style="--d:' + ((i % 4) * 0.06) + 's"><img src="' + $.img(s.img) + '.webp" alt="" loading="lazy"><div><small>' + $.pad(i + 1) + '</small><h3>' + $.esc(s.t) + '</h3></div></article>'; }).join(''));
+      $.fill('#steps', A.steps.map(function (s, i) { return '<li><b>' + $.pad(i + 1) + '</b><div><strong>' + $.esc(s.t) + '</strong><p>' + s.d + '</p></div></li>'; }).join(''));
+      $.fill('#parties', A.parties.map(function (p) { return '<li><small>' + p.tag + '</small><strong>' + p.t + '</strong><p>' + p.d + '</p></li>'; }).join(''));
+      $.fill('#people-grid', '<article class="pp pp--ceo glass" data-reveal><img src="' + $.img(A.ceo.img) + '" alt="" loading="lazy"><small>Chief Executive Officer</small><strong>' + A.ceo.name + '</strong><p>“' + A.ceo.quote.split('. ')[0] + '.”</p></article>' +
+        A.team.map(function (p, i) { return '<article class="pp glass" data-reveal style="--d:' + ((i % 4) * 0.05) + 's"><img src="' + $.img(p.img) + '" alt="" loading="lazy"><div><strong>' + p.name + '</strong><small>' + (p.group === 'Board' ? 'Board member' : 'Advisor') + '</small></div></article>'; }).join(''));
+      $.fill('#logos', A.partners.map(function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; }).join(''));
+      $.fill('#faq-list', A.faq.map(function (f, i) { return '<details class="glass"' + (i ? '' : ' open') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join(''));
+
+      // HUD: route progress and the name of the current "stop"
+      var hud = document.getElementById('hud'), k = document.getElementById('hud-k'), nm = document.getElementById('hud-name'), stops = document.querySelectorAll('[data-hud]');
+      function hudUpdate() {
+        var max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? scrollY / max : 0, cur = 'Departure', n = 0;
+        stops.forEach(function (s, i) { if (s.getBoundingClientRect().top < innerHeight * 0.5) { cur = s.dataset.hud; n = i + 1; } });
+        hud.style.setProperty('--p', p.toFixed(3)); k.textContent = String(n + 1).padStart(2, '0'); nm.textContent = cur.toUpperCase();
+      }
+      addEventListener('scroll', hudUpdate, { passive: true }); hudUpdate();
+    })();
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+    const canvas = document.getElementById('city');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mobile = innerWidth < 860;
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+    if (renderer) build();
+
+    function build() {
+      renderer.setPixelRatio(Math.min(devicePixelRatio, mobile ? 1.25 : 1.6));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.92;
+      const scene = new THREE.Scene();
+      const FOG = new THREE.Color(0.012, 0.028, 0.032);
+      scene.background = FOG;
+      const camera = new THREE.PerspectiveCamera(58, 1, 0.5, 1400);
+      let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const END = -470;
+
+      // ---- Sky dome: horizon glow + stars
+      const sky = new THREE.Mesh(new THREE.SphereGeometry(1000, 32, 16), new THREE.ShaderMaterial({
+        side: THREE.BackSide, depthWrite: false,
+        vertexShader: `varying vec3 vP; void main() { vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `varying vec3 vP; void main() {
+          float h = vP.y; vec3 top = vec3(0.004, 0.010, 0.016), mid = vec3(0.012, 0.028, 0.032), glow = vec3(0.30, 0.13, 0.04);
+          vec3 c = mix(mid, top, smoothstep(0.02, 0.5, h)); c += glow * exp(-abs(h - 0.01) * 22.0) * (0.6 + 0.4 * smoothstep(0.2, -0.9, vP.z));
+          gl_FragColor = vec4(c, 1.0);
+          #include <tonemapping_fragment>
+          #include <colorspace_fragment>
+        }`,
+      }));
+      const skyGroup = new THREE.Group(); skyGroup.add(sky); scene.add(skyGroup);
+      const starPos = new Float32Array(1600 * 3);
+      for (let i = 0; i < 1600; i++) { const a = rnd() * Math.PI * 2, y = 0.08 + rnd() * 0.9, r = Math.sqrt(1 - y * y); starPos.set([Math.cos(a) * r * 900, y * 900, Math.sin(a) * r * 900], i * 3); }
+      skyGroup.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(starPos, 3)), new THREE.PointsMaterial({ color: 0xcfd8ff, size: 1.6, sizeAttenuation: false, transparent: true, opacity: 0.7, fog: false })));
+
+      // ---- Ground + avenue with lane markings
+      const ground = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1600), new THREE.ShaderMaterial({
+        uniforms: { uFog: { value: FOG } },
+        vertexShader: `varying vec3 vW; void main() { vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }`,
+        fragmentShader: `varying vec3 vW; uniform vec3 uFog;
+          void main() {
+            vec3 c = vec3(0.006, 0.010, 0.011);
+            float road = step(abs(vW.x), 9.0);
+            c = mix(c, vec3(0.012, 0.014, 0.016), road);
+            float dash = step(0.5, fract(vW.z / 6.0)) * (1.0 - step(0.12, abs(vW.x))) ;
+            float edge = (1.0 - step(0.1, abs(abs(vW.x) - 8.6)));
+            float lanes = (1.0 - step(0.06, abs(abs(vW.x) - 4.4))) * step(0.6, fract(vW.z / 4.0));
+            c += vec3(0.9, 0.6, 0.25) * dash * 0.55 + vec3(0.5, 0.5, 0.55) * (edge * 0.35 + lanes * 0.18);
+            float grid = (1.0 - step(0.25, abs(fract(vW.x / 64.0 + 0.5) - 0.5) * 64.0)) + (1.0 - step(0.25, abs(fract(vW.z / 64.0 + 0.5) - 0.5) * 64.0));
+            c += vec3(0.05, 0.035, 0.015) * min(grid, 1.0) * (1.0 - road);
+            float d = length(vW - cameraPosition); c = mix(c, uFog, 1.0 - exp(-d * d * 0.0000045));
+            gl_FragColor = vec4(c, 1.0);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`,
+      }));
+      ground.rotation.x = -Math.PI / 2; ground.position.z = -300; scene.add(ground);
+
+      // ---- Buildings: one instanced box mesh with procedural lit windows
+      const lots = [];
+      const span = mobile ? 70 : 110;
+      for (let z = 40; z > END - 40; z -= 9) {
+        for (let x = 13; x < span; x += 9) {
+          for (const side of [-1, 1]) {
+            if (rnd() < 0.12 || (Math.abs(z - (END - 70)) < 34 && x < 36)) continue;
+            const w = 4 + rnd() * 4.5, d = 4 + rnd() * 4.5, near = Math.max(0, 1 - (x - 13) / 60);
+            let hgt = 6 + rnd() * 18 + near * rnd() * 22;
+            if (rnd() < 0.09) hgt = 45 + rnd() * 60;
+            if (Math.abs(z - END) < 90 && rnd() < 0.3) hgt *= 1.4;
+            lots.push([side * (x + rnd() * 2), z + rnd() * 2, w, hgt, d]);
+          }
+        }
+      }
+      const box = new THREE.BoxGeometry(1, 1, 1); box.translate(0, 0.5, 0);
+      const bMat = new THREE.ShaderMaterial({
+        uniforms: { uFog: { value: FOG }, uTime: { value: 0 } },
+        vertexShader: `varying vec3 vW; varying vec3 vN; varying float vId; varying float vH;
+          void main() { vec4 w = modelMatrix * instanceMatrix * vec4(position, 1.0); vW = w.xyz; vN = normalize(mat3(instanceMatrix) * normal); vId = float(gl_InstanceID); vH = instanceMatrix[1][1];
+            gl_Position = projectionMatrix * viewMatrix * w; }`,
+        fragmentShader: `varying vec3 vW; varying vec3 vN; varying float vId; varying float vH; uniform vec3 uFog; uniform float uTime;
+          float hash(vec3 p) { return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453); }
+          void main() {
+            vec3 body = vec3(0.010, 0.016, 0.018) * (0.6 + 0.4 * vW.y / max(vH, 1.0));
+            vec3 c = body;
+            if (vN.y < 0.5) {
+              float u = abs(vN.x) > 0.5 ? vW.z : vW.x;
+              vec2 cell = vec2(floor(u / 1.9), floor(vW.y / 2.6));
+              vec2 f = vec2(fract(u / 1.9), fract(vW.y / 2.6));
+              float win = step(0.2, f.x) * step(f.x, 0.8) * step(0.28, f.y) * step(f.y, 0.82) * step(1.6, vW.y);
+              float h = hash(vec3(cell, vId));
+              float lit = step(0.68, h) * (0.8 + 0.2 * sin(uTime * 0.3 + h * 50.0)) * (step(0.965, h) * 1.6 + 0.42);
+              vec3 warm = mix(vec3(1.0, 0.55, 0.18), vec3(1.0, 0.82, 0.55), hash(vec3(cell.yx, vId)));
+              vec3 cool = vec3(0.25, 0.45, 0.6);
+              vec3 wc = hash(vec3(vId, 3.0, 1.0)) < 0.25 ? cool : warm;
+              c += win * (lit * wc + (1.0 - step(0.68, h)) * vec3(0.012, 0.02, 0.028));
+              c += vec3(0.9, 0.55, 0.2) * 1.2 * smoothstep(vH - 0.5, vH, vW.y) * step(40.0, vH);
+            } else { c = vec3(0.02, 0.025, 0.028); }
+            float d = length(vW - cameraPosition); c = mix(c, uFog, 1.0 - exp(-d * d * 0.0000040));
+            gl_FragColor = vec4(c, 1.0);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`,
+      });
+      const city = new THREE.InstancedMesh(box, bMat, lots.length);
+      const m4 = new THREE.Matrix4();
+      lots.forEach((l, i) => { m4.makeScale(l[2], l[3], l[4]); m4.setPosition(l[0], 0, l[1]); city.setMatrixAt(i, m4); });
+      city.frustumCulled = false; scene.add(city);
+
+      // ---- Landmark at the end of the avenue: a tower with a parabolic opening and sky bridge
+      const s = new THREE.Shape();
+      s.moveTo(-16, 0); s.lineTo(16, 0); s.quadraticCurveTo(15.5, 120, 7.5, 200); s.quadraticCurveTo(0, 130, -7.5, 200); s.quadraticCurveTo(-15.5, 120, -16, 0);
+      const towerGeo = new THREE.ExtrudeGeometry(s, { depth: 14, bevelEnabled: false, curveSegments: 40 }); towerGeo.translate(0, 0, -7);
+      const tower = new THREE.Group();
+      tower.add(new THREE.Mesh(towerGeo, new THREE.MeshBasicMaterial({ color: 0x040a0c })));
+      tower.add(new THREE.LineSegments(new THREE.EdgesGeometry(towerGeo, 25), new THREE.LineBasicMaterial({ color: 0xffc66e })));
+      const bridge = new THREE.Mesh(new THREE.BoxGeometry(11, 2.2, 6), new THREE.MeshBasicMaterial({ color: 0xffd89a }));
+      bridge.position.y = 172; tower.add(bridge);
+      const glowMat = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: `varying vec2 vU; void main() { vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `varying vec2 vU; void main() { float a = smoothstep(0.5, 0.0, length(vU - vec2(0.5, 0.75))) * 0.8; gl_FragColor = vec4(vec3(1.0, 0.6, 0.2) * a, a); }` });
+      const halo = new THREE.Mesh(new THREE.PlaneGeometry(70, 120), glowMat); halo.position.set(0, 160, -8); tower.add(halo);
+      tower.position.set(0, 0, END - 70); tower.scale.setScalar(mobile ? 0.9 : 1); scene.add(tower);
+
+      // ---- Traffic: streaks of head and tail lights
+      const CARS = mobile ? 120 : 260;
+      const carMesh = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.28, 2.6).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }), CARS);
+      const cars = [], col = new THREE.Color();
+      for (let i = 0; i < CARS; i++) {
+        const dir = i % 2 ? 1 : -1, lane = (dir > 0 ? 2.2 : -2.2) + (rnd() < 0.5 ? 2.2 * Math.sign(dir) : 0) + (rnd() - 0.5) * 0.6;
+        cars.push({ x: lane, z: 60 - rnd() * 620, v: (18 + rnd() * 16) * dir });
+        carMesh.setColorAt(i, col.set(dir > 0 ? 0xff3b2f : 0xfff1d0).multiplyScalar(dir > 0 ? 2.2 : 2.8));
+      }
+      carMesh.frustumCulled = false; scene.add(carMesh);
+
+      // ---- Street lights along the avenue
+      const lamps = [];
+      for (let z = 50; z > END - 30; z -= 12) { lamps.push(-9.6, 7, z, 9.6, 7, z); }
+      scene.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(lamps, 3)), new THREE.PointsMaterial({ color: 0xffc670, size: 1.1, transparent: true, opacity: 1, toneMapped: false, blending: THREE.AdditiveBlending, depthWrite: false })));
+
+      // ---- Post-processing glow (desktop)
+      let composer = null;
+      if (!mobile) {
+        composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.7, 0.5, 0.85));
+        composer.addPass(new OutputPass());
+      }
+
+      function resize() {
+        const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.fov = w < 860 ? 70 : 58; camera.updateProjectionMatrix();
+        if (composer) composer.setSize(w, h);
+      }
+      resize(); addEventListener('resize', resize);
+      let mx = 0, my = 0; addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
+
+      const camPos = new THREE.Vector3(0, 22, 70), look = new THREE.Vector3(0, 10, 0), want = new THREE.Vector3(), wantLook = new THREE.Vector3();
+      let last = performance.now();
+      function tick(now) {
+        requestAnimationFrame(tick);
+        const dt = Math.min(0.05, (now - last) / 1000); last = now; const t = now / 1000;
+        const max = document.documentElement.scrollHeight - innerHeight, p = max > 0 ? Math.min(1, scrollY / max) : 0;
+        // fly down the avenue, dip low past the traffic, rise to face the tower at the end
+        const z = 60 + (END + 20 - 60) * p;
+        const y = 22 - Math.sin(Math.min(1, p * 1.25) * Math.PI) * 14 + Math.pow(p, 6) * 30;
+        want.set(Math.sin(p * Math.PI * 3) * 3 + mx * 4, y - my * 3, z);
+        wantLook.set(Math.sin(p * Math.PI * 3 + 0.6) * 2, 6 + Math.pow(p, 3) * 150, z - 90);
+        camPos.lerp(want, calm ? 1 : 0.06); look.lerp(wantLook, calm ? 1 : 0.06);
+        camera.position.copy(camPos); camera.lookAt(look); skyGroup.position.copy(camPos);
+        bMat.uniforms.uTime.value = t;
+        if (!calm) {
+          cars.forEach((c, i) => { c.z += c.v * dt; if (c.z > 80) c.z -= 640; if (c.z < END - 120) c.z += 640; m4.makeTranslation(c.x, 0.15, c.z); carMesh.setMatrixAt(i, m4); });
+          carMesh.instanceMatrix.needsUpdate = true;
+        }
+        if (composer) composer.render(); else renderer.render(scene, camera);
+      }
+      cars.forEach((c, i) => { m4.makeTranslation(c.x, 0.15, c.z); carMesh.setMatrixAt(i, m4); });
+      requestAnimationFrame(tick);
+      document.documentElement.classList.add('gl-ready');
+    }
+  </script>
+</body>
+</html>

@@ -3,349 +3,597 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Model 2 · Vision | Alliance Investment</title>
+  <title>Investor Hub · Model 2 | Alliance Investment</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#06261d">
+  <meta name="theme-color" content="#f4f4f6">
   <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
-  <link rel="preload" href="../../assets/img/hero-poster.webp" as="image">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
   <link rel="stylesheet" href="../models.css">
+  <script src="../content.js"></script>
   <script src="../models.js" defer></script>
   <style>
-    /* Model 2 — Vision: cinematic full-screen imagery, deep green and gold, national scale */
+    /* Model 2 — Investor Hub (inspired by ADIO, the Abu Dhabi Investment Office): light canvas, live indicator ticker,
+       photo hero with glass cards, a 3D gold coin, a rotating 3D sector ring and stacking journey cards */
     :root {
-      --deep: #06261d; --green: #0b3b2e; --green-2: #12503f; --gold: #c29b5e; --gold-2: #e2c48c;
-      --cream: #f7f2e8; --ink: #0f1a16; --muted: #5f6b66;
+      --bg: #f4f4f6; --card: #ffffff; --ink: #0f1a16; --muted: #5d6965; --line: #e2e2e8;
+      --green: #0b3b2e; --green-2: #12503f; --gold: #b98a3e; --gold-2: #d9b26a;
       --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
-      --wrap: min(1320px, 100% - 40px);
+      --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+      --wrap: min(1360px, 100% - 48px); --r: 26px;
     }
-    body { background: var(--cream); color: var(--ink); font: 400 16px/1.65 var(--sans); }
+    body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--sans); }
     .wrap { width: var(--wrap); margin-inline: auto; }
-    .icon { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-    .label { display: inline-flex; align-items: center; gap: 12px; font: 700 12px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
-    .label::before { content: ""; width: 34px; height: 1px; background: currentColor; }
-    .h2 { font: 800 clamp(2rem, 4.2vw, 3.5rem)/1.06 var(--sans); letter-spacing: -.025em; text-transform: uppercase; }
-    .h2 span { color: var(--gold); }
-    .btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 30px; background: var(--gold); color: var(--deep); font: 700 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; transition: background .3s, transform .3s; }
-    .btn:hover { background: var(--gold-2); transform: translateY(-2px); }
-    .btn--line { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5); }
-    .btn--line:hover { background: rgba(255, 255, 255, .1); }
-    section { padding: clamp(80px, 10vw, 140px) 0; }
+    .mono { font: 500 11.5px/1.2 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+    .gold-i { font-style: italic; font-weight: 600; background: linear-gradient(95deg, #9d7330, var(--gold-2) 45%, #8c6a2f); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
+    .h2 { font: 700 clamp(2rem, 4.4vw, 3.6rem)/1.04 var(--sans); letter-spacing: -.04em; }
+    .lead { color: var(--muted); font-size: clamp(1rem, 1.2vw, 1.1rem); max-width: 58ch; }
+    .btn { display: inline-flex; align-items: center; gap: 12px; padding: 14px 16px 14px 22px; border-radius: 999px; background: var(--green); color: #fff; font: 600 14px/1 var(--sans); transition: background .3s; }
+    .btn i { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--gold-2); color: var(--green); font-style: normal; transition: transform .3s; }
+    .btn:hover { background: var(--green-2); } .btn:hover i { transform: rotate(-45deg); }
+    .btn--light { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+    section { padding: clamp(80px, 9vw, 130px) 0; }
+    .sec-head { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
+    .sec-head .mono { color: var(--gold); display: block; margin-bottom: 18px; }
 
-    /* Header */
-    .header { position: fixed; inset: 0 0 auto; z-index: 50; color: #fff; transition: background .4s, box-shadow .4s; }
-    .header.is-scrolled { background: rgba(6, 38, 29, .94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 1px 0 rgba(255, 255, 255, .08); }
-    .header__in { display: flex; align-items: center; height: 92px; gap: 40px; transition: height .4s; }
-    .is-scrolled .header__in { height: 76px; }
-    .header__logo img { width: 156px; }
-    .nav { display: flex; align-items: center; gap: 30px; margin-inline-start: auto; font: 600 13px var(--sans); letter-spacing: .08em; text-transform: uppercase; }
-    .nav a:not(.btn) { opacity: .85; transition: opacity .3s, color .3s; }
-    .nav a:not(.btn):hover { opacity: 1; color: var(--gold-2); }
-    .nav .btn { padding: 13px 22px; }
-    .burger { display: none; width: 46px; height: 46px; margin-inline-start: auto; position: relative; z-index: 2; }
-    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 12px; right: 12px; height: 2px; background: #fff; transition: transform .3s, opacity .3s; }
-    .burger::before { top: 16px; } .burger span { top: 22px; } .burger::after { top: 28px; }
-    .menu-open .burger::before { transform: translateY(6px) rotate(45deg); }
-    .menu-open .burger span { opacity: 0; }
-    .menu-open .burger::after { transform: translateY(-6px) rotate(-45deg); }
+    /* Utility bar, header, ticker */
+    .util { background: #fff; border-bottom: 1px solid var(--line); }
+    .util .wrap { display: flex; justify-content: space-between; align-items: center; height: 36px; color: var(--muted); }
+    .util__r { display: flex; gap: 22px; align-items: center; }
+    .util__r a:hover { color: var(--ink); }
+    .clock b { color: var(--ink); font-weight: 600; }
+    .header { position: sticky; top: 0; z-index: 60; background: rgba(255, 255, 255, .88); backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); border-bottom: 1px solid var(--line); }
+    .header .wrap { display: flex; align-items: center; gap: 28px; height: 76px; }
+    .logo img { width: 128px; }
+    .nav { display: flex; align-items: center; gap: 30px; margin-inline-start: auto; font-weight: 600; font-size: 14.5px; }
+    .nav a:not(.btn) { position: relative; padding: 6px 0; }
+    .nav a:not(.btn)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--gold); transform: scaleX(0); transition: transform .35s; transform-origin: right; }
+    .nav a:not(.btn):hover::after { transform: scaleX(1); transform-origin: left; }
+    .burger { display: none; width: 44px; height: 44px; margin-inline-start: auto; position: relative; z-index: 3; }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 11px; right: 11px; height: 2px; background: var(--ink); transition: transform .35s, opacity .35s; }
+    .burger::before { top: 15px; } .burger span { top: 21px; } .burger::after { top: 27px; }
+    .menu-open .burger::before { transform: translateY(6px) rotate(45deg); } .menu-open .burger span { opacity: 0; } .menu-open .burger::after { transform: translateY(-6px) rotate(-45deg); }
+    .ticker { background: #fff; border-bottom: 1px solid var(--line); overflow: hidden; }
+    .ticker ul { display: flex; width: max-content; animation: tick 48s linear infinite; }
+    .ticker li { display: flex; gap: 10px; align-items: center; padding: 11px 28px; border-right: 1px solid var(--line); white-space: nowrap; color: var(--muted); }
+    .ticker li b { color: var(--ink); font-weight: 600; }
+    .ticker li i { width: 0; height: 0; border: 5px solid transparent; border-bottom: 7px solid #1b9d72; border-top: 0; }
+    .ticker li:first-child { background: var(--green); color: #fff; } .ticker li:first-child b { color: var(--gold-2); }
+    @keyframes tick { to { transform: translateX(-50%); } }
 
     /* Hero */
-    .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; padding: 0; overflow: hidden; background: var(--deep); }
-    .hero__bg { position: absolute; inset: 0; }
-    .hero__bg img { width: 100%; height: 100%; object-fit: cover; animation: zoom 24s ease-out both; }
-    @keyframes zoom { from { transform: scale(1.18); } to { transform: scale(1); } }
-    .hero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6, 38, 29, .55) 0%, rgba(6, 38, 29, .15) 35%, rgba(6, 38, 29, .85) 78%, var(--deep) 100%), linear-gradient(90deg, rgba(6, 38, 29, .7), transparent 60%); }
-    .hero__in { position: relative; padding-top: 140px; }
-    .hero h1 { font: 800 clamp(2.6rem, 7.4vw, 7rem)/.98 var(--sans); letter-spacing: -.035em; text-transform: uppercase; max-width: 13ch; margin: 26px 0 28px; }
-    .hero h1 span { display: block; color: var(--gold); }
-    .hero p { max-width: 54ch; font-size: clamp(1rem, 1.4vw, 1.2rem); color: rgba(255, 255, 255, .82); }
-    .hero__actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; }
-    .hero__stats { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(56px, 8vw, 96px); border-top: 1px solid rgba(255, 255, 255, .16); }
-    .hero__stats div { padding: 30px 24px 38px 0; }
-    .hero__stats div + div { padding-left: 24px; border-left: 1px solid rgba(255, 255, 255, .16); }
-    .hero__stats strong { display: block; font: 800 clamp(2rem, 3.6vw, 3.1rem)/1 var(--sans); color: var(--gold-2); }
-    .hero__stats span { display: block; margin-top: 10px; font-size: 13px; color: rgba(255, 255, 255, .7); max-width: 24ch; }
+    .hero { padding: 16px 0 0; }
+    .hero__box { position: relative; border-radius: 30px; overflow: hidden; min-height: min(860px, calc(100svh - 150px)); display: flex; flex-direction: column; justify-content: space-between; color: #fff; isolation: isolate; background: #0b2a21; }
+    .hero__bg { position: absolute; inset: 0; z-index: -2; }
+    .hero__bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); animation: heroIn 2.6s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes heroIn { to { transform: scale(1); } }
+    .hero__box::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(5, 20, 15, .82) 0%, rgba(5, 20, 15, .45) 48%, rgba(5, 20, 15, .1) 75%), linear-gradient(0deg, rgba(5, 20, 15, .75), transparent 45%); }
+    .hero__coin { position: absolute; right: 2%; top: 4%; width: min(46vw, 620px); aspect-ratio: 1; z-index: -1; }
+    .hero__coin canvas { width: 100% !important; height: 100% !important; }
+    .hero__top { padding: clamp(40px, 6vw, 90px) clamp(24px, 5vw, 72px) 0; max-width: 980px; }
+    .hero h1 { font: 700 clamp(2.7rem, 7vw, 6.6rem)/.98 var(--sans); letter-spacing: -.05em; margin-top: 20px; }
+    .hero h1 .gold-i { background: linear-gradient(95deg, #e6c27f, #f8e3b4 40%, #c9a057); -webkit-background-clip: text; background-clip: text; }
+    .hero__top p { margin-top: 24px; max-width: 54ch; font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(255, 255, 255, .84); }
+    .hero__cards { display: grid; grid-template-columns: 1.35fr 1fr 1fr; gap: 1px; margin: 40px clamp(14px, 2vw, 24px) clamp(14px, 2vw, 24px); border-radius: 22px; overflow: hidden; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .18); }
+    .gcard { padding: 24px 26px 26px; background: rgba(12, 30, 24, .55); backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4); display: flex; flex-direction: column; gap: 10px; transition: background .4s; }
+    a.gcard:hover { background: rgba(12, 30, 24, .72); }
+    .gcard__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .gcard__ic { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--gold-2); color: var(--green); }
+    .gcard .mono { color: rgba(255, 255, 255, .6); }
+    .gcard h3 { font-size: 1.15rem; font-weight: 700; }
+    .gcard p { color: rgba(255, 255, 255, .72); font-size: 14px; }
+    .ask { display: flex; margin-top: 8px; background: rgba(255, 255, 255, .95); border-radius: 12px; padding: 5px; }
+    .ask input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; padding: 10px 12px; color: var(--ink); font-size: 14px; }
+    .ask button { width: 40px; height: 40px; border-radius: 9px; background: var(--green); color: var(--gold-2); display: grid; place-items: center; }
 
-    /* Statement */
-    .statement { background: var(--deep); color: #fff; padding-top: clamp(40px, 6vw, 80px); }
-    .statement p { font: 600 clamp(1.5rem, 3.1vw, 2.6rem)/1.3 var(--sans); letter-spacing: -.015em; max-width: 30ch; }
-    .statement p b { color: var(--gold); font-weight: 600; }
-    .statement__row { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: end; }
-    .statement__side { color: rgba(255, 255, 255, .7); }
-    .statement__side img { width: 170px; margin-bottom: 22px; background: #fff; padding: 12px 16px; border-radius: 2px; }
+    /* Advantage */
+    .adv { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+    .adv__aside { position: sticky; top: 130px; }
+    .adv__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; }
+    .adv__stats div { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; }
+    .adv__stats strong { display: block; font: 700 2.4rem/1 var(--sans); letter-spacing: -.04em; }
+    .adv__stats span { display: block; color: var(--muted); font-size: 13px; margin-top: 8px; }
+    .rows li { border-top: 1px solid var(--line); }
+    .rows li:last-child { border-bottom: 1px solid var(--line); }
+    .row { display: grid; grid-template-columns: 70px 1fr 48px; gap: 18px; padding: 30px 6px; align-items: start; transition: background .4s, padding .4s; border-radius: 6px; }
+    .row:hover { background: var(--card); padding-inline: 18px; }
+    .row .mono { color: var(--gold); padding-top: 6px; }
+    .row h3 { font: 700 clamp(1.15rem, 1.8vw, 1.5rem)/1.25 var(--sans); letter-spacing: -.02em; }
+    .row p { color: var(--muted); margin-top: 8px; max-width: 58ch; }
+    .row .icon { width: 30px; height: 30px; color: var(--gold); opacity: .4; transition: opacity .3s, transform .4s; }
+    .row:hover .icon { opacity: 1; transform: rotate(-8deg) scale(1.12); }
 
-    /* Sectors mosaic */
-    .head { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; margin-bottom: 52px; }
-    .head .h2 { margin-top: 18px; max-width: 18ch; }
-    .head p { max-width: 44ch; color: var(--muted); }
-    .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 280px; gap: 14px; }
-    .tile { position: relative; overflow: hidden; color: #fff; background: var(--green); }
-    .tile--wide { grid-column: span 2; }
-    .tile--tall { grid-row: span 2; }
-    .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
-    .tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(6, 38, 29, .92)); transition: background .5s; }
-    .tile:hover img { transform: scale(1.07); }
-    .tile:hover::after { background: linear-gradient(180deg, rgba(6, 38, 29, .2), rgba(6, 38, 29, .95)); }
-    .tile div { position: absolute; z-index: 1; inset: auto 0 0; padding: 26px; }
-    .tile small { font: 700 12px var(--sans); color: var(--gold-2); letter-spacing: .14em; }
-    .tile h3 { font: 700 clamp(1.05rem, 1.5vw, 1.35rem)/1.25 var(--sans); margin-top: 8px; }
+    /* Help cards */
+    .help { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .hcard { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 34px 30px; min-height: 340px; display: flex; flex-direction: column; overflow: hidden; isolation: isolate; }
+    .hcard::before { content: ""; position: absolute; inset: auto -20% -60% -20%; height: 80%; z-index: -1; background: radial-gradient(closest-side, rgba(217, 178, 106, .35), transparent); opacity: 0; transition: opacity .6s; }
+    .hcard:hover::before { opacity: 1; }
+    .hcard .mono { color: var(--muted); }
+    .hcard h3 { font: 700 1.6rem/1.15 var(--sans); letter-spacing: -.03em; margin: 22px 0 14px; }
+    .hcard p { color: var(--muted); }
+    .hcard .more { margin-top: auto; padding-top: 24px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+    .hcard .more i { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); font-style: normal; transition: background .3s, color .3s, transform .3s; }
+    .hcard:hover .more i { background: var(--green); color: var(--gold-2); transform: rotate(-45deg); }
 
-    /* Solutions */
-    .solutions { background: #fff; }
-    .sol { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid #e7e0d2; }
-    .sol li { padding: 40px 28px; border-right: 1px solid #e7e0d2; display: flex; flex-direction: column; gap: 16px; position: relative; transition: background .4s, color .4s; }
-    .sol li:last-child { border-right: 0; }
-    .sol li::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .5s; }
-    .sol li:hover { background: var(--green); color: #fff; }
-    .sol li:hover::before { transform: scaleX(1); }
-    .sol li:hover p { color: rgba(255, 255, 255, .75); }
-    .sol .icon { font-size: 40px; color: var(--gold); stroke-width: 1.3; }
-    .sol small { font: 700 12px var(--sans); color: var(--gold); letter-spacing: .14em; }
-    .sol h3 { font: 700 1.1rem/1.3 var(--sans); }
-    .sol p { font-size: 14px; color: var(--muted); transition: color .4s; }
+    /* Sector ring (3D) */
+    .eco { background: var(--green); color: #fff; border-radius: 34px; margin: 0 16px; overflow: hidden; position: relative; }
+    .eco .lead { color: rgba(255, 255, 255, .7); }
+    .eco .mono { color: var(--gold-2) !important; }
+    .stage { position: relative; height: 560px; perspective: 1500px; cursor: grab; touch-action: pan-y; user-select: none; }
+    .stage.is-drag { cursor: grabbing; }
+    .spin { position: absolute; left: 50%; top: 50%; width: 300px; height: 400px; margin: -200px 0 0 -150px; transform-style: preserve-3d; }
+    .rcard { position: absolute; inset: 0; border-radius: 22px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(calc(var(--i) * 45deg)) translateZ(430px); background: #06261d; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .5); }
+    .rcard img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .rcard::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(4, 24, 18, .95)); }
+    .rcard div { position: absolute; z-index: 1; inset: auto 0 0; padding: 22px; }
+    .rcard .mono { color: var(--gold-2); }
+    .rcard h3 { font-size: 1.2rem; line-height: 1.25; margin-top: 8px; }
+    .eco__hint { text-align: center; color: rgba(255, 255, 255, .55); padding-bottom: 50px; }
 
-    /* Presence */
-    .presence { background: var(--deep); color: #fff; position: relative; overflow: hidden; }
-    .presence .head p { color: rgba(255, 255, 255, .7); }
-    .presence__map { position: relative; }
-    .presence__map img { width: 100%; }
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; justify-content: center; }
-    .chips li { padding: 9px 16px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 999px; font-size: 13px; color: rgba(255, 255, 255, .85); }
-    .chips li:first-child { background: var(--gold); border-color: var(--gold); color: var(--deep); font-weight: 700; }
+    /* Journey: stacking cards */
+    .stack { display: grid; gap: 0; }
+    .scard { position: sticky; top: calc(120px + var(--i) * 26px); min-height: 440px; border-radius: 30px; padding: clamp(28px, 4vw, 56px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 64px); margin-bottom: 40px; transform-origin: 50% 0; box-shadow: 0 -20px 50px -30px rgba(15, 26, 22, .35); }
+    .scard:nth-child(1) { background: #fff; border: 1px solid var(--line); }
+    .scard:nth-child(2) { background: #e9e3d6; }
+    .scard:nth-child(3) { background: var(--green); color: #fff; }
+    .scard__n { font: 700 clamp(5rem, 11vw, 9rem)/.85 var(--sans); letter-spacing: -.06em; color: var(--gold); opacity: .9; }
+    .scard h3 { font: 700 clamp(1.8rem, 3vw, 2.6rem)/1.05 var(--sans); letter-spacing: -.04em; margin-top: 18px; }
+    .scard p { color: inherit; opacity: .74; margin-top: 14px; max-width: 46ch; }
+    .scard ul { display: grid; gap: 12px; align-content: center; }
+    .scard li { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: 16px; background: rgba(15, 26, 22, .05); }
+    .scard:nth-child(3) li { background: rgba(255, 255, 255, .08); }
+    .scard li .icon { color: var(--gold); flex: none; }
+    .scard li strong { display: block; } .scard li small { display: block; opacity: .72; font-size: 13.5px; margin-top: 2px; }
 
-    /* Leadership */
-    .lead { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
-    .lead__photo { position: relative; }
-    .lead__photo img { width: 100%; aspect-ratio: 1; object-fit: cover; }
-    .lead__photo::before { content: ""; position: absolute; inset: 24px -24px -24px 24px; border: 1px solid var(--gold); z-index: -1; }
-    .lead blockquote { font: 600 clamp(1.3rem, 2.4vw, 2rem)/1.35 var(--sans); letter-spacing: -.01em; margin: 24px 0 28px; }
-    .lead cite { font-style: normal; font-weight: 700; display: block; }
-    .lead cite span { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
-    .faces { display: flex; align-items: center; gap: 18px; margin-top: 40px; padding-top: 30px; border-top: 1px solid #e3dbcb; flex-wrap: wrap; }
-    .faces__imgs { display: flex; }
-    .faces__imgs img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 3px solid var(--cream); margin-inline-start: -14px; }
-    .faces__imgs img:first-child { margin-inline-start: 0; }
-    .faces a { font-weight: 700; font-size: 14px; color: var(--green); border-bottom: 1px solid var(--gold); padding-bottom: 2px; }
+    /* Leadership stories */
+    .stories { position: relative; border-radius: 34px; overflow: hidden; background: #0c241c; color: #fff; min-height: 640px; display: grid; grid-template-rows: 1fr auto; isolation: isolate; }
+    .stories__bg { position: absolute; inset: 0; z-index: -1; background: radial-gradient(70% 90% at 80% 30%, rgba(217, 178, 106, .25), transparent 60%), url(../../assets/img/skyline.webp) center / cover; opacity: .9; }
+    .stories__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8, 26, 20, .96) 30%, rgba(8, 26, 20, .7)); }
+    .story { display: none; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; padding: clamp(32px, 5vw, 72px); }
+    .story.is-active { display: grid; animation: storyIn .8s cubic-bezier(.2,.7,.2,1); }
+    @keyframes storyIn { from { opacity: 0; transform: translateY(18px); } }
+    .story blockquote { font: 500 clamp(1.25rem, 2.2vw, 1.9rem)/1.4 var(--sans); letter-spacing: -.015em; }
+    .story blockquote::before { content: "“"; display: block; font-size: 4rem; line-height: .7; color: var(--gold-2); }
+    .story cite { display: block; font-style: normal; margin-top: 26px; font-weight: 700; }
+    .story cite .mono { display: block; color: rgba(255, 255, 255, .6); margin-top: 8px; font-weight: 500; }
+    .story figure { justify-self: center; width: min(360px, 100%); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255, 255, 255, .25); box-shadow: 0 0 0 16px rgba(255, 255, 255, .04), 0 0 0 32px rgba(255, 255, 255, .03); }
+    .story figure img { width: 100%; height: 100%; object-fit: cover; }
+    .stabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 0 clamp(16px, 3vw, 40px) clamp(16px, 3vw, 40px); }
+    .stabs button { text-align: left; padding: 14px 16px; border-radius: 16px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .3s, border-color .3s; position: relative; overflow: hidden; }
+    .stabs button .mono { color: rgba(255, 255, 255, .5); }
+    .stabs button strong { display: block; font-size: 14px; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .stabs button.is-active { background: rgba(255, 255, 255, .16); border-color: var(--gold-2); }
+    .stabs button.is-active::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; background: var(--gold-2); animation: fill 7s linear forwards; }
+    @keyframes fill { from { width: 0; } to { width: 100%; } }
+    .team-mini { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 16px; }
+    .tm { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 12px; display: flex; gap: 12px; align-items: center; }
+    .tm img { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; }
+    .tm strong { display: block; font-size: 13.5px; line-height: 1.25; } .tm span { font-size: 11px; color: var(--muted); }
 
-    /* Partners marquee */
-    .partners { background: #fff; padding: 64px 0; border-block: 1px solid #ece5d8; }
-    .partners p { text-align: center; margin-bottom: 36px; }
-    .marquee { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-    .marquee ul { display: flex; gap: 64px; width: max-content; animation: slide 50s linear infinite; }
-    .marquee:hover ul { animation-play-state: paused; }
-    .marquee li img { height: 56px; width: auto; }
-    @keyframes slide { to { transform: translateX(-50%); } }
+    /* Model */
+    .parties { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; position: relative; }
+    .party { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 30px; position: relative; }
+    .party .mono { color: var(--gold); }
+    .party h3 { font-size: 1.35rem; margin: 16px 0 8px; letter-spacing: -.02em; }
+    .party p { color: var(--muted); }
+    .party b { position: absolute; right: 24px; top: 22px; font: 700 3.4rem/1 var(--sans); color: var(--bg); letter-spacing: -.05em; }
+    .core-band { margin-top: 16px; border-radius: var(--r); background: var(--green); color: #fff; padding: 22px 30px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .core-band img { width: 54px; }
+    .core-band p { flex: 1; min-width: 240px; color: rgba(255, 255, 255, .8); }
+    .core-band strong { color: #fff; }
+
+    /* Logos */
+    .logos { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+    .logos li { background: #fff; border: 1px solid var(--line); border-radius: 16px; height: 96px; display: grid; place-items: center; padding: 16px; transition: transform .35s, box-shadow .35s; }
+    .logos li:hover { transform: translateY(-4px); box-shadow: 0 16px 30px -18px rgba(15, 26, 22, .35); }
+    .logos img { max-height: 52px; width: auto; object-fit: contain; }
+
+    /* FAQ */
+    .faq-wrap { display: grid; grid-template-columns: 1fr 1.5fr; gap: clamp(28px, 5vw, 80px); align-items: start; }
+    .faq-search { margin-top: 28px; display: flex; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 6px; }
+    .faq-search input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 10px 12px; background: none; }
+    .faq-search .icon { margin: 10px; color: var(--gold); width: 20px; height: 20px; }
+    .faq details { background: #fff; border: 1px solid var(--line); border-radius: 18px; margin-bottom: 10px; transition: box-shadow .3s; }
+    .faq details[open] { box-shadow: 0 14px 30px -20px rgba(15, 26, 22, .3); }
+    .faq summary { list-style: none; display: flex; justify-content: space-between; gap: 16px; padding: 20px 22px; font-weight: 600; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary i { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); display: grid; place-items: center; font-style: normal; transition: transform .3s, background .3s; }
+    .faq details[open] summary i { transform: rotate(45deg); background: var(--gold-2); }
+    .faq details p { padding: 0 22px 22px; color: var(--muted); }
+    .faq mark { background: rgba(217, 178, 106, .35); color: inherit; border-radius: 3px; }
+    .faq-empty { padding: 24px; border-radius: 18px; border: 1px dashed var(--line); color: var(--muted); }
 
     /* CTA */
-    .cta { position: relative; color: #fff; text-align: center; overflow: hidden; background: var(--green); }
-    .cta > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .28; }
-    .cta .wrap { position: relative; }
-    .cta h2 { margin: 22px auto 20px; max-width: 20ch; }
-    .cta p { color: rgba(255, 255, 255, .8); max-width: 52ch; margin: 0 auto 38px; }
-    .cta__actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta { border-radius: 34px; background: var(--green); color: #fff; padding: clamp(32px, 5vw, 72px); display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; position: relative; overflow: hidden; isolation: isolate; }
+    .cta::before { content: ""; position: absolute; right: -10%; top: -40%; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(closest-side, rgba(217, 178, 106, .35), transparent); z-index: -1; }
+    .cta .h2 .gold-i { background: linear-gradient(95deg, #e6c27f, #f8e3b4 40%, #c9a057); -webkit-background-clip: text; background-clip: text; }
+    .cta p { color: rgba(255, 255, 255, .75); margin-top: 16px; max-width: 46ch; }
+    .clist { display: grid; gap: 10px; align-content: center; }
+    .clist a, .clist div { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 22px; border-radius: 16px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .12); transition: background .3s; }
+    .clist a:hover { background: rgba(255, 255, 255, .14); }
+    .clist .mono { color: var(--gold-2); } .clist strong { font-size: 1.05rem; }
 
-    footer { background: var(--deep); color: rgba(255, 255, 255, .7); padding: 72px 0 100px; font-size: 14px; }
-    .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
-    .footer__grid img { width: 150px; margin-bottom: 18px; }
-    .footer__grid h4 { color: #fff; font: 700 12px var(--sans); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 16px; }
-    .footer__grid li { margin-bottom: 10px; }
-    .footer__grid a:hover { color: var(--gold-2); }
-    .footer__bottom { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, .1); font-size: 13px; }
+    footer { padding: 70px 0 110px; color: var(--muted); font-size: 14px; }
+    .fgrid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 32px; border-top: 1px solid var(--line); padding-top: 48px; }
+    .fgrid img { width: 130px; margin-bottom: 14px; }
+    .fgrid h4 { color: var(--ink); margin-bottom: 14px; }
+    .fgrid li + li { margin-top: 9px; } .fgrid a:hover { color: var(--ink); }
 
     @media (max-width: 1100px) {
-      .sol { grid-template-columns: repeat(2, 1fr); }
-      .sol li { border-bottom: 1px solid #e7e0d2; }
-      .sol li:last-child { grid-column: span 2; }
-      .mosaic { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 240px; }
+      .stabs { grid-template-columns: repeat(3, 1fr); }
+      .team-mini { grid-template-columns: repeat(3, 1fr); }
+      .logos { grid-template-columns: repeat(5, 1fr); }
     }
-    @media (max-width: 900px) {
+    @media (max-width: 960px) {
       .burger { display: block; }
-      .nav { position: fixed; inset: 0; z-index: 1; flex-direction: column; justify-content: center; gap: 28px; font-size: 18px; background: var(--deep); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
-      .menu-open .nav { opacity: 1; visibility: visible; }
-      .menu-open { overflow: hidden; }
-      .hero__stats { grid-template-columns: repeat(2, 1fr); }
-      .hero__stats div:nth-child(3) { padding-left: 0; border-left: 0; }
-      .hero__stats div:nth-child(n+3) { border-top: 1px solid rgba(255, 255, 255, .16); }
-      .statement__row, .lead { grid-template-columns: 1fr; }
-      .lead__photo { max-width: 420px; }
-      .footer__grid { grid-template-columns: 1fr 1fr; }
+      .nav { position: fixed; inset: 0; z-index: 2; flex-direction: column; justify-content: center; gap: 22px; font-size: 22px; background: #fff; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .menu-open .nav { opacity: 1; visibility: visible; } .menu-open { overflow: hidden; }
+      .util__hide { display: none; }
+      .hero__cards { grid-template-columns: minmax(0, 1fr); }
+      .hero__coin { width: 70vw; right: -14vw; top: 2%; opacity: .55; }
+      .adv, .faq-wrap, .cta, .story { grid-template-columns: 1fr; }
+      .adv__aside { position: static; }
+      .help, .parties { grid-template-columns: 1fr; }
+      .hcard { min-height: 0; }
+      .scard { grid-template-columns: 1fr; position: relative; top: 0; }
+      .story figure { width: 200px; order: -1; justify-self: start; }
+      .sec-head { grid-template-columns: 1fr; }
+      .stage { height: 500px; }
     }
-    @media (max-width: 560px) {
-      .hero__stats div, .hero__stats div + div { padding: 22px 10px 24px 0; }
-      .hero__stats div:nth-child(even) { padding-left: 16px; }
-      .mosaic { grid-template-columns: 1fr; grid-auto-rows: 220px; }
-      .tile--wide, .tile--tall { grid-column: auto; grid-row: auto; }
-      .sol { grid-template-columns: 1fr; }
-      .sol li { border-right: 0; }
-      .sol li:last-child { grid-column: auto; }
-      .lead__photo::before { inset: 14px -10px -14px 10px; }
-      .footer__grid { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      :root { --wrap: calc(100% - 28px); }
+      .stabs { grid-template-columns: repeat(2, 1fr); }
+      .team-mini { grid-template-columns: 1fr 1fr; }
+      .logos { grid-template-columns: repeat(3, 1fr); } .logos li { height: 76px; padding: 12px; }
+      .fgrid { grid-template-columns: 1fr 1fr; }
+      .row { grid-template-columns: 44px 1fr; } .row .icon { display: none; }
+      .eco { margin: 0 8px; }
+      .spin { width: 220px; height: 300px; margin: -150px 0 0 -110px; }
+      .rcard { transform: rotateY(calc(var(--i) * 45deg)) translateZ(310px); }
+      .stage { height: 420px; }
+      .util .wrap > span:first-child { display: none; }
     }
   </style>
 </head>
 <body>
+  <div class="util mono">
+    <div class="wrap">
+      <span>Alliance Investment Holding</span>
+      <div class="util__r"><span class="clock">Riyadh <b id="clock">--:--:--</b> AST</span><a class="util__hide" href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a><a href="../../ar/" lang="ar">عربي</a></div>
+    </div>
+  </div>
   <header class="header" data-header>
-    <div class="wrap header__in">
-      <a class="header__logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208"></a>
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211"></a>
       <nav class="nav" id="nav" aria-label="Main">
-        <a href="#sectors">Sectors</a>
-        <a href="#solutions">Solutions</a>
-        <a href="#presence">Presence</a>
-        <a href="#leadership">Leadership</a>
-        <a href="../../ar/" lang="ar">العربية</a>
-        <a class="btn" href="#contact">Contact</a>
+        <a href="#advantage">The Alliance Advantage</a>
+        <a href="#ecosystem">Where to invest</a>
+        <a href="#journey">Set Up &amp; Grow</a>
+        <a href="#leaders">Leadership</a>
+        <a class="btn" href="#contact" data-magnetic>Talk to Alliance <i>→</i></a>
       </nav>
       <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
   </header>
+  <div class="ticker mono" aria-label="Key indicators"><ul data-marquee id="ticker"></ul></div>
 
   <main>
     <section class="hero">
-      <div class="hero__bg"><img src="../../assets/img/hero-poster.webp" srcset="../../assets/img/hero-poster-sm.webp 900w, ../../assets/img/hero-poster.webp 1920w" sizes="100vw" alt="" width="1920" height="1080" fetchpriority="high"></div>
-      <div class="wrap hero__in">
-        <span class="label" data-reveal>Aligned with Saudi Vision 2030</span>
-        <h1 data-reveal style="--d:.1s">Building success <span>in the Saudi market</span></h1>
-        <p data-reveal style="--d:.2s">Alliance Investment is the strategic and trusted partner for foreign and local companies seeking sustainable expansion in the Kingdom.</p>
-        <div class="hero__actions" data-reveal style="--d:.3s">
-          <a class="btn" href="#solutions">Our Solutions →</a>
-          <a class="btn btn--line" href="#contact">Partner With Us</a>
+      <div class="wrap hero__box">
+        <div class="hero__bg"><img src="../../assets/img/hero-poster.webp" srcset="../../assets/img/hero-poster-sm.webp 900w, ../../assets/img/hero-poster.webp 1920w" sizes="100vw" alt="" width="1920" height="1080" fetchpriority="high"></div>
+        <div class="hero__coin" aria-hidden="true"></div>
+        <div class="hero__top">
+          <p class="mono" data-reveal style="color:var(--gold-2)">Saudi market entry &amp; investment partner</p>
+          <h1 data-split>Investor’s <span class="gold-i">Partner</span> in the Saudi&nbsp;Market</h1>
+          <p data-reveal style="--d:.3s">We help foreign and local companies enter, establish and grow in the Kingdom — with deep local expertise and an international network across 16 countries.</p>
         </div>
-        <div class="hero__stats" data-reveal style="--d:.35s">
-          <div><strong data-count="10" data-suffix="+">10+</strong><span>Years of presence in the Saudi market</span></div>
-          <div><strong data-count="16">16</strong><span>Countries in our international network</span></div>
-          <div><strong data-count="8">8</strong><span>Strategic sectors aligned with Vision 2030</span></div>
-          <div><strong data-count="41">41</strong><span>Government and private-sector partners</span></div>
+        <div class="hero__cards" data-reveal style="--d:.45s">
+          <form class="gcard" id="ask-form">
+            <div class="gcard__top"><span class="gcard__ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#arrow-right"/></svg></span><span class="mono">Get started</span></div>
+            <h3>Start your journey</h3>
+            <p>Ask anything, or pick where you are starting from.</p>
+            <label class="ask"><span class="sr-only">Your question</span><input id="ask" placeholder="e.g. Do I need a local partner?" autocomplete="off"><button type="submit" aria-label="Search answers"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#arrow-up-right"/></svg></button></label>
+          </form>
+          <a class="gcard" href="#advantage">
+            <div class="gcard__top"><span class="gcard__ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#award"/></svg></span><span class="mono">The advantage</span></div>
+            <h3>The Alliance Advantage</h3><p>Saudi leadership, global expertise and end-to-end delivery.</p>
+          </a>
+          <a class="gcard" href="#help">
+            <div class="gcard__top"><span class="gcard__ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#users"/></svg></span><span class="mono">Support</span></div>
+            <h3>How Alliance can help</h3><p>Get the guidance, partners and services you need to start and grow.</p>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="statement">
-      <div class="wrap statement__row">
-        <p data-reveal>A Saudi company with <b>over 10 years</b> of market presence, operating through an international network of consultants and partners — connecting <b>global capability</b> with <b>local opportunity</b>.</p>
-        <div class="statement__side" data-reveal style="--d:.12s">
-          <img src="../../assets/img/vision-2030.webp" alt="Saudi Vision 2030" width="480" height="321" loading="lazy">
-          <p>We provide deep expertise in corporate partnerships and investment development within the practical framework of Saudi Vision 2030.</p>
+    <section id="advantage">
+      <div class="wrap adv">
+        <div class="adv__aside">
+          <span class="mono" style="color:var(--gold)" data-reveal>The Alliance Advantage</span>
+          <h2 class="h2" style="margin-top:18px" data-split>Local insight. <span class="gold-i">Global</span> standards.</h2>
+          <p class="lead" style="margin-top:20px" data-reveal id="about-1"></p>
+          <div class="adv__stats" data-reveal id="adv-stats"></div>
         </div>
+        <ol class="rows" id="rows"></ol>
       </div>
     </section>
 
-    <section id="sectors">
+    <section id="help" style="padding-top:0">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><span class="label">Sectors of success</span><h2 class="h2">Where we <span>invest our expertise</span></h2></div>
-          <p data-reveal style="--d:.1s">Strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities.</p>
-        </div>
-        <div class="mosaic">
-          <article class="tile tile--wide tile--tall" data-reveal><img src="../../assets/img/sector-entertainment.webp" alt="" loading="lazy"><div><small>01</small><h3>Entertainment, Leisure &amp; Sports</h3></div></article>
-          <article class="tile" data-reveal style="--d:.05s"><img src="../../assets/img/sector-ict.webp" alt="" loading="lazy"><div><small>02</small><h3>ICT, Digital, Innovation &amp; Human Capital</h3></div></article>
-          <article class="tile" data-reveal style="--d:.1s"><img src="../../assets/img/sector-energy.webp" alt="" loading="lazy"><div><small>03</small><h3>Energy, Utilities &amp; Environment</h3></div></article>
-          <article class="tile" data-reveal style="--d:.05s"><img src="../../assets/img/sector-logistics.webp" alt="" loading="lazy"><div><small>04</small><h3>Logistics &amp; Supply Chain</h3></div></article>
-          <article class="tile" data-reveal style="--d:.1s"><img src="../../assets/img/sector-agriculture.webp" alt="" loading="lazy"><div><small>05</small><h3>Food &amp; Agriculture</h3></div></article>
-          <article class="tile" data-reveal><img src="../../assets/img/sector-healthcare.webp" alt="" loading="lazy"><div><small>06</small><h3>Healthcare, Life Sciences &amp; Pharma</h3></div></article>
-          <article class="tile" data-reveal style="--d:.05s"><img src="../../assets/img/sector-real-estate.webp" alt="" loading="lazy"><div><small>07</small><h3>Real Estate &amp; Infrastructure</h3></div></article>
-          <article class="tile tile--wide" data-reveal style="--d:.1s"><img src="../../assets/img/sector-finance.webp" alt="" loading="lazy"><div><small>08</small><h3>Financial Services &amp; Investments</h3></div></article>
+        <div class="sec-head"><div><span class="mono" data-reveal>Support</span><h2 class="h2" data-split>How Alliance <span class="gold-i">can help</span></h2></div><p class="lead" data-reveal id="mission"></p></div>
+        <div class="help">
+          <a class="hcard" href="#model" data-reveal><span class="mono">01 · Access</span><h3>One door to government &amp; investors</h3><p>Deep understanding of government and Public Investment Fund priorities, with strong networks across business councils.</p><span class="more"><i>↗</i>Operating model</span></a>
+          <a class="hcard" href="#journey" data-reveal style="--d:.08s"><span class="mono">02 · Tailored</span><h3>Support made for your project</h3><p>No pre-packaged solutions — every partner receives a business model tailored to their ambition and target market.</p><span class="more"><i>↗</i>Your journey</span></a>
+          <a class="hcard" href="#journey" data-reveal style="--d:.16s"><span class="mono">03 · Long term</span><h3>With you after setup</h3><p>Local representation, partnerships, operations and performance monitoring for sustainable growth.</p><span class="more"><i>↗</i>Post-establishment</span></a>
         </div>
       </div>
     </section>
 
-    <section class="solutions" id="solutions">
+    <section class="eco" id="ecosystem">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><span class="label">Services &amp; solutions</span><h2 class="h2">From strategy <span>to operations</span></h2></div>
-          <p data-reveal style="--d:.1s">A full-service partner — supporting you from initial strategy through market entry, local operations, business development and performance tracking.</p>
-        </div>
-        <ol class="sol" data-reveal>
-          <li><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#flag"/></svg><small>01</small><h3>Saudi Market Entry</h3><p>Comprehensive market analysis and competitor assessment.</p></li>
-          <li><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#clipboard"/></svg><small>02</small><h3>Feasibility Studies</h3><p>Feasibility studies and opportunity analysis.</p></li>
-          <li><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#network"/></svg><small>03</small><h3>Expansion Within the Kingdom</h3><p>Growth across Saudi Arabia through local partnerships.</p></li>
-          <li><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#coins"/></svg><small>04</small><h3>Financing &amp; Investment</h3><p>Connecting your business with institutional funding and investors.</p></li>
-          <li><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#columns"/></svg><small>05</small><h3>Public-Private Partnerships</h3><p>Structuring partnerships between the public and private sectors.</p></li>
-        </ol>
+        <div class="sec-head"><div><span class="mono" data-reveal>Where to invest</span><h2 class="h2" data-split>The Kingdom’s <span class="gold-i">investment</span> ecosystem</h2></div><p class="lead" data-reveal>Eight strategic sectors aligned with Vision 2030 — drag to explore.</p></div>
       </div>
+      <div class="stage" id="stage" data-reveal="fade"><div class="spin" id="spin"></div></div>
+      <p class="eco__hint mono">← Drag to rotate →</p>
     </section>
 
-    <section class="presence" id="presence">
+    <section id="journey">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><span class="label">Global network</span><h2 class="h2">Present in <span>16 countries</span></h2></div>
-          <p data-reveal style="--d:.1s">Consultants and partners across the Gulf, Europe, Asia, the Americas and Africa — all connected to our headquarters in Riyadh.</p>
-        </div>
-        <div class="presence__map" data-reveal><img src="../../assets/img/world-map.svg" alt="World map of the Alliance network connected to Riyadh" width="1000" height="383" loading="lazy"></div>
-        <ul class="chips" data-reveal>
-          <li>Saudi Arabia · HQ</li><li>UAE</li><li>Qatar</li><li>Bahrain</li><li>Türkiye</li><li>United Kingdom</li><li>France</li><li>Germany</li><li>Austria</li><li>Spain</li><li>United States</li><li>China</li><li>Japan</li><li>South Korea</li><li>India</li><li>South Africa</li>
-        </ul>
+        <div class="sec-head"><div><span class="mono" data-reveal>Set up &amp; grow</span><h2 class="h2" data-split>Your setup journey, <span class="gold-i">in three steps</span></h2></div><p class="lead" data-reveal>A typical business setup takes 4 to 6 weeks — our in-market experience helps minimise delays.</p></div>
+        <div class="stack" id="stack"></div>
       </div>
     </section>
 
-    <section id="leadership">
-      <div class="wrap lead">
-        <div class="lead__photo" data-reveal><img src="../../assets/img/team-turki-al-qahtani.webp" alt="Eng. Turki Al-Qahtani" width="400" height="400" loading="lazy"></div>
-        <div data-reveal style="--d:.1s">
-          <span class="label">Message from the CEO</span>
-          <blockquote>“We are proud of our heritage and excited about the future, focusing on sustainable growth, innovation, value creation and positive social impact. We are committed to achieving our strategy for Vision 2030 and expanding opportunities.”</blockquote>
-          <cite>Eng. Turki Al-Qahtani<span>Chief Executive Officer</span></cite>
-          <div class="faces">
-            <div class="faces__imgs">
-              <img src="../../assets/img/team-abdullah-almosa.webp" alt="" loading="lazy">
-              <img src="../../assets/img/team-metab-altawill.webp" alt="" loading="lazy">
-              <img src="../../assets/img/team-bassam-nehme.webp" alt="" loading="lazy">
-              <img src="../../assets/img/team-kazuteru-arimura.webp" alt="" loading="lazy">
-              <img src="../../assets/img/team-dragana-linden.webp" alt="" loading="lazy">
-            </div>
-            <a href="../../about-us/#team">Meet the board &amp; advisors →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="partners">
-      <p class="label" style="display:flex;justify-content:center">Trusted by leading institutions</p>
-      <div class="marquee" aria-label="Partners">
-        <ul>
-          <li><img src="../../assets/img/partner-pif.webp" alt="Public Investment Fund" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-neom.webp" alt="NEOM" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-investment.webp" alt="Ministry of Investment" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-red-sea.webp" alt="The Red Sea Development Company" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-qiddiya.webp" alt="Qiddiya" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-industry.webp" alt="Ministry of Industry and Mineral Resources" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-sport.webp" alt="Ministry of Sport" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-energy.webp" alt="Ministry of Energy" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-amcham-saudi.webp" alt="AmCham Saudi Arabia" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ecc-ksa.webp" alt="European Chamber of Commerce in Saudi Arabia" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-indra.webp" alt="Indra Group" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-typsa.webp" alt="Grupo TYPSA" loading="lazy"></li>
-        </ul>
-      </div>
-    </div>
-
-    <section class="cta" id="contact">
-      <img src="../../assets/img/skyline.webp" alt="" loading="lazy">
+    <section id="leaders" style="padding-top:0">
       <div class="wrap">
-        <span class="label" data-reveal>Contact us</span>
-        <h2 class="h2" data-reveal style="--d:.08s">Let’s build your next step <span>in the Kingdom</span></h2>
-        <p data-reveal style="--d:.14s">Tell us about your organisation and objectives — our team in Riyadh will get back to you.</p>
-        <div class="cta__actions" data-reveal style="--d:.2s">
-          <a class="btn" href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a>
-          <a class="btn btn--line" href="tel:+966539503000">+966 53 950 3000</a>
+        <div class="sec-head"><div><span class="mono" data-reveal>Leadership</span><h2 class="h2" data-split>The people behind <span class="gold-i">the alliance</span></h2></div></div>
+        <div class="stories" data-reveal>
+          <div class="stories__bg"></div>
+          <div id="story-list"></div>
+          <div class="stabs" id="stabs"></div>
+        </div>
+        <div class="team-mini" id="team-mini"></div>
+      </div>
+    </section>
+
+    <section id="model" style="padding-top:0">
+      <div class="wrap">
+        <div class="sec-head"><div><span class="mono" data-reveal>Strategic operating model</span><h2 class="h2" data-split>Built on <span class="gold-i">three</span> integrated parties</h2></div></div>
+        <div class="parties" id="parties"></div>
+        <div class="core-band" data-reveal><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"><p><strong>Alliance Investment at the centre</strong> — bringing together the institutional financier, the local partner and the target company under one coordinated model.</p><a class="btn btn--light" href="../../business-model/">Business model <i>→</i></a></div>
+      </div>
+    </section>
+
+    <section id="partners" style="padding-top:0">
+      <div class="wrap">
+        <div class="sec-head"><div><span class="mono" data-reveal>Trusted network</span><h2 class="h2" data-split>41 partners <span class="gold-i">across sectors</span></h2></div></div>
+        <ul class="logos" id="logos" data-reveal></ul>
+      </div>
+    </section>
+
+    <section id="faq" style="padding-top:0">
+      <div class="wrap faq-wrap">
+        <div>
+          <span class="mono" style="color:var(--gold)" data-reveal>Answers</span>
+          <h2 class="h2" style="margin-top:18px" data-split>Answers to <span class="gold-i">your questions</span></h2>
+          <label class="faq-search" data-reveal><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#search-chart"/></svg><span class="sr-only">Search the questions</span><input id="faq-q" type="search" placeholder="Search: licence, partner, funding…"></label>
+        </div>
+        <div class="faq" id="faq-list" data-reveal></div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding-top:0">
+      <div class="wrap cta" data-reveal>
+        <div><span class="mono" style="color:var(--gold-2)">Make the move</span><h2 class="h2" style="margin-top:18px">Your next step in the Kingdom <span class="gold-i">starts here</span></h2><p>Tell us about your organization and objectives — our team in Riyadh will get back to you.</p></div>
+        <div class="clist">
+          <a href="mailto:Ksa@alliance.sa"><span><span class="mono">Email</span><br><strong>Ksa@alliance.sa</strong></span><span>↗</span></a>
+          <a href="tel:+966539503000"><span><span class="mono">Phone</span><br><strong>+966 53 950 3000</strong></span><span>↗</span></a>
+          <a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener"><span><span class="mono">LinkedIn</span><br><strong>Alliance Investment</strong></span><span>↗</span></a>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap">
-      <div class="footer__grid">
-        <div><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy"><p>Your strategic partner for success in the Saudi market.</p></div>
-        <div><h4>Company</h4><ul><li><a href="../../about-us/">About Us</a></li><li><a href="../../about-us/#team">Our Team</a></li><li><a href="../../business-model/">Business Model</a></li></ul></div>
-        <div><h4>Explore</h4><ul><li><a href="#sectors">Sectors</a></li><li><a href="#solutions">Solutions</a></li><li><a href="#presence">Global Network</a></li></ul></div>
-        <div><h4>Contact</h4><ul><li><a href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a></li><li><a href="tel:+966539503000">+966 53 950 3000</a></li><li>Riyadh, Saudi Arabia</li></ul></div>
-      </div>
-      <div class="footer__bottom">© <span data-year>2026</span> Alliance Investment · <a href="../../privacy-policy/">Privacy Policy</a></div>
+    <div class="wrap fgrid">
+      <div><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211" loading="lazy"><p>Your strategic partner for success in the Saudi market.</p><p style="margin-top:14px">© <span data-year>2026</span> Alliance Investment</p></div>
+      <div><h4>Invest</h4><ul><li><a href="#advantage">The Alliance Advantage</a></li><li><a href="#ecosystem">Sectors</a></li><li><a href="#journey">Set up &amp; grow</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#leaders">Leadership</a></li><li><a href="#model">Operating model</a></li><li><a href="../../privacy-policy/">Privacy Policy</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a></li><li><a href="tel:+966539503000">+966 53 950 3000</a></li><li>Riyadh, Saudi Arabia</li></ul></div>
     </div>
   </footer>
+
   <script>
-    // Repeat the partner logos so the marquee loops without a gap
-    var track = document.querySelector('.marquee ul');
-    track.innerHTML += track.innerHTML.replace(/alt="[^"]*"/g, 'alt="" aria-hidden="true"');
+    (function () {
+      var A = ALLIANCE, $ = A$;
+      $.fill('#ticker', [['Alliance', 'Live indicators'], ['Years in KSA', '10+'], ['Network', '16 countries'], ['Strategic sectors', '8'], ['Partners', '41'], ['Typical setup', '4–6 weeks'], ['Business councils', '5'], ['Framework', 'Vision 2030'], ['Headquarters', 'Riyadh']]
+        .map(function (t, i) { return '<li>' + (i ? '<i></i>' : '') + t[0] + ' <b>' + t[1] + '</b></li>'; }).join(''));
+      $.fill('#about-1', A.about[0]);
+      $.fill('#mission', A.mission);
+      $.fill('#adv-stats', A.stats.map(function (s) { return '<div><strong data-count="' + s.n + '" data-suffix="' + s.s + '">' + s.n + s.s + '</strong><span>' + s.label + '</span></div>'; }).join(''));
+      $.fill('#rows', A.why.map(function (w, i) {
+        return '<li data-reveal style="--d:' + (i * 0.05) + 's"><div class="row"><span class="mono">' + $.pad(i + 1) + '</span><div><h3>' + w.t + '</h3><p>' + w.d + '</p></div>' + $.icon(w.icon) + '</div></li>';
+      }).join(''));
+      $.fill('#spin', A.sectors.map(function (s, i) {
+        return '<article class="rcard" style="--i:' + i + '"><img src="' + $.img(s.img) + '.webp" alt="" loading="lazy" draggable="false"><div><span class="mono">' + $.pad(i + 1) + ' · Sector</span><h3>' + $.esc(s.t) + '</h3></div></article>';
+      }).join(''));
+      var groups = [[A.entry[1], A.solutions[1], A.entry[0]], [A.entry[2], A.solutions[0], A.solutions[3]], [A.entry[3], A.entry[4], A.solutions[2]]];
+      $.fill('#stack', A.phases.map(function (p, i) {
+        return '<article class="scard" style="--i:' + i + '"><div><span class="scard__n">' + $.pad(i + 1) + '</span><span class="mono" style="display:block;margin-top:18px;opacity:.7">Phase ' + ['one', 'two', 'three'][i] + '</span><h3>' + p.t + '</h3><p>' + p.d + '</p></div><ul>' +
+          groups[i].map(function (g) { return '<li>' + $.icon(g.icon) + '<span><strong>' + $.esc(g.t) + '</strong><small>' + g.d + '</small></span></li>'; }).join('') + '</ul></article>';
+      }).join(''));
+      var people = [{ name: A.ceo.name, img: A.ceo.img, role: 'Chief Executive Officer', text: A.ceo.quote }].concat(A.team.slice(0, 5).map(function (p) {
+        return { name: p.name, img: p.img, role: 'Board member', text: p.focus + '.' };
+      }));
+      $.fill('#story-list', people.map(function (p, i) {
+        return '<div class="story' + (i ? '' : ' is-active') + '"><div><blockquote>' + p.text + '</blockquote><cite>' + p.name + '<span class="mono">' + p.role + '</span></cite></div><figure><img src="' + $.img(p.img) + '" alt="' + p.name + '" loading="lazy"></figure></div>';
+      }).join(''));
+      $.fill('#stabs', people.map(function (p, i) {
+        return '<button type="button"' + (i ? '' : ' class="is-active"') + '><span class="mono">' + $.pad(i + 1) + '</span><strong>' + p.name.replace('Eng. ', '') + '</strong></button>';
+      }).join(''));
+      $.fill('#team-mini', A.team.slice(5).map(function (p) { return '<div class="tm" data-reveal><img src="' + $.img(p.img) + '" alt="" loading="lazy"><div><strong>' + p.name + '</strong><span>Advisor</span></div></div>'; }).join(''));
+      $.fill('#parties', A.parties.map(function (p, i) {
+        return '<article class="party" data-reveal style="--d:' + (i * 0.08) + 's"><b>' + $.pad(i + 1) + '</b><span class="mono">' + p.tag + '</span><h3>' + p.t + '</h3><p>' + p.d + '</p></article>';
+      }).join(''));
+      $.fill('#logos', A.partners.map(function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; }).join('') + '<li class="mono" style="color:var(--gold)">+ more</li>');
+      $.fill('#faq-list', A.faq.map(function (f, i) { return '<details' + (i ? '' : ' open') + '><summary><span>' + f[0] + '</span><i>+</i></summary><p>' + f[1] + '</p></details>'; }).join('') + '<p class="faq-empty" hidden>No matching answer — <a href="#contact"><u>ask our team directly</u></a>.</p>');
+
+      // Riyadh clock
+      var clock = document.getElementById('clock');
+      var fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Riyadh', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+      (function t() { clock.textContent = fmt.format(new Date()); setTimeout(t, 1000); })();
+
+      // Leadership stories rotate
+      var stories = document.querySelectorAll('.story'), tabs = document.querySelectorAll('#stabs button'), cur = 0, timer;
+      function show(n) {
+        cur = (n + stories.length) % stories.length;
+        stories.forEach(function (s, i) { s.classList.toggle('is-active', i === cur); });
+        tabs.forEach(function (b, i) { b.classList.remove('is-active'); void b.offsetWidth; b.classList.toggle('is-active', i === cur); });
+        clearTimeout(timer); timer = setTimeout(function () { show(cur + 1); }, 7000);
+      }
+      tabs.forEach(function (b, i) { b.addEventListener('click', function () { show(i); }); });
+      show(0);
+
+      // FAQ search (also fed by the hero "Start your journey" box)
+      var q = document.getElementById('faq-q'), items = document.querySelectorAll('#faq-list details'), empty = document.querySelector('.faq-empty');
+      var plain = Array.prototype.map.call(items, function (d) { return { s: d.querySelector('summary span').textContent, p: d.querySelector('p').textContent }; });
+      function mark(text, words) { var out = $.esc(text); words.forEach(function (w) { out = out.replace(new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>'); }); return out; }
+      function search() {
+        var words = q.value.toLowerCase().split(/\s+/).filter(function (w) { return w.length > 2 && ['the', 'and', 'for', 'can', 'how', 'what', 'does', 'need'].indexOf(w) < 0; });
+        var shown = 0;
+        items.forEach(function (d, i) {
+          var hay = (plain[i].s + ' ' + plain[i].p).toLowerCase(), hit = !words.length || words.some(function (w) { return hay.indexOf(w) > -1; });
+          d.hidden = !hit; if (hit) shown++;
+          d.querySelector('summary span').innerHTML = mark(plain[i].s, words);
+          d.querySelector('p').innerHTML = mark(plain[i].p, words);
+          if (words.length && hit && shown === 1) d.open = true;
+        });
+        empty.hidden = shown > 0;
+      }
+      q.addEventListener('input', search);
+      document.getElementById('ask-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        q.value = document.getElementById('ask').value; search();
+        var faq = document.getElementById('faq');
+        if (window.Models && Models.lenis) Models.lenis.scrollTo(faq, { offset: -80 }); else faq.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // 3D sector ring: auto-rotates, drag to spin, front card is brightest
+      var stage = document.getElementById('stage'), spin = document.getElementById('spin'), cards = spin.children;
+      var angle = 0, vel = 0.06, drag = false, lastX = 0, R = 430;
+      function sizeRing() { R = innerWidth < 600 ? 310 : 430; spin.style.transform = 'translateZ(' + -R + 'px) rotateY(' + angle + 'deg)'; }
+      stage.addEventListener('pointerdown', function (e) { drag = true; lastX = e.clientX; stage.classList.add('is-drag'); stage.setPointerCapture(e.pointerId); });
+      stage.addEventListener('pointermove', function (e) { if (!drag) return; vel = (e.clientX - lastX) * 0.18; lastX = e.clientX; });
+      stage.addEventListener('pointerup', function () { drag = false; stage.classList.remove('is-drag'); });
+      var ringOn = false; new IntersectionObserver(function (en) { ringOn = en[0].isIntersecting; }).observe(stage);
+      (function loop() {
+        requestAnimationFrame(loop);
+        if (!ringOn) return;
+        angle += vel; if (!drag) vel += ((window.Models && Models.calm ? 0 : 0.06) - vel) * 0.03;
+        spin.style.transform = 'translateZ(' + -R + 'px) rotateY(' + angle + 'deg)';
+        for (var i = 0; i < cards.length; i++) {
+          var a = ((i * 45 + angle) % 360 + 360) % 360, c = Math.cos(a * Math.PI / 180);
+          cards[i].style.filter = 'brightness(' + (0.45 + 0.55 * Math.max(0, c)).toFixed(2) + ')';
+        }
+      })();
+      addEventListener('resize', sizeRing); sizeRing();
+
+      // Stacking journey cards shrink a little as the next one slides over them
+      var stack = Array.prototype.slice.call(document.querySelectorAll('.scard'));
+      function stackFx() {
+        if (innerWidth < 960) { stack.forEach(function (c) { c.style.transform = ''; }); return; }
+        stack.forEach(function (c, i) {
+          var next = stack[i + 1]; if (!next) return;
+          var top = parseFloat(getComputedStyle(c).top), d = next.getBoundingClientRect().top - top, k = Math.min(1, Math.max(0, 1 - d / c.offsetHeight));
+          c.style.transform = 'scale(' + (1 - k * 0.06).toFixed(4) + ')'; c.style.filter = 'brightness(' + (1 - k * 0.12).toFixed(3) + ')';
+        });
+      }
+      addEventListener('scroll', function () { requestAnimationFrame(stackFx); }, { passive: true }); stackFx();
+    })();
+  </script>
+
+  <script type="module">
+    // 3D gold coin with the Alliance emblem, lit by a studio environment
+    import * as THREE from 'three';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+    const host = document.querySelector('.hero__coin');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const emblem = new Image();
+    emblem.src = '../../assets/img/emblem.webp';
+    emblem.decode().then(build).catch(() => {});
+
+    function faceTextures() {
+      const S = 1024, c = document.createElement('canvas'); c.width = c.height = S; const x = c.getContext('2d');
+      const g = x.createRadialGradient(S * .42, S * .38, S * .05, S / 2, S / 2, S * .52);
+      g.addColorStop(0, '#f6dc9c'); g.addColorStop(.55, '#d4a855'); g.addColorStop(1, '#9c7130');
+      x.fillStyle = g; x.fillRect(0, 0, S, S);
+      x.strokeStyle = 'rgba(90, 60, 20, .55)'; x.lineWidth = 6;
+      [0.47, 0.43].forEach((r) => { x.beginPath(); x.arc(S / 2, S / 2, S * r, 0, Math.PI * 2); x.stroke(); });
+      for (let i = 0; i < 120; i++) { const a = i / 120 * Math.PI * 2; x.beginPath(); x.moveTo(S / 2 + Math.cos(a) * S * .435, S / 2 + Math.sin(a) * S * .435); x.lineTo(S / 2 + Math.cos(a) * S * .465, S / 2 + Math.sin(a) * S * .465); x.lineWidth = 3; x.stroke(); }
+      const e = S * .62; x.globalCompositeOperation = 'multiply'; x.drawImage(emblem, (S - e) / 2, (S - e) / 2, e, e); x.globalCompositeOperation = 'source-over';
+      // relief map: emblem + rings in white on black
+      const b = document.createElement('canvas'); b.width = b.height = S; const y = b.getContext('2d');
+      y.fillStyle = '#000'; y.fillRect(0, 0, S, S);
+      const m = document.createElement('canvas'); m.width = m.height = S; const z = m.getContext('2d');
+      z.drawImage(emblem, (S - e) / 2, (S - e) / 2, e, e); z.globalCompositeOperation = 'source-in'; z.fillStyle = '#fff'; z.fillRect(0, 0, S, S);
+      y.filter = 'blur(2px)'; y.drawImage(m, 0, 0); y.filter = 'none';
+      y.strokeStyle = '#fff'; y.lineWidth = 8; [0.47, 0.43].forEach((r) => { y.beginPath(); y.arc(S / 2, S / 2, S * r, 0, Math.PI * 2); y.stroke(); });
+      const map = new THREE.CanvasTexture(c); map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 8;
+      const bump = new THREE.CanvasTexture(b);
+      [map, bump].forEach((t) => { t.center.set(0.5, 0.5); t.rotation = Math.PI / 2; });
+      return { map, bump };
+    }
+    function edgeTexture() {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 8; const x = c.getContext('2d');
+      for (let i = 0; i < 512; i += 4) { x.fillStyle = i % 8 ? '#000' : '#fff'; x.fillRect(i, 0, 4, 8); }
+      const t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.repeat.x = 6; return t;
+    }
+
+    function build() {
+      let renderer;
+      try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { return; }
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.1;
+      host.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+      const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50); camera.position.set(0, 0, 6.2);
+
+      const { map, bump } = faceTextures();
+      const face = new THREE.MeshStandardMaterial({ map, bumpMap: bump, bumpScale: 6, metalness: 1, roughness: 0.3 });
+      const side = new THREE.MeshStandardMaterial({ color: 0xd7ad5f, metalness: 1, roughness: 0.22, bumpMap: edgeTexture(), bumpScale: 3 });
+      const coin = new THREE.Mesh(new THREE.CylinderGeometry(1.25, 1.25, 0.16, 160, 1), [side, face, face]);
+      coin.rotation.x = Math.PI / 2;
+      const pivot = new THREE.Group(); pivot.add(coin); scene.add(pivot);
+      const key = new THREE.DirectionalLight(0xfff1d6, 2.4); key.position.set(3, 4, 5); scene.add(key);
+      const rim = new THREE.DirectionalLight(0x9fe6c9, 1.2); rim.position.set(-4, -2, -3); scene.add(rim);
+
+      // a few gold motes orbiting the coin
+      const N = 160, mp = new Float32Array(N * 3), seeds = [];
+      for (let i = 0; i < N; i++) seeds.push([Math.random() * Math.PI * 2, 1.6 + Math.random() * 1.1, (Math.random() - .5) * 1.6, 0.2 + Math.random() * 0.6]);
+      const motes = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(mp, 3)), new THREE.PointsMaterial({ color: 0xf3d79a, size: 0.035, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending }));
+      scene.add(motes);
+
+      function resize() { const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+      resize(); addEventListener('resize', resize);
+      let mx = 0, my = 0; addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
+      let on = true; new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(host);
+      const start = performance.now();
+      (function tick(now) {
+        requestAnimationFrame(tick);
+        if (!on) return;
+        const t = calm ? 0 : (now - start) / 1000;
+        const intro = Math.min(1, t / 2.2), ease = 1 - Math.pow(1 - intro, 3);
+        pivot.rotation.y = (1 - ease) * Math.PI * 3 + Math.sin(t * 0.5) * 0.45 + mx * 0.7 + scrollY * 0.002;
+        pivot.rotation.x = Math.sin(t * 0.37) * 0.12 - my * 0.5;
+        pivot.position.y = Math.sin(t * 0.8) * 0.08;
+        pivot.scale.setScalar(0.6 + ease * 0.4);
+        for (let i = 0; i < N; i++) { const s = seeds[i], a = s[0] + t * s[3] * 0.4; mp[i * 3] = Math.cos(a) * s[1]; mp[i * 3 + 1] = s[2] + Math.sin(t * s[3] + i) * 0.08; mp[i * 3 + 2] = Math.sin(a) * s[1] * 0.5; }
+        motes.geometry.attributes.position.needsUpdate = true;
+        renderer.render(scene, camera);
+      })(start);
+    }
   </script>
 </body>
 </html>

@@ -5,105 +5,152 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>نماذج التصميم | تحالف للاستثمار</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#0b3b2e">
+  <meta name="theme-color" content="#06261d">
   <link rel="icon" href="../assets/img/favicon-32.png" sizes="32x32">
   <link rel="stylesheet" href="models.css">
   <style>
     @font-face { font-family: Cairo; src: url(../assets/fonts/cairo-arabic.woff2) format('woff2'); font-weight: 200 1000; font-display: swap; unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0898-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC; }
-    :root { --green: #0b3b2e; --deep: #06261d; --gold: #c29b5e; --cream: #fbf7f0; --ink: #14201b; --muted: #5f6b66; --line: #e6dece; }
-    body { background: var(--cream); color: var(--ink); font: 400 16px/1.7 Cairo, Montserrat, system-ui, sans-serif; }
-    .wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
-    header { background: var(--deep); color: #fff; padding: 40px 0 120px; }
-    header img { width: 150px; }
-    header h1 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); line-height: 1.25; margin: 48px 0 14px; }
-    header p { color: rgba(255, 255, 255, .78); max-width: 60ch; font-size: 1.08rem; }
-    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: -80px; padding-bottom: 110px; }
-    .card { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; transition: transform .35s, box-shadow .35s; }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -26px rgba(11, 59, 46, .4); }
-    .shot { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #e9e3d6; direction: ltr; }
-    .shot iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; }
-    .card__body { padding: 24px 26px 28px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-    .card__top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .num { font: 700 13px Montserrat, sans-serif; background: var(--green); color: #fff; border-radius: 999px; padding: 4px 12px; }
-    .num--now { background: var(--gold); color: var(--deep); }
-    .card h2 { font-size: 1.45rem; line-height: 1.3; }
-    .card p { color: var(--muted); }
-    .like { font-size: 14px; color: var(--ink); }
-    .like b { color: var(--green); }
-    .feats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-    .feats li { font-size: 13px; padding: 4px 12px; border-radius: 999px; background: var(--cream); border: 1px solid var(--line); }
-    .open { margin-top: auto; padding-top: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .open a { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 10px; background: var(--green); color: #fff; font-weight: 700; font-size: 15px; }
+    :root { --green: #0b3b2e; --deep: #06261d; --gold: #c29b5e; --gold-2: #e6c98f; --cream: #f8f4ec; --ink: #13201b; --muted: #5f6b66; --line: #e5ddcc; }
+    body { background: var(--cream); color: var(--ink); font: 400 16px/1.75 Cairo, Montserrat, system-ui, sans-serif; }
+    .wrap { width: min(1240px, 100% - 32px); margin-inline: auto; }
+    header { background: radial-gradient(90% 120% at 80% 0%, #12503f 0%, var(--deep) 60%); color: #fff; padding: 36px 0 150px; position: relative; overflow: hidden; }
+    header::after { content: ""; position: absolute; left: -120px; bottom: -160px; width: 420px; height: 420px; background: url(../assets/img/emblem.webp) center / contain no-repeat; opacity: .07; }
+    header img.logo { width: 150px; }
+    header h1 { font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.25; margin: 50px 0 16px; font-weight: 800; }
+    header h1 span { color: var(--gold-2); }
+    header p { color: rgba(255, 255, 255, .8); max-width: 66ch; font-size: 1.08rem; }
+    .legend { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+    .legend span { padding: 6px 14px; border-radius: 999px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .18); font-size: 14px; }
+    main { margin-top: -96px; position: relative; padding-bottom: 80px; }
+    .group { margin-top: 56px; }
+    .group:first-child { margin-top: 0; }
+    .group__head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+    .group__head h2 { font-size: 1.5rem; font-weight: 800; }
+    .group:first-child .group__head h2 { color: #fff; }
+    .group:first-child .group__head p { color: rgba(255, 255, 255, .75); }
+    .group__head p { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid--one { grid-template-columns: 1fr; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 50px -36px rgba(11, 59, 46, .45); transition: transform .4s cubic-bezier(.2,.7,.2,1), box-shadow .4s; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 34px 60px -30px rgba(11, 59, 46, .5); }
+    .shot { display: block; position: relative; aspect-ratio: 960 / 548; overflow: hidden; background: #e9e3d6; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+    .card:hover .shot img { transform: scale(1.04); }
+    .shot .badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; border-radius: 999px; background: rgba(6, 38, 29, .85); color: #fff; font-weight: 700; font-size: 13px; backdrop-filter: blur(6px); }
+    .shot .badge--gold { background: var(--gold); color: var(--deep); }
+    .body { padding: 20px 22px 24px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .body h3 { font-size: 1.35rem; font-weight: 800; line-height: 1.3; }
+    .body h3 small { display: block; font: 600 12px Montserrat, sans-serif; letter-spacing: .12em; color: var(--gold); direction: ltr; text-align: right; }
+    .body p { color: var(--muted); font-size: 15px; }
+    .like { font-size: 14px; } .like a { color: var(--green); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .feats { display: flex; flex-wrap: wrap; gap: 6px; }
+    .feats li { font-size: 12.5px; padding: 3px 10px; border-radius: 999px; background: var(--cream); border: 1px solid var(--line); }
+    .feats li.wow { background: #fbf1dc; border-color: #ead3a3; color: #7a5a1f; font-weight: 700; }
+    .open { margin-top: auto; padding-top: 10px; }
+    .open a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px; background: var(--green); color: #fff; font-weight: 700; font-size: 15px; transition: background .3s; }
     .open a:hover { background: var(--deep); }
-    footer { text-align: center; color: var(--muted); font-size: 14px; padding: 0 0 60px; }
-    @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+    .current { display: grid; grid-template-columns: 1.1fr 1fr; }
+    .current .shot { aspect-ratio: auto; min-height: 100%; }
+    .note { margin-top: 56px; padding: 22px 26px; border-radius: 16px; background: #fff; border: 1px dashed var(--line); color: var(--muted); font-size: 15px; }
+    .note b { color: var(--ink); }
+    @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } .current { grid-template-columns: 1fr; } .current .shot { aspect-ratio: 960 / 548; } }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap">
-      <img src="../assets/img/logo-light.webp" alt="تحالف للاستثمار القابضة" width="480" height="208">
-      <h1>نماذج تصميم الموقع</h1>
-      <p>أربعة اتجاهات مختلفة للصفحة الرئيسية بنفس المحتوى والبيانات. كل نموذج مستوحى من أسلوب مواقع شركات استثمار عالمية كبرى. اختاروا النموذج المناسب، وبعدها يتم تطبيقه على كل صفحات الموقع وباللغات الست.</p>
+      <img class="logo" src="../assets/img/logo-light.webp" alt="تحالف للاستثمار القابضة" width="480" height="208">
+      <h1>ستة تصميمات جديدة <span>لموقع الشركة</span></h1>
+      <p>درسنا مواقع أفضل الجهات التي تعمل في نفس مجال الشركة، وهو مساعدة الشركات على دخول السوق والاستثمار فيه. أول ثلاثة تصميمات مستوحاة من أفضل ثلاثة مواقع في هذا المجال، والثلاثة الأخرى تصميمات أصلية مبتكرة تركّز على المؤثرات ثلاثية الأبعاد والحركة. كل التصميمات فيها محتوى الشركة كاملًا.</p>
+      <div class="legend"><span>6 تصميمات + الموقع الحالي</span><span>مؤثرات 3D حقيقية</span><span>يعمل على الكمبيوتر والجوال</span><span>نفس المحتوى والبيانات</span></div>
     </div>
   </header>
 
-  <main class="wrap grid">
-    <article class="card">
-      <div class="shot"><iframe src="../" title="معاينة الموقع الحالي" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
-      <div class="card__body">
-        <div class="card__top"><span class="num num--now">الحالي</span><h2>الكرة الأرضية التفاعلية</h2></div>
-        <p>شاشة افتتاحية بشعار الشركة، وكرة أرضية ثلاثية الأبعاد تدور مع الماوس وتُظهر الدول الـ16 متصلة بالرياض.</p>
-        <ul class="feats"><li>كرة أرضية 3D</li><li>أخضر وذهبي</li><li>6 لغات جاهزة</li></ul>
-        <div class="open"><a href="../">افتح الموقع الحالي ←</a></div>
+  <main class="wrap">
+    <section class="group">
+      <div class="group__head"><h2>مستوحاة من أفضل 3 مواقع في المجال</h2><p>نفس أسلوب وتجربة هذه المواقع، بهوية تحالف وألوانها.</p></div>
+      <div class="grid">
+        <article class="card">
+          <a class="shot" href="1/"><img src="img/m1.jpg" alt="معاينة النموذج 1" loading="lazy" width="960" height="548"><span class="badge">نموذج 1</span></a>
+          <div class="body">
+            <h3><small>GATEWAY</small>البوابة</h3>
+            <p>أخضر داكن وألواح زجاجية، وخريطة عالم ثلاثية الأبعاد تخرج منها خطوط ضوء من الرياض إلى الدول الـ15، ورسائل تتبدل في الواجهة، وخانة بحث «أبحث عن…» توجّهك للقسم المطلوب.</p>
+            <p class="like">مستوحى من: <a href="https://investsaudi.sa/en" target="_blank" rel="noopener">Invest Saudi</a> (بوابة الاستثمار في السعودية)</p>
+            <ul class="feats"><li class="wow">خريطة 3D حيّة</li><li>بطاقات تتمدد</li><li>معرض قطاعات بالسحب</li></ul>
+            <div class="open"><a href="1/">افتح النموذج ←</a></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="shot" href="2/"><img src="img/m2.jpg" alt="معاينة النموذج 2" loading="lazy" width="960" height="548"><span class="badge">نموذج 2</span></a>
+          <div class="body">
+            <h3><small>INVESTOR HUB</small>مركز المستثمر</h3>
+            <p>تصميم فاتح وأنيق مع شريط مؤشرات متحرك وساعة الرياض الحية، وعملة ذهبية ثلاثية الأبعاد تحمل شعار الشركة، وحلقة قطاعات تدور بالسحب، وبطاقات رحلة التأسيس تتراكب فوق بعضها.</p>
+            <p class="like">مستوحى من: <a href="https://www.investwithabudhabi.com/en" target="_blank" rel="noopener">ADIO</a> (مكتب أبوظبي للاستثمار)</p>
+            <ul class="feats"><li class="wow">عملة ذهبية 3D</li><li>حلقة قطاعات 3D</li><li>بحث في الأسئلة</li></ul>
+            <div class="open"><a href="2/">افتح النموذج ←</a></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="shot" href="3/"><img src="img/m3.jpg" alt="معاينة النموذج 3" loading="lazy" width="960" height="548"><span class="badge">نموذج 3</span></a>
+          <div class="body">
+            <h3><small>EXPANSION</small>التوسّع</h3>
+            <p>تصميم أبيض بأسلوب الشركات التقنية، مع بطاقات رحلة الدخول للسوق تطفو في مشهد ثلاثي الأبعاد، ولوحة خدمات كبيرة، وتبويبات لكل نوع عميل، وأداة «مخطط الدخول للسوق» التفاعلية.</p>
+            <p class="like">مستوحى من: <a href="https://astrolabs.com/" target="_blank" rel="noopener">AstroLabs</a> (شركة تأسيس أعمال في السعودية والإمارات)</p>
+            <ul class="feats"><li class="wow">مخطط دخول تفاعلي</li><li>بطاقات 3D عائمة</li><li>تبويبات العملاء</li></ul>
+            <div class="open"><a href="3/">افتح النموذج ←</a></div>
+          </div>
+        </article>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="shot"><iframe src="1/" title="معاينة النموذج 1" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
-      <div class="card__body">
-        <div class="card__top"><span class="num">نموذج 1</span><h2>الكلاسيكي الهادئ</h2></div>
-        <p>خلفية فاتحة، وعناوين كبيرة بخط كلاسيكي، وأرقام ضخمة، وتقسيم واضح لمن تخدمهم الشركة: الشركات الأجنبية، والمستثمرون، والجهات الحكومية.</p>
-        <p class="like">مستوحى من أسلوب: <b>Brookfield · KKR · Blackstone</b></p>
-        <ul class="feats"><li>فخامة وبساطة</li><li>قائمة قطاعات تفاعلية</li><li>مناسب للمستثمرين</li></ul>
-        <div class="open"><a href="1/">افتح النموذج 1 ←</a></div>
+    <section class="group">
+      <div class="group__head"><h2>تصميمات أصلية مبتكرة</h2><p>أفكار جديدة بالكامل، تركّز على المؤثرات ثلاثية الأبعاد والحركة.</p></div>
+      <div class="grid">
+        <article class="card">
+          <a class="shot" href="4/"><img src="img/m4.jpg" alt="معاينة النموذج 4" loading="lazy" width="960" height="548"><span class="badge badge--gold">نموذج 4</span></a>
+          <div class="body">
+            <h3><small>CONSTELLATION</small>الكوكبة</h3>
+            <p>آلاف الجزيئات الذهبية تتجمع في شعار الشركة، وتتحول أثناء التمرير إلى كرة أرضية، ثم كوكبة القطاعات الثمانية، ثم شريط شراكة، ثم خريطة المملكة، ثم «2030». الجزيئات تبتعد عن الماوس.</p>
+            <ul class="feats"><li class="wow">جزيئات تتحول لأشكال</li><li>تتفاعل مع الماوس</li><li>قصة بالتمرير</li></ul>
+            <div class="open"><a href="4/">افتح النموذج ←</a></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="shot" href="5/"><img src="img/m5.jpg" alt="معاينة النموذج 5" loading="lazy" width="960" height="548"><span class="badge badge--gold">نموذج 5</span></a>
+          <div class="body">
+            <h3><small>RIYADH NIGHTS</small>ليالي الرياض</h3>
+            <p>مدينة ليلية ثلاثية الأبعاد بنوافذ مضيئة وحركة سيارات. التمرير يجعلك تطير على طول الشارع حتى تصل إلى برج مميز في النهاية، والمحتوى يطفو فوق المدينة على ألواح زجاجية.</p>
+            <ul class="feats"><li class="wow">مدينة 3D كاملة</li><li>طيران بالتمرير</li><li>إضاءة متوهجة</li></ul>
+            <div class="open"><a href="5/">افتح النموذج ←</a></div>
+          </div>
+        </article>
+        <article class="card">
+          <a class="shot" href="6/"><img src="img/m6.jpg" alt="معاينة النموذج 6" loading="lazy" width="960" height="548"><span class="badge badge--gold">نموذج 6</span></a>
+          <div class="body">
+            <h3><small>SILK &amp; GOLD</small>الحرير والذهب</h3>
+            <p>فخامة هادئة بلون عاجي: شريطان من الحرير ثلاثيا الأبعاد، ذهبي للخبرة العالمية وأخضر للقيادة السعودية، يلتفّان معًا كرمز للتحالف. وفيه معرض قطاعات يتحرك أفقيًا وقائمة خدمات بأسلوب راقٍ.</p>
+            <ul class="feats"><li class="wow">شرائط حرير 3D</li><li>معرض أفقي</li><li>كلمات تتحرك مع التمرير</li></ul>
+            <div class="open"><a href="6/">افتح النموذج ←</a></div>
+          </div>
+        </article>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="shot"><iframe src="2/" title="معاينة النموذج 2" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
-      <div class="card__body">
-        <div class="card__top"><span class="num">نموذج 2</span><h2>الرؤية الوطنية</h2></div>
-        <p>صورة كبيرة بملء الشاشة، وأخضر داكن مع ذهبي، وعناوين قوية، وفسيفساء صور للقطاعات، وشريط متحرك لشعارات الشركاء. طابع رسمي يناسب رؤية 2030.</p>
-        <p class="like">مستوحى من أسلوب: <b>صندوق الاستثمارات العامة PIF · مبادلة</b></p>
-        <ul class="feats"><li>هيبة ورسمية</li><li>صور كبيرة</li><li>طابع سعودي</li></ul>
-        <div class="open"><a href="2/">افتح النموذج 2 ←</a></div>
-      </div>
-    </article>
+    <section class="group">
+      <div class="group__head"><h2>الموقع الحالي</h2><p>للمقارنة: الموقع الجديد الجاهز بست لغات.</p></div>
+      <article class="card current">
+        <a class="shot" href="../"><img src="img/current.jpg" alt="معاينة الموقع الحالي" loading="lazy" width="960" height="548"><span class="badge">الحالي</span></a>
+        <div class="body">
+          <h3><small>CURRENT</small>الكرة الأرضية التفاعلية</h3>
+          <p>شاشة افتتاحية بشعار الشركة، وكرة أرضية ثلاثية الأبعاد تدور مع الماوس وتظهر الدول الـ16 متصلة بالرياض. جاهز بست لغات: العربية والإنجليزية والإسبانية واليابانية والصينية والكورية.</p>
+          <ul class="feats"><li>كرة أرضية 3D</li><li>6 لغات</li><li>4 صفحات كاملة</li></ul>
+          <div class="open"><a href="../">افتح الموقع الحالي ←</a></div>
+        </div>
+      </article>
+    </section>
 
-    <article class="card">
-      <div class="shot"><iframe src="3/" title="معاينة النموذج 3" scrolling="no" tabindex="-1" aria-hidden="true"></iframe></div>
-      <div class="card__body">
-        <div class="card__top"><span class="num">نموذج 3</span><h2>العصري التقني</h2></div>
-        <p>خلفية داكنة مع إضاءة ذهبية، وبطاقات مرتبة كالشبكة، ومراحل العمل على خط زمني يمتلئ أثناء التمرير، وأسئلة شائعة مختصرة.</p>
-        <p class="like">مستوحى من أسلوب: <b>شركات الاستثمار والتقنية الحديثة</b></p>
-        <ul class="feats"><li>حديث وجريء</li><li>مؤثرات خفيفة</li><li>ممتاز على الجوال</li></ul>
-        <div class="open"><a href="3/">افتح النموذج 3 ←</a></div>
-      </div>
-    </article>
+    <p class="note"><b>ملاحظة:</b> كل نموذج صفحة واحدة كاملة باللغة الإنجليزية، وفيها كل محتوى الشركة: من نحن، والقطاعات، والخدمات، ونموذج العمل، والفريق، والشركاء، والأسئلة، والتواصل. في أسفل كل نموذج يوجد شريط للتنقل بين النماذج. بعد اختيار النموذج المناسب، يتم تطبيقه على كل الصفحات واللغات الست.</p>
   </main>
-
-  <footer>كل النماذج تعمل على الكمبيوتر والجوال. داخل أي نموذج يوجد شريط في الأسفل للتنقل بين النماذج.</footer>
-
-  <script>
-    // Scale each live preview to fit its card
-    function fit() {
-      document.querySelectorAll('.shot').forEach(function (s) {
-        s.querySelector('iframe').style.transform = 'scale(' + (s.clientWidth / 1440) + ')';
-      });
-    }
-    addEventListener('resize', fit);
-    fit();
-  </script>
 </body>
 </html>

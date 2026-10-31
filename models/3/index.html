@@ -3,358 +3,435 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Model 3 · Modern | Alliance Investment</title>
+  <title>Expansion · Model 3 | Alliance Investment</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#080d0b">
+  <meta name="theme-color" content="#ffffff">
   <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
   <link rel="stylesheet" href="../models.css">
+  <script src="../content.js"></script>
   <script src="../models.js" defer></script>
   <style>
-    /* Model 3 — Modern: dark interface, glowing gold accents, bento grid of cards */
+    /* Model 3 — Expansion (inspired by AstroLabs, a Saudi/UAE market-entry firm): clean white product style,
+       a 3D collage of floating journey cards, a big services panel, audience tabs and an entry planner */
     :root {
-      --bg: #080d0b; --panel: #0f1714; --panel-2: #14201b; --line: rgba(255, 255, 255, .08); --line-2: rgba(255, 255, 255, .14);
-      --text: #eef1ef; --muted: #96a39d; --gold: #d8b06a; --gold-2: #f3d9a4; --green: #1f6b52;
+      --bg: #ffffff; --soft: #f5f8f6; --ink: #0c1a15; --muted: #5a6762; --line: #e5ebe8;
+      --brand: #0e6b4f; --brand-2: #0b3b2e; --mint: #d9f2e8; --gold: #c29b5e; --gold-soft: #f6ecd9;
       --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
-      --wrap: min(1200px, 100% - 40px); --r: 22px;
+      --wrap: min(1240px, 100% - 48px); --r: 22px;
     }
-    body { background: var(--bg); color: var(--text); font: 400 16px/1.6 var(--sans); }
+    body { background: var(--bg); color: var(--ink); font: 400 16px/1.6 var(--sans); }
     .wrap { width: var(--wrap); margin-inline: auto; }
-    .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
-    .grad { background: linear-gradient(100deg, var(--gold-2), var(--gold) 45%, #a8d5c2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .pill { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px 7px 8px; border: 1px solid var(--line-2); border-radius: 999px; font-size: 13px; color: var(--muted); background: rgba(255, 255, 255, .03); }
-    .pill b { padding: 3px 9px; border-radius: 999px; background: var(--gold); color: var(--bg); font-size: 11px; letter-spacing: .04em; }
-    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 24px; border-radius: 12px; font: 600 14px/1 var(--sans); background: var(--text); color: var(--bg); transition: transform .3s, box-shadow .3s; }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -10px rgba(216, 176, 106, .55); }
-    .btn--ghost { background: rgba(255, 255, 255, .05); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-2); }
-    .h2 { font: 700 clamp(1.9rem, 4vw, 3.2rem)/1.08 var(--sans); letter-spacing: -.035em; }
-    .sub { color: var(--muted); max-width: 52ch; margin-top: 16px; }
-    .tag { font: 600 12px var(--sans); color: var(--gold); letter-spacing: .14em; text-transform: uppercase; }
-    section { padding: clamp(72px, 9vw, 120px) 0; position: relative; }
-
-    /* Background glow */
-    .glow { position: absolute; z-index: -1; border-radius: 50%; filter: blur(90px); opacity: .5; pointer-events: none; }
-    .glow--a { width: 520px; height: 520px; background: #8a6a2f; top: -120px; left: 50%; transform: translateX(-80%); animation: drift 16s ease-in-out infinite alternate; }
-    .glow--b { width: 460px; height: 460px; background: #12503f; top: 60px; left: 50%; transform: translateX(10%); animation: drift 19s ease-in-out infinite alternate-reverse; }
-    @keyframes drift { to { translate: 60px 40px; } }
+    .hl { color: var(--gold); }
+    .tag { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: var(--mint); color: var(--brand); font-size: 12.5px; font-weight: 700; }
+    .h2 { font: 700 clamp(1.9rem, 3.8vw, 3.1rem)/1.1 var(--sans); letter-spacing: -.035em; }
+    .lead { color: var(--muted); font-size: clamp(1rem, 1.2vw, 1.1rem); max-width: 60ch; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font: 700 14px/1 var(--sans); background: var(--brand); color: #fff; transition: background .3s, transform .3s, box-shadow .3s; }
+    .btn:hover { background: var(--brand-2); box-shadow: 0 12px 26px -12px rgba(14, 107, 79, .7); }
+    .btn--line { background: #fff; color: var(--brand); box-shadow: inset 0 0 0 1.5px var(--brand); }
+    .btn--line:hover { background: var(--mint); box-shadow: inset 0 0 0 1.5px var(--brand); }
+    section { padding: clamp(72px, 9vw, 120px) 0; }
+    .center { text-align: center; } .center .lead { margin-inline: auto; }
 
     /* Header */
-    .header { position: sticky; top: 12px; z-index: 50; margin-top: 12px; }
-    .header__in { display: flex; align-items: center; gap: 28px; height: 64px; padding: 0 10px 0 22px; border-radius: 18px; border: 1px solid var(--line); background: rgba(15, 23, 20, .7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-    .header__logo img { width: 116px; }
-    .nav { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; font-size: 14px; }
-    .nav a { padding: 10px 14px; border-radius: 10px; color: var(--muted); transition: color .2s, background .2s; }
-    .nav a:hover { color: var(--text); background: rgba(255, 255, 255, .05); }
-    .nav .btn { color: var(--bg); padding: 12px 18px; margin-inline-start: 8px; }
-    .nav .btn:hover { color: var(--bg); background: var(--gold-2); }
-    .burger { display: none; width: 44px; height: 44px; margin-inline-start: auto; position: relative; z-index: 2; }
-    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 12px; right: 12px; height: 1.5px; background: var(--text); transition: transform .3s, opacity .3s; }
-    .burger::before { top: 16px; } .burger span { top: 21.5px; } .burger::after { top: 27px; }
-    .menu-open .burger::before { transform: translateY(5.5px) rotate(45deg); }
-    .menu-open .burger span { opacity: 0; }
-    .menu-open .burger::after { transform: translateY(-5.5px) rotate(-45deg); }
+    .header { position: sticky; top: 0; z-index: 60; background: rgba(255, 255, 255, .9); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: box-shadow .3s; }
+    .header.is-scrolled { box-shadow: 0 1px 0 var(--line), 0 10px 30px -20px rgba(12, 26, 21, .25); }
+    .header .wrap { display: flex; align-items: center; gap: 30px; height: 76px; }
+    .logo img { width: 124px; }
+    .nav { display: flex; align-items: center; gap: 26px; font-weight: 600; font-size: 14.5px; flex: 1; }
+    .nav a:not(.btn):hover { color: var(--brand); }
+    .nav .new { font-size: 10px; padding: 3px 7px; border-radius: 999px; background: var(--gold-soft); color: #8a6526; margin-inline-start: 6px; font-weight: 800; letter-spacing: .04em; }
+    .nav__cta { display: flex; gap: 10px; margin-inline-start: auto; }
+    .nav__cta .btn { padding: 12px 18px; }
+    .burger { display: none; width: 44px; height: 44px; margin-inline-start: auto; position: relative; z-index: 3; }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 11px; right: 11px; height: 2px; background: var(--ink); transition: transform .35s, opacity .35s; }
+    .burger::before { top: 15px; } .burger span { top: 21px; } .burger::after { top: 27px; }
+    .menu-open .burger::before { transform: translateY(6px) rotate(45deg); } .menu-open .burger span { opacity: 0; } .menu-open .burger::after { transform: translateY(-6px) rotate(-45deg); }
 
     /* Hero */
-    .hero { text-align: center; padding-top: clamp(64px, 10vw, 130px); padding-bottom: 40px; isolation: isolate; overflow-x: clip; }
-    .hero h1 { font: 700 clamp(2.5rem, 7vw, 5.6rem)/1.02 var(--sans); letter-spacing: -.045em; max-width: 15ch; margin: 26px auto 22px; }
-    .hero p { color: var(--muted); max-width: 56ch; margin: 0 auto; font-size: clamp(1rem, 1.3vw, 1.12rem); }
-    .hero__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+    .hero { padding: clamp(40px, 6vw, 80px) 0 40px; position: relative; overflow: hidden; }
+    .hero::before { content: ""; position: absolute; inset: -20% -10% auto 40%; height: 120%; z-index: -1; background: radial-gradient(40% 40% at 50% 40%, rgba(14, 107, 79, .14), transparent 70%), radial-gradient(30% 30% at 75% 70%, rgba(194, 155, 94, .18), transparent 70%); filter: blur(10px); animation: float 14s ease-in-out infinite alternate; }
+    @keyframes float { to { transform: translate(-4%, 6%) scale(1.08); } }
+    .hero .wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center; }
+    .hero h1 { font: 700 clamp(2.6rem, 5.6vw, 4.7rem)/1.04 var(--sans); letter-spacing: -.045em; margin: 22px 0; }
+    .hero h1 .hl { display: inline-block; }
+    .hero__btns { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .trust { display: flex; gap: 26px; margin-top: 40px; flex-wrap: wrap; }
+    .trust div { font-size: 13px; color: var(--muted); }
+    .trust strong { display: block; font-size: 1.6rem; color: var(--ink); letter-spacing: -.03em; }
+    .scene { position: relative; height: 560px; perspective: 1400px; }
+    .collage { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(var(--rx, 8deg)) rotateY(var(--ry, -14deg)); transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+    .ui { position: absolute; background: #fff; border-radius: 18px; border: 1px solid var(--line); box-shadow: 0 30px 60px -25px rgba(12, 26, 21, .35), 0 8px 18px -10px rgba(12, 26, 21, .15); padding: 18px; animation: bob 7s ease-in-out infinite; }
+    @keyframes bob { 50% { translate: 0 -10px; } }
+    .ui--main { left: 6%; top: 8%; width: 66%; transform: translateZ(40px); }
+    .ui--photo { right: 0; top: 0; width: 40%; height: 46%; padding: 0; overflow: hidden; transform: translateZ(-60px); animation-delay: -2s; }
+    .ui--photo img { width: 100%; height: 100%; object-fit: cover; }
+    .ui--ok { right: 2%; top: 50%; width: 46%; transform: translateZ(110px); animation-delay: -4s; }
+    .ui--fund { left: 0; bottom: 4%; width: 52%; transform: translateZ(80px); animation-delay: -1s; }
+    .ui--chip { right: 12%; bottom: 0; transform: translateZ(150px); animation-delay: -3s; padding: 12px 16px; display: flex; gap: 10px; align-items: center; font-weight: 700; font-size: 13px; }
+    .ui h4 { font-size: 13px; color: var(--muted); font-weight: 600; display: flex; justify-content: space-between; }
+    .ui h4 small { color: var(--brand); font-weight: 700; }
+    .steps-ui { display: grid; gap: 10px; margin-top: 14px; }
+    .steps-ui li { display: grid; grid-template-columns: 26px 1fr auto; gap: 10px; align-items: center; font-size: 13.5px; font-weight: 600; }
+    .steps-ui i { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 12px; background: var(--soft); color: var(--muted); }
+    .steps-ui .done i { background: var(--brand); color: #fff; }
+    .steps-ui .now i { background: var(--gold-soft); color: #8a6526; box-shadow: 0 0 0 4px rgba(194, 155, 94, .18); }
+    .steps-ui span.st { font-size: 11px; color: var(--muted); font-weight: 600; }
+    .bar-ui { height: 8px; border-radius: 99px; background: var(--soft); margin-top: 16px; overflow: hidden; }
+    .bar-ui b { display: block; height: 100%; width: 62%; border-radius: inherit; background: linear-gradient(90deg, var(--brand), var(--gold)); animation: grow 3s cubic-bezier(.2,.7,.2,1) both .6s; }
+    @keyframes grow { from { width: 0; } }
+    .ok-ui { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+    .ok-ui span { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--mint); color: var(--brand); flex: none; }
+    .ok-ui strong { display: block; font-size: 14px; } .ok-ui small { color: var(--muted); font-size: 12px; }
+    .chart-ui { display: flex; align-items: flex-end; gap: 6px; height: 70px; margin-top: 12px; }
+    .chart-ui i { flex: 1; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, var(--gold), #e8d3ad); transform-origin: bottom; animation: rise 1.4s cubic-bezier(.2,.7,.2,1) both; }
+    .chart-ui i:nth-child(odd) { background: linear-gradient(180deg, var(--brand), #8fcab4); }
+    @keyframes rise { from { transform: scaleY(0); } }
+    .ui small.note { display: block; margin-top: 10px; font-size: 11px; color: var(--muted); }
+    .ui--chip .dot { width: 10px; height: 10px; border-radius: 50%; background: #20b37a; box-shadow: 0 0 0 4px rgba(32, 179, 122, .2); }
 
-    /* Bento */
-    .bento { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(170px, auto); gap: 14px; margin-top: clamp(48px, 7vw, 80px); text-align: left; }
-    .box { position: relative; overflow: hidden; border-radius: var(--r); border: 1px solid var(--line); background: linear-gradient(180deg, var(--panel-2), var(--panel)); padding: 26px; display: flex; flex-direction: column; }
-    .box::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -20%), rgba(216, 176, 106, .14), transparent 60%); opacity: 0; transition: opacity .4s; }
-    .box:hover::before { opacity: 1; }
-    .box h3 { font: 600 1.1rem/1.3 var(--sans); letter-spacing: -.01em; }
-    .box p { color: var(--muted); font-size: 14px; margin-top: 8px; }
-    .box .tag { margin-bottom: 14px; }
-    .b-img { grid-column: span 7; grid-row: span 2; padding: 0; min-height: 380px; }
-    .b-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .b-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(8, 13, 11, .9)); }
-    .b-img div { position: relative; z-index: 1; margin-top: auto; padding: 28px; }
-    .b-img h3 { font-size: clamp(1.3rem, 2.2vw, 1.8rem); max-width: 22ch; }
-    .b-stat { grid-column: span 5; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .b-stat strong { display: block; font: 700 clamp(2.2rem, 4vw, 3.2rem)/1 var(--sans); letter-spacing: -.04em; }
-    .b-stat span { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
-    .b-speed { grid-column: span 5; justify-content: space-between; }
-    .b-speed .bar { height: 8px; border-radius: 99px; background: rgba(255, 255, 255, .06); overflow: hidden; margin-top: 18px; }
-    .b-speed .bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--gold)); transition: width 1.6s cubic-bezier(.2,.7,.2,1) .3s; }
-    .b-speed.is-in .bar i { width: 82%; }
-    .b-speed .scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 8px; }
-    .b-map { grid-column: span 7; }
-    .b-map img { margin-top: auto; padding-top: 10px; }
-    .b-quote { grid-column: span 5; }
-    .b-quote blockquote { font: 500 1.08rem/1.5 var(--sans); margin: 4px 0 20px; }
-    .b-quote .who { display: flex; align-items: center; gap: 12px; margin-top: auto; font-size: 14px; }
-    .b-quote .who img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
-    .b-quote .who span { display: block; color: var(--muted); font-size: 12px; }
+    /* Logo strip */
+    .strip { padding: 34px 0 10px; }
+    .strip p { text-align: center; color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+    .marquee { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+    .marquee ul { display: flex; align-items: center; gap: 56px; width: max-content; animation: slide 60s linear infinite; }
+    .marquee img { height: 46px; width: auto; filter: grayscale(1); opacity: .65; transition: filter .3s, opacity .3s; }
+    .marquee img:hover { filter: none; opacity: 1; }
+    @keyframes slide { to { transform: translateX(-50%); } }
 
-    /* Sectors */
-    .head { display: flex; justify-content: space-between; align-items: end; gap: 28px; flex-wrap: wrap; margin-bottom: 44px; }
-    .sectors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-    .sector { position: relative; overflow: hidden; border-radius: var(--r); border: 1px solid var(--line); aspect-ratio: 3 / 4; background: var(--panel); }
-    .sector img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.6) brightness(.65); transition: transform 1s cubic-bezier(.2,.7,.2,1), filter .6s; }
-    .sector:hover img { transform: scale(1.07); filter: saturate(1) brightness(.75); }
-    .sector div { position: absolute; inset: auto 0 0; padding: 20px; background: linear-gradient(transparent, rgba(8, 13, 11, .92)); }
-    .sector small { color: var(--gold); font-weight: 600; font-size: 12px; }
-    .sector h3 { font: 600 1rem/1.3 var(--sans); margin-top: 6px; }
+    /* Services panel */
+    .panel { display: grid; grid-template-columns: 1.2fr 1fr; border-radius: 28px; overflow: hidden; border: 1px solid var(--line); background: var(--soft); }
+    .panel__big { background: radial-gradient(120% 90% at 0% 0%, #1b8a66, transparent 60%), linear-gradient(150deg, #0e6b4f, #0b3b2e 70%); color: #fff; padding: clamp(28px, 4vw, 52px); position: relative; overflow: hidden; }
+    .panel__big::after { content: ""; position: absolute; right: -80px; bottom: -80px; width: 320px; height: 320px; background: url(../../assets/img/emblem.webp) center / contain no-repeat; opacity: .08; }
+    .panel__big .tag { background: rgba(255, 255, 255, .14); color: #fff; }
+    .svc-list { margin-top: 26px; display: grid; gap: 4px; }
+    .svc-list button { text-align: left; font: 700 clamp(1.4rem, 3vw, 2.5rem)/1.2 var(--sans); letter-spacing: -.035em; color: rgba(255, 255, 255, .42); padding: 6px 0; transition: color .3s, transform .4s; display: flex; align-items: center; gap: 14px; }
+    .svc-list button::before { content: ""; width: 0; height: 3px; background: var(--gold); transition: width .4s; }
+    .svc-list button.is-active, .svc-list button:hover { color: #fff; }
+    .svc-list button.is-active::before { width: 34px; }
+    .panel__side { padding: clamp(24px, 3vw, 40px); display: grid; gap: 12px; align-content: center; }
+    .svc-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: none; }
+    .svc-card.is-active { display: block; animation: pop .5s cubic-bezier(.2,.7,.2,1); }
+    @keyframes pop { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+    .svc-card .ic { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; background: var(--mint); color: var(--brand); }
+    .svc-card h3 { font-size: 1.25rem; margin: 16px 0 8px; letter-spacing: -.02em; }
+    .svc-card p { color: var(--muted); }
+    .svc-card ul { margin-top: 14px; display: grid; gap: 8px; }
+    .svc-card li { display: flex; gap: 10px; font-size: 14px; }
+    .svc-card li::before { content: "✓"; color: var(--brand); font-weight: 800; }
+    .svc-mini { display: flex; gap: 12px; align-items: center; padding: 16px 18px; border-radius: 14px; background: #fff; border: 1px solid var(--line); font-size: 14px; }
+    .svc-mini .icon { color: var(--gold); }
 
-    /* Process timeline */
-    .process { display: grid; grid-template-columns: 1fr 1.25fr; gap: clamp(32px, 6vw, 96px); }
-    .process__aside { position: sticky; top: 110px; align-self: start; }
-    .timeline { position: relative; padding-inline-start: 40px; }
-    .timeline::before { content: ""; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 2px; background: var(--line-2); }
-    .timeline__fill { position: absolute; left: 11px; top: 8px; width: 2px; height: 0; background: linear-gradient(var(--gold), var(--green)); }
-    .tl { position: relative; padding: 4px 0 44px; }
-    .tl:last-child { padding-bottom: 0; }
-    .tl::before { content: ""; position: absolute; left: -35px; top: 8px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line-2); transition: border-color .4s, box-shadow .4s; }
-    .tl.is-in::before { border-color: var(--gold); box-shadow: 0 0 0 6px rgba(216, 176, 106, .14); }
-    .tl small { color: var(--gold); font-weight: 600; font-size: 12px; letter-spacing: .1em; }
-    .tl h3 { font: 600 1.25rem/1.3 var(--sans); margin: 6px 0 8px; letter-spacing: -.01em; }
-    .tl p { color: var(--muted); font-size: 15px; }
+    /* Why trust */
+    .trust2 { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+    .checks { margin-top: 26px; display: grid; gap: 14px; }
+    .checks li { display: grid; grid-template-columns: 30px 1fr; gap: 12px; }
+    .checks li span { width: 30px; height: 30px; border-radius: 9px; background: var(--mint); color: var(--brand); display: grid; place-items: center; font-weight: 800; font-size: 14px; }
+    .checks strong { display: block; } .checks small { color: var(--muted); font-size: 14px; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .stat { border: 1px solid var(--line); border-radius: 20px; padding: 24px; display: flex; justify-content: space-between; gap: 16px; background: #fff; transition: transform .4s, box-shadow .4s; }
+    .stat:hover { transform: translateY(-6px); box-shadow: 0 24px 40px -26px rgba(12, 26, 21, .4); }
+    .stat strong { font: 700 clamp(2rem, 3.5vw, 2.8rem)/1 var(--sans); letter-spacing: -.04em; }
+    .stat p { color: var(--muted); font-size: 13.5px; margin-top: 8px; max-width: 18ch; }
+    .stat .ic { width: 46px; height: 46px; border-radius: 14px; background: var(--soft); display: grid; place-items: center; color: var(--brand); flex: none; }
+    .stat--dark { background: var(--brand-2); color: #fff; border-color: var(--brand-2); }
+    .stat--dark p { color: rgba(255, 255, 255, .7); } .stat--dark .ic { background: rgba(255, 255, 255, .1); color: var(--gold); }
 
-    /* Solutions list */
-    .sols { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-    .sol { border-radius: var(--r); border: 1px solid var(--line); padding: 26px; background: var(--panel); transition: border-color .3s, transform .3s; }
-    .sol:hover { border-color: rgba(216, 176, 106, .45); transform: translateY(-4px); }
-    .sol .ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(216, 176, 106, .12); color: var(--gold); margin-bottom: 22px; }
-    .sol h3 { font: 600 1.02rem/1.3 var(--sans); }
-    .sol p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+    /* Audience tabs */
+    .seg { display: inline-flex; gap: 4px; padding: 5px; border-radius: 14px; background: var(--soft); border: 1px solid var(--line); margin: 30px 0 26px; flex-wrap: wrap; }
+    .seg button { padding: 11px 20px; border-radius: 10px; font-weight: 700; font-size: 14px; color: var(--muted); transition: background .3s, color .3s; }
+    .seg button.is-active { background: var(--brand); color: #fff; }
+    .aud { display: grid; grid-template-columns: 1fr 1fr; border-radius: 26px; overflow: hidden; border: 1px solid var(--line); }
+    .aud[hidden] { display: none; }
+    .aud.is-active { animation: pop .6s cubic-bezier(.2,.7,.2,1); }
+    .aud__txt { padding: clamp(28px, 4vw, 52px); }
+    .aud__txt h3 { font: 700 clamp(1.4rem, 2.4vw, 2rem)/1.2 var(--sans); letter-spacing: -.03em; }
+    .aud__txt p { color: var(--muted); margin-top: 12px; }
+    .aud__txt ul { display: grid; gap: 12px; margin: 22px 0 28px; }
+    .aud__txt li { display: flex; gap: 12px; }
+    .aud__txt li::before { content: ""; flex: none; width: 20px; height: 20px; border-radius: 6px; margin-top: 2px; background: var(--mint) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e6b4f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center / 13px no-repeat; }
+    .aud__img { position: relative; min-height: 380px; }
+    .aud__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-    /* Partners */
-    .logos { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
-    .logos li { display: grid; place-items: center; aspect-ratio: 16 / 10; border-radius: 16px; background: #f4f1ea; padding: 18px; opacity: .92; transition: opacity .3s, transform .3s; }
-    .logos li:hover { opacity: 1; transform: translateY(-3px); }
-    .logos img { max-height: 46px; width: auto; }
+    /* Planner */
+    .planner { border-radius: 28px; background: var(--brand-2); color: #fff; padding: clamp(26px, 4vw, 56px); display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(26px, 4vw, 56px); position: relative; overflow: hidden; isolation: isolate; }
+    .planner::before { content: ""; position: absolute; inset: -40% -20% auto auto; width: 60%; aspect-ratio: 1; border-radius: 50%; z-index: -1; background: radial-gradient(closest-side, rgba(194, 155, 94, .35), transparent); }
+    .planner .tag { background: rgba(255, 255, 255, .12); color: var(--gold); }
+    .planner .lead { color: rgba(255, 255, 255, .72); }
+    .q { margin-top: 22px; }
+    .q p { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+    .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+    .opts label { cursor: pointer; }
+    .opts input { position: absolute; opacity: 0; pointer-events: none; }
+    .opts span { display: inline-block; padding: 10px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .22); font-size: 14px; font-weight: 600; transition: background .25s, border-color .25s, color .25s; }
+    .opts input:checked + span { background: var(--gold); border-color: var(--gold); color: var(--brand-2); }
+    .opts input:focus-visible + span { outline: 2px solid #fff; outline-offset: 2px; }
+    .road { background: #fff; color: var(--ink); border-radius: 22px; padding: 26px; align-self: start; }
+    .road h3 { font-size: 1.15rem; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .road h3 small { font-size: 12px; color: var(--brand); background: var(--mint); padding: 5px 10px; border-radius: 999px; }
+    .road ol { margin-top: 18px; display: grid; gap: 0; }
+    .road li { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding-bottom: 18px; position: relative; animation: pop .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--k) * 70ms); }
+    .road li::before { content: ""; position: absolute; left: 16px; top: 34px; bottom: 0; width: 2px; background: var(--line); }
+    .road li:last-child::before { display: none; }
+    .road li b { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--soft); color: var(--brand); font-size: 13px; position: relative; z-index: 1; }
+    .road li strong { display: block; font-size: 15px; } .road li small { color: var(--muted); font-size: 13.5px; }
+    .road .note { color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 14px; }
+
+    /* Team slider */
+    .sl-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+    .arrows { display: flex; gap: 8px; }
+    .arrows button { width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--line); font-size: 18px; transition: background .3s, color .3s; }
+    .arrows button:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .slider { display: grid; grid-auto-flow: column; grid-auto-columns: min(290px, 74vw); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 30px 0 12px; scrollbar-width: none; }
+    .slider::-webkit-scrollbar { display: none; }
+    .tcard { scroll-snap-align: start; border-radius: 20px; border: 1px solid var(--line); overflow: hidden; background: #fff; transition: box-shadow .4s, transform .4s; }
+    .tcard:hover { transform: translateY(-6px); box-shadow: 0 24px 40px -26px rgba(12, 26, 21, .4); }
+    .tcard img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .tcard div { padding: 18px; }
+    .tcard small { color: var(--brand); font-weight: 700; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; }
+    .tcard strong { display: block; margin: 4px 0 6px; }
+    .tcard p { color: var(--muted); font-size: 13.5px; }
+    .ceo-note { margin-top: 26px; display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; padding: 26px; border-radius: 22px; background: var(--gold-soft); }
+    .ceo-note img { width: 86px; height: 86px; border-radius: 50%; object-fit: cover; }
+    .ceo-note blockquote { font-weight: 600; font-size: 1.05rem; }
+    .ceo-note cite { display: block; font-style: normal; color: var(--muted); font-size: 13.5px; margin-top: 8px; }
 
     /* FAQ */
-    .faq { max-width: 820px; margin-inline: auto; }
-    .faq details { border-bottom: 1px solid var(--line-2); }
-    .faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 20px; padding: 22px 0; font-weight: 600; font-size: 1.05rem; }
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+    .faq details { border: 1px solid var(--line); border-radius: 16px; padding: 0 20px; align-self: start; background: #fff; transition: border-color .3s, background .3s; }
+    .faq details[open] { border-color: var(--brand); background: var(--soft); }
+    .faq summary { list-style: none; display: flex; justify-content: space-between; gap: 14px; padding: 18px 0; font-weight: 700; }
     .faq summary::-webkit-details-marker { display: none; }
-    .faq summary::after { content: "+"; color: var(--gold); font-size: 1.5rem; line-height: 1; transition: transform .3s; }
+    .faq summary::after { content: "+"; color: var(--brand); font-size: 1.4rem; line-height: 1; transition: transform .3s; }
     .faq details[open] summary::after { transform: rotate(45deg); }
-    .faq details p { color: var(--muted); padding-bottom: 22px; max-width: 66ch; }
+    .faq p { padding-bottom: 18px; color: var(--muted); }
 
-    /* CTA */
-    .cta { border-radius: 28px; padding: clamp(40px, 7vw, 80px); text-align: center; position: relative; overflow: hidden; isolation: isolate; border: 1px solid var(--line-2); background: radial-gradient(120% 120% at 0% 0%, rgba(216, 176, 106, .28), transparent 50%), radial-gradient(120% 120% at 100% 100%, rgba(31, 107, 82, .45), transparent 55%), var(--panel); }
-    .cta h2 { margin: 16px auto 14px; max-width: 18ch; }
-    .cta p { color: var(--muted); max-width: 48ch; margin: 0 auto 30px; }
-    .cta__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    /* CTA + footer */
+    .cta { border-radius: 30px; padding: clamp(32px, 5vw, 64px); background: linear-gradient(120deg, var(--mint), #fff 55%, var(--gold-soft)); border: 1px solid var(--line); display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: center; }
+    .cta__btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+    footer { background: var(--brand-2); color: rgba(255, 255, 255, .7); padding: 70px 0 110px; margin-top: 80px; font-size: 14px; }
+    .fgrid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 30px; }
+    .fgrid img { width: 130px; margin-bottom: 14px; }
+    .fgrid h4 { color: #fff; margin-bottom: 14px; font-size: 14px; }
+    .fgrid li + li { margin-top: 9px; } .fgrid a:hover { color: var(--gold); }
+    .fbot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; border-top: 1px solid rgba(255, 255, 255, .12); margin-top: 44px; padding-top: 22px; font-size: 13px; }
 
-    footer { padding: 40px 0 100px; color: var(--muted); font-size: 13px; }
-    .footer__in { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 32px; }
-    .footer__in img { width: 110px; }
-    .footer__links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .footer__links a:hover { color: var(--text); }
-
-    @media (max-width: 1000px) {
-      .b-img, .b-stat, .b-speed, .b-map, .b-quote { grid-column: span 12; }
-      .b-img { min-height: 320px; }
-      .sectors { grid-template-columns: repeat(2, 1fr); }
-      .logos { grid-template-columns: repeat(3, 1fr); }
-      .process { grid-template-columns: 1fr; }
-      .process__aside { position: static; }
-    }
-    @media (max-width: 820px) {
+    @media (max-width: 1060px) {
       .burger { display: block; }
-      .nav { position: fixed; inset: 0; z-index: 1; flex-direction: column; justify-content: center; gap: 10px; font-size: 20px; background: rgba(8, 13, 11, .97); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
-      .nav .btn { margin: 14px 0 0; font-size: 16px; }
-      .menu-open .nav { opacity: 1; visibility: visible; }
-      .menu-open { overflow: hidden; }
-      .header__in { padding-inline-start: 16px; }
+      .nav { position: fixed; inset: 0; z-index: 2; flex-direction: column; justify-content: center; gap: 22px; font-size: 20px; background: #fff; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .nav__cta { margin: 10px 0 0; }
+      .menu-open .nav { opacity: 1; visibility: visible; } .menu-open { overflow: hidden; }
+      .hero .wrap, .panel, .trust2, .aud, .planner, .cta { grid-template-columns: 1fr; }
+      .scene { height: 480px; max-width: 640px; width: 100%; margin-inline: auto; }
+      .cta__btns { justify-content: flex-start; }
+      .fgrid { grid-template-columns: 1fr 1fr 1fr; }
     }
-    @media (max-width: 520px) {
-      .b-stat { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
-      .sectors { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .sector div { padding: 14px; }
-      .sector h3 { font-size: .9rem; }
-      .logos { grid-template-columns: repeat(2, 1fr); }
-      .glow { width: 300px; height: 300px; }
+    @media (max-width: 620px) {
+      :root { --wrap: calc(100% - 28px); }
+      .scene { height: 420px; }
+      .ui--main { width: 86%; left: 2%; } .ui--ok { width: 68%; } .ui--fund { width: 70%; } .ui--photo { width: 46%; height: 34%; }
+      .stat-grid, .faq { grid-template-columns: 1fr; }
+      .aud__img { min-height: 220px; }
+      .fgrid { grid-template-columns: 1fr 1fr; }
+      .seg { display: flex; } .seg button { flex: 1 1 40%; padding: 10px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap header" data-header>
-    <div class="header__in">
-      <a class="header__logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208"></a>
+  <header class="header" data-header>
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211"></a>
       <nav class="nav" id="nav" aria-label="Main">
-        <a href="#sectors">Sectors</a>
-        <a href="#process">Process</a>
-        <a href="#solutions">Solutions</a>
-        <a href="#faq">FAQ</a>
+        <a href="#services">Services</a>
+        <a href="#who">Who we help</a>
+        <a href="#planner">Entry Planner<span class="new">NEW</span></a>
+        <a href="#team">Company</a>
         <a href="../../ar/" lang="ar">العربية</a>
-        <a class="btn" href="#contact">Get in touch</a>
+        <span class="nav__cta"><a class="btn btn--line" href="#faq">FAQ</a><a class="btn" href="#contact" data-magnetic>Enquire now</a></span>
       </nav>
       <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
-  </div>
+  </header>
 
   <main>
     <section class="hero">
-      <span class="glow glow--a" aria-hidden="true"></span>
-      <span class="glow glow--b" aria-hidden="true"></span>
       <div class="wrap">
-        <span class="pill" data-reveal><b>2030</b> Aligned with Saudi Vision 2030</span>
-        <h1 data-reveal style="--d:.08s">Enter the Saudi market <span class="grad">with confidence.</span></h1>
-        <p data-reveal style="--d:.16s">Business setup, investment strategy, local partnerships and growth — one trusted partner with over 10 years in the Kingdom and a network across 16 countries.</p>
-        <div class="hero__actions" data-reveal style="--d:.24s">
-          <a class="btn" href="#contact">Start a conversation →</a>
-          <a class="btn btn--ghost" href="#process">See how we work</a>
+        <div>
+          <span class="tag" data-reveal>● Saudi market entry &amp; investment</span>
+          <h1 data-split>Your partner for <span class="hl">expansion</span> in Saudi&nbsp;Arabia</h1>
+          <p class="lead" data-reveal style="--d:.25s">Set up, operate and grow your business in the Kingdom with a Saudi team, an international network and full compliance from day one.</p>
+          <div class="hero__btns" data-reveal style="--d:.35s"><a class="btn" href="#contact" data-magnetic>Enquire now →</a><a class="btn btn--line" href="#planner">Plan your entry</a></div>
+          <div class="trust" data-reveal style="--d:.45s">
+            <div><strong data-count="10" data-suffix="+">10+</strong>years in KSA</div>
+            <div><strong data-count="16">16</strong>countries</div>
+            <div><strong data-count="41">41</strong>partners</div>
+          </div>
         </div>
-
-        <div class="bento">
-          <article class="box b-img" data-reveal>
-            <img src="../../assets/img/about-towers.webp" alt="Riyadh towers" width="1000" height="975" loading="lazy">
-            <div><p class="tag">Who we are</p><h3>The strategic and trusted partner for foreign and local companies in Saudi Arabia.</h3></div>
-          </article>
-          <article class="box b-stat" data-reveal style="--d:.06s">
-            <div><strong data-count="10" data-suffix="+">10+</strong><span>Years in the Saudi market</span></div>
-            <div><strong data-count="16">16</strong><span>Countries in our network</span></div>
-            <div><strong data-count="8">8</strong><span>Vision 2030 sectors</span></div>
-            <div><strong data-count="41">41</strong><span>Institutional partners</span></div>
-          </article>
-          <article class="box b-speed" data-reveal style="--d:.12s">
-            <div><p class="tag">Business setup</p><h3>From licence to launch in 4–6 weeks</h3><p>Legal structure, registration, licences and permits — handled end to end.</p></div>
-            <div><div class="bar"><i></i></div><div class="scale"><span>Week 1</span><span>Week 6</span></div></div>
-          </article>
-          <article class="box b-map" data-reveal>
-            <p class="tag">Global network</p>
-            <h3>Riyadh headquarters, partners from London to Tokyo.</h3>
-            <img src="../../assets/img/world-map.svg" alt="World map of the Alliance network" width="1000" height="383" loading="lazy">
-          </article>
-          <article class="box b-quote" data-reveal style="--d:.06s">
-            <p class="tag">From our CEO</p>
-            <blockquote>“We are committed to achieving our strategy for Vision 2030 and expanding opportunities — with sustainable growth, innovation and positive social impact.”</blockquote>
-            <div class="who"><img src="../../assets/img/team-turki-al-qahtani.webp" alt="" width="400" height="400" loading="lazy"><div>Eng. Turki Al-Qahtani<span>Chief Executive Officer</span></div></div>
-          </article>
+        <div class="scene" id="scene" data-reveal="scale" style="--d:.2s" aria-label="Illustration of a market-entry journey">
+          <div class="collage" id="collage">
+            <div class="ui ui--photo"><img src="../../assets/img/about-towers.webp" alt="" width="1000" height="975"></div>
+            <div class="ui ui--main">
+              <h4>Your Saudi setup <small>Example journey</small></h4>
+              <ul class="steps-ui">
+                <li class="done"><i>✓</i>Market &amp; feasibility study<span class="st">Done</span></li>
+                <li class="done"><i>✓</i>Entry model selected<span class="st">Done</span></li>
+                <li class="now"><i>3</i>Legal entity &amp; licences<span class="st">In progress</span></li>
+                <li><i>4</i>Local partner &amp; representation<span class="st">Next</span></li>
+                <li><i>5</i>Funding &amp; growth<span class="st">Next</span></li>
+              </ul>
+              <div class="bar-ui"><b></b></div>
+              <small class="note">Typical setup: 4–6 weeks</small>
+            </div>
+            <div class="ui ui--ok"><h4>Partnerships</h4><div class="ok-ui"><span>✓</span><div><strong>Vetted local partner</strong><small>Legal presence &amp; field support</small></div></div></div>
+            <div class="ui ui--fund"><h4>Funding pathways <small>PIF · Banks · PE</small></h4><div class="chart-ui"><i style="height:35%"></i><i style="height:52%;animation-delay:.1s"></i><i style="height:46%;animation-delay:.2s"></i><i style="height:68%;animation-delay:.3s"></i><i style="height:60%;animation-delay:.4s"></i><i style="height:84%;animation-delay:.5s"></i><i style="height:100%;animation-delay:.6s"></i></div></div>
+            <div class="ui ui--chip"><span class="dot"></span>Vision 2030 aligned</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="sectors">
+    <div class="strip"><p>Working with government entities, giga-projects and global companies</p><div class="marquee"><ul data-marquee id="logos"></ul></div></div>
+
+    <section id="services">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><p class="tag">Sectors</p><h2 class="h2" style="margin-top:12px">Eight sectors. <span class="grad">One vision.</span></h2></div>
-          <p class="sub" data-reveal style="--d:.1s">Strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities.</p>
-        </div>
-        <div class="sectors">
-          <article class="sector" data-reveal><img src="../../assets/img/sector-entertainment.webp" alt="" loading="lazy"><div><small>01</small><h3>Entertainment, Leisure &amp; Sports</h3></div></article>
-          <article class="sector" data-reveal style="--d:.05s"><img src="../../assets/img/sector-ict.webp" alt="" loading="lazy"><div><small>02</small><h3>ICT, Digital &amp; Innovation</h3></div></article>
-          <article class="sector" data-reveal style="--d:.1s"><img src="../../assets/img/sector-energy.webp" alt="" loading="lazy"><div><small>03</small><h3>Energy, Utilities &amp; Environment</h3></div></article>
-          <article class="sector" data-reveal style="--d:.15s"><img src="../../assets/img/sector-logistics.webp" alt="" loading="lazy"><div><small>04</small><h3>Logistics &amp; Supply Chain</h3></div></article>
-          <article class="sector" data-reveal><img src="../../assets/img/sector-agriculture.webp" alt="" loading="lazy"><div><small>05</small><h3>Food &amp; Agriculture</h3></div></article>
-          <article class="sector" data-reveal style="--d:.05s"><img src="../../assets/img/sector-healthcare.webp" alt="" loading="lazy"><div><small>06</small><h3>Healthcare &amp; Life Sciences</h3></div></article>
-          <article class="sector" data-reveal style="--d:.1s"><img src="../../assets/img/sector-real-estate.webp" alt="" loading="lazy"><div><small>07</small><h3>Real Estate &amp; Infrastructure</h3></div></article>
-          <article class="sector" data-reveal style="--d:.15s"><img src="../../assets/img/sector-finance.webp" alt="" loading="lazy"><div><small>08</small><h3>Financial Services &amp; Investments</h3></div></article>
+        <div class="center" style="margin-bottom:44px"><span class="tag" data-reveal>Our services</span><h2 class="h2" style="margin-top:16px" data-split>Everything you need to <span class="hl">enter and grow</span></h2></div>
+        <div class="panel" data-reveal data-tabs data-tabs-hover>
+          <div class="panel__big"><span class="tag">Business development &amp; investment</span><div class="svc-list" id="svc-list"></div></div>
+          <div class="panel__side"><div id="svc-cards"></div><a class="svc-mini" href="../../business-model/"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#layers"/></svg>Explore our full business model →</a></div>
         </div>
       </div>
     </section>
 
-    <section id="process">
-      <div class="wrap process">
-        <div class="process__aside" data-reveal>
-          <p class="tag">Business model</p>
-          <h2 class="h2" style="margin-top:12px">Five steps from <span class="grad">idea to impact.</span></h2>
-          <p class="sub">A disciplined path we follow on every engagement — from the first market study to long-term performance.</p>
-          <p style="margin-top:28px"><a class="btn btn--ghost" href="../../business-model/">Full business model →</a></p>
+    <section style="background:var(--soft)">
+      <div class="wrap trust2">
+        <div>
+          <span class="tag" data-reveal>Why trust Alliance?</span>
+          <h2 class="h2" style="margin-top:16px" data-split>The trusted partner for <span class="hl">Saudi expansion</span></h2>
+          <p class="lead" style="margin-top:14px" data-reveal id="about"></p>
+          <ul class="checks" id="checks"></ul>
         </div>
-        <div class="timeline">
-          <span class="timeline__fill" aria-hidden="true"></span>
-          <div class="tl" data-reveal><small>STEP 01</small><h3>Strategic Analysis &amp; Planning</h3><p>Conducting market research, identifying investment opportunities and developing customised strategies for our clients.</p></div>
-          <div class="tl" data-reveal><small>STEP 02</small><h3>Operations &amp; Process Management</h3><p>Enhancing operational efficiency, offering cost-effective solutions and increasing productivity.</p></div>
-          <div class="tl" data-reveal><small>STEP 03</small><h3>Long-Term Strategic Partnerships</h3><p>Establishing long-term agreements with local and international partners to ensure sustainable growth.</p></div>
-          <div class="tl" data-reveal><small>STEP 04</small><h3>Investing in High-Growth Opportunities</h3><p>Focusing on promising sectors that generate high investment returns.</p></div>
-          <div class="tl" data-reveal><small>STEP 05</small><h3>Performance Monitoring &amp; Sustainability</h3><p>Tracking performance and using advanced analytics for data-driven decisions and lasting business sustainability.</p></div>
+        <div class="stat-grid">
+          <div class="stat" data-reveal><div><strong data-count="10" data-suffix="+">10+</strong><p>Years of Saudi market presence</p></div><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#award"/></svg></span></div>
+          <div class="stat stat--dark" data-reveal style="--d:.06s"><div><strong data-count="16">16</strong><p>Countries in our network</p></div><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#globe"/></svg></span></div>
+          <div class="stat" data-reveal style="--d:.12s"><div><strong data-count="41">41</strong><p>Government &amp; private partners</p></div><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#handshake"/></svg></span></div>
+          <div class="stat" data-reveal style="--d:.18s"><div><strong data-count="8">8</strong><p>Vision 2030 sectors</p></div><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#layers"/></svg></span></div>
         </div>
       </div>
     </section>
 
-    <section id="solutions" style="padding-top:0">
+    <section id="who">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><p class="tag">Solutions</p><h2 class="h2" style="margin-top:12px">Everything you need to grow here.</h2></div>
-        </div>
-        <div class="sols">
-          <article class="sol" data-reveal><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#flag"/></svg></span><h3>Saudi Market Entry</h3><p>Comprehensive market analysis and competitor assessment.</p></article>
-          <article class="sol" data-reveal style="--d:.05s"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#clipboard"/></svg></span><h3>Feasibility Studies</h3><p>Feasibility studies and opportunity analysis.</p></article>
-          <article class="sol" data-reveal style="--d:.1s"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#network"/></svg></span><h3>Expansion in the Kingdom</h3><p>Growth across Saudi Arabia through local partnerships.</p></article>
-          <article class="sol" data-reveal style="--d:.15s"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#coins"/></svg></span><h3>Financing &amp; Investment</h3><p>Institutional funding and investor introductions.</p></article>
-          <article class="sol" data-reveal style="--d:.2s"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#columns"/></svg></span><h3>Public-Private Partnerships</h3><p>Structuring partnerships between public and private sectors.</p></article>
+        <span class="tag" data-reveal>Who do we help?</span>
+        <h2 class="h2" style="margin-top:16px" data-split>Built for every kind of <span class="hl">ambition</span></h2>
+        <div data-tabs data-reveal>
+          <div class="seg" role="tablist"><button type="button" data-tab="corp">Corporates</button><button type="button" data-tab="inv">Investors</button><button type="button" data-tab="sme">Startups &amp; SMEs</button><button type="button" data-tab="gov">Government</button></div>
+          <div class="aud" data-panel="corp"><div class="aud__txt"><h3>International companies entering the Kingdom</h3><p>From the right entry model to full operations — with legal establishment, local partners and permanent on-the-ground representation.</p><ul><li>Smart entry models, including equity stakes or partial takeovers</li><li>Legal entity, licences, registrations and full compliance</li><li>Vetted local partners and government liaison</li><li>Typical business setup in 4 to 6 weeks</li></ul><a class="btn" href="#contact">Discuss your entry →</a></div><div class="aud__img"><img src="../../assets/img/gate.webp" alt="" loading="lazy"></div></div>
+          <div class="aud" data-panel="inv"><div class="aud__txt"><h3>Investors seeking high-growth opportunities</h3><p>A precise opportunity map grounded in data — and access to the sectors shaping Vision 2030.</p><ul><li>Market analysis and opportunity monitoring</li><li>Feasibility studies and opportunity analysis</li><li>High-growth sectors: infrastructure, clean energy, AI, logistics, healthcare, sports</li><li>Introductions to institutional funding: PIF, Saudi banks, private equity</li></ul><a class="btn" href="#contact">Explore opportunities →</a></div><div class="aud__img"><img src="../../assets/img/sector-finance.webp" alt="" loading="lazy"></div></div>
+          <div class="aud" data-panel="sme"><div class="aud__txt"><h3>Startups &amp; SMEs building what’s next</h3><p>We empower entrepreneurs and SMEs as key drivers of innovation — from idea development to market expansion.</p><ul><li>Incubator pathway: mentorship, strategy, legal setup and seed funding</li><li>Accelerator pathway: partnerships, market entry and Series A/B funding</li><li>Funding pathways: venture capital, angel investors, institutional partners</li><li>Business development: value proposition and scalable models</li></ul><a class="btn" href="#contact">Start your pathway →</a></div><div class="aud__img"><img src="../../assets/img/sector-ict.webp" alt="" loading="lazy"></div></div>
+          <div class="aud" data-panel="gov"><div class="aud__txt"><h3>Government &amp; public-private partnerships</h3><p>Structured partnerships between the public and private sectors, and support for companies serving government projects.</p><ul><li>Public-private partnership (PPP) structuring</li><li>Registration on government procurement platforms</li><li>Proposal development and stakeholder engagement</li><li>Business councils: European, American, Chinese, Korean, French</li></ul><a class="btn" href="#contact">Discuss a partnership →</a></div><div class="aud__img"><img src="../../assets/img/sector-real-estate.webp" alt="" loading="lazy"></div></div>
         </div>
       </div>
     </section>
 
-    <section style="padding-top:0">
+    <section id="planner" style="padding-top:0">
+      <div class="wrap planner" data-reveal>
+        <div>
+          <span class="tag">Entry planner · NEW</span>
+          <h2 class="h2" style="margin-top:16px">Plan your entry into Saudi Arabia</h2>
+          <p class="lead" style="margin-top:12px">Answer three quick questions to see an indicative roadmap.</p>
+          <form id="plan-form">
+            <div class="q"><p>1. Who are you?</p><div class="opts" data-q="who"><label><input type="radio" name="who" value="corp" checked><span>International company</span></label><label><input type="radio" name="who" value="inv"><span>Investor</span></label><label><input type="radio" name="who" value="sme"><span>Startup / SME</span></label></div></div>
+            <div class="q"><p>2. Do you already have a local partner?</p><div class="opts"><label><input type="radio" name="partner" value="no" checked><span>No</span></label><label><input type="radio" name="partner" value="yes"><span>Yes</span></label><label><input type="radio" name="partner" value="unsure"><span>Not sure if I need one</span></label></div></div>
+            <div class="q"><p>3. Will you need funding?</p><div class="opts"><label><input type="radio" name="fund" value="yes" checked><span>Yes</span></label><label><input type="radio" name="fund" value="no"><span>No</span></label></div></div>
+          </form>
+        </div>
+        <div class="road" id="road" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="team" style="padding-top:0">
       <div class="wrap">
-        <div class="head"><div data-reveal><p class="tag">Partners</p><h2 class="h2" style="margin-top:12px">Trusted across the Kingdom.</h2></div></div>
-        <ul class="logos" data-reveal>
-          <li><img src="../../assets/img/partner-pif.webp" alt="Public Investment Fund" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-neom.webp" alt="NEOM" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-investment.webp" alt="Ministry of Investment" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-red-sea.webp" alt="The Red Sea Development Company" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-qiddiya.webp" alt="Qiddiya" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-sport.webp" alt="Ministry of Sport" loading="lazy"></li>
-        </ul>
+        <div class="sl-head"><div><span class="tag" data-reveal>Leadership</span><h2 class="h2" style="margin-top:16px" data-split>Saudi leadership, <span class="hl">global advisors</span></h2></div><div class="arrows"><button type="button" id="tprev" aria-label="Previous">←</button><button type="button" id="tnext" aria-label="Next">→</button></div></div>
+        <div class="slider" id="slider"></div>
+        <div class="ceo-note" data-reveal><img src="../../assets/img/team-turki-al-qahtani.webp" alt="" width="400" height="400" loading="lazy"><div><blockquote id="ceo-q"></blockquote><cite>Eng. Turki Al-Qahtani · Chief Executive Officer</cite></div></div>
       </div>
     </section>
 
     <section id="faq" style="padding-top:0">
       <div class="wrap">
-        <div class="head" style="justify-content:center;text-align:center"><div data-reveal><p class="tag">FAQ</p><h2 class="h2" style="margin-top:12px">Questions, answered.</h2></div></div>
-        <div class="faq" data-reveal>
-          <details open><summary>How can Alliance help me enter the Saudi market?</summary><p>We begin with a deep-dive analysis of your industry, competitive landscape and regulatory environment, then build a customised market entry strategy aligned with your objectives.</p></details>
-          <details><summary>Do I need a local partner to establish my business?</summary><p>It depends on your industry and business model. If a local partner is required, we connect you with vetted partners who provide both legal cover and operational alignment.</p></details>
-          <details><summary>Can Alliance assist with funding?</summary><p>Yes. We connect you with institutional funding through entities such as the Public Investment Fund, regional banks and private equity investors.</p></details>
-          <details><summary>How long does it take to establish a business?</summary><p>Typically 4 to 6 weeks, depending on your readiness and the complexity of regulatory approvals.</p></details>
-        </div>
+        <div class="center"><span class="tag" data-reveal>FAQ</span><h2 class="h2" style="margin-top:16px" data-split>Frequently asked <span class="hl">questions</span></h2></div>
+        <div class="faq" id="faq-list" data-reveal></div>
       </div>
     </section>
 
-    <section id="contact" style="padding-top:0">
-      <div class="wrap">
-        <div class="cta" data-reveal>
-          <p class="tag">Contact</p>
-          <h2 class="h2">Ready for your next step in the Kingdom?</h2>
-          <p>Tell us about your organisation and objectives — our team in Riyadh will get back to you.</p>
-          <div class="cta__actions">
-            <a class="btn" href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a>
-            <a class="btn btn--ghost" href="tel:+966539503000">+966 53 950 3000</a>
-          </div>
-        </div>
+    <section id="contact" style="padding:0">
+      <div class="wrap cta" data-reveal>
+        <div><h2 class="h2">Ready to expand &amp; grow your business in <span class="hl">Saudi Arabia?</span></h2><p class="lead" style="margin-top:12px">Tell us about your organization and objectives — our team in Riyadh will get back to you.</p></div>
+        <div class="cta__btns"><a class="btn" href="mailto:Ksa@alliance.sa" data-magnetic>Ksa@alliance.sa</a><a class="btn btn--line" href="tel:+966539503000">+966 53 950 3000</a></div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap footer__in">
-      <img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy">
-      <div class="footer__links"><a href="../../about-us/">About Us</a><a href="../../business-model/">Business Model</a><a href="../../privacy-policy/">Privacy Policy</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></div>
-      <span>© <span data-year>2026</span> Alliance Investment</span>
+    <div class="wrap">
+      <div class="fgrid">
+        <div><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy"><p>Your strategic partner for success in the Saudi market.</p></div>
+        <div><h4>Services</h4><ul><li><a href="#services">Market entry</a></li><li><a href="#services">Feasibility studies</a></li><li><a href="#services">Financing</a></li></ul></div>
+        <div><h4>By profile</h4><ul><li><a href="#who">Corporates</a></li><li><a href="#who">Investors</a></li><li><a href="#who">Startups &amp; SMEs</a></li></ul></div>
+        <div><h4>Company</h4><ul><li><a href="#team">Leadership</a></li><li><a href="../../business-model/">Business model</a></li><li><a href="../../privacy-policy/">Privacy policy</a></li></ul></div>
+        <div><h4>Contact</h4><ul><li><a href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a></li><li><a href="tel:+966539503000">+966 53 950 3000</a></li><li>Riyadh, Saudi Arabia</li></ul></div>
+      </div>
+      <div class="fbot"><span>© <span data-year>2026</span> Alliance Investment. All rights reserved.</span><span><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://x.com/KSA_Alliance" target="_blank" rel="noopener">X</a></span></div>
     </div>
   </footer>
 
   <script>
     (function () {
-      // Cursor light on the bento cards (mouse only)
-      if (matchMedia('(pointer: fine)').matches) {
-        document.querySelectorAll('.box').forEach(function (box) {
-          box.addEventListener('pointermove', function (e) {
-            var r = box.getBoundingClientRect();
-            box.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-            box.style.setProperty('--my', (e.clientY - r.top) + 'px');
-          });
+      var A = ALLIANCE, $ = A$;
+      $.fill('#logos', A.partners.map(function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; }).join(''));
+      var extra = [['Comprehensive market analysis', 'Competitor assessment', 'Opportunity mapping'], ['Feasibility studies', 'Opportunity analysis', 'Investment-ready insights'], ['Local partnerships', 'Government liaison', 'Representation in the Kingdom'], ['Public Investment Fund & Saudi banks', 'Private equity investors', 'Investor positioning'], ['Public–private structuring', 'Procurement platforms', 'Proposal development']];
+      $.fill('#svc-list', A.solutions.map(function (s, i) { return '<button type="button" data-tab="s' + i + '">' + $.esc(s.t) + '</button>'; }).join(''));
+      $.fill('#svc-cards', A.solutions.map(function (s, i) {
+        return '<article class="svc-card" data-panel="s' + i + '"><span class="ic">' + $.icon(s.icon) + '</span><h3>' + $.esc(s.t) + '</h3><p>' + s.d + '</p><ul>' + extra[i].map(function (e) { return '<li>' + $.esc(e) + '</li>'; }).join('') + '</ul></article>';
+      }).join(''));
+      $.fill('#about', A.about[1]);
+      $.fill('#checks', A.why.map(function (w, i) { return '<li data-reveal style="--d:' + (i * 0.05) + 's"><span>✓</span><div><strong>' + w.t + '</strong><small>' + w.d + '</small></div></li>'; }).join(''));
+      $.fill('#slider', A.team.map(function (p) {
+        return '<article class="tcard"><img src="' + $.img(p.img) + '" alt="' + p.name + '" loading="lazy"><div><small>' + (p.group === 'Board' ? 'Board member' : 'Advisor') + '</small><strong>' + p.name + '</strong><p>' + p.focus + '</p></div></article>';
+      }).join(''));
+      $.fill('#ceo-q', '“' + A.ceo.quote + '”');
+      $.fill('#faq-list', A.faq.map(function (f, i) { return '<details' + (i ? '' : ' open') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join(''));
+
+      // Team slider arrows
+      var slider = document.getElementById('slider');
+      function by(d) { slider.scrollBy({ left: d * (slider.firstElementChild.offsetWidth + 16), behavior: 'smooth' }); }
+      document.getElementById('tprev').onclick = function () { by(-1); };
+      document.getElementById('tnext').onclick = function () { by(1); };
+
+      // Entry planner: builds an indicative roadmap from the answers
+      var form = document.getElementById('plan-form'), road = document.getElementById('road');
+      function plan() {
+        var who = form.who.value, partner = form.partner.value, fund = form.fund.value, s = [];
+        if (who === 'sme') s.push(['Business development & consultation', 'Sharpen your value proposition and build a scalable model.']);
+        s.push(['Market analysis & opportunity map', 'Sector, competitors and regulations — the data behind your decision.']);
+        if (who === 'inv') s.push(['Feasibility studies', 'Opportunity analysis for the sectors and projects you target.']);
+        s.push([who === 'inv' ? 'Investment & entry model' : 'Smart entry model', who === 'inv' ? 'Equity stakes, partial takeovers or new ventures — structured for impact.' : 'The right structure for a fast, impactful foothold.']);
+        s.push(['Legal & operational establishment', 'Entity, licences, registrations and full compliance — typically 4–6 weeks.']);
+        if (partner !== 'yes') s.push([partner === 'unsure' ? 'Local partner assessment' : 'Vetted local partner', partner === 'unsure' ? 'We evaluate whether your industry needs one — and match you if it does.' : 'Legal presence, field support and market expertise.']);
+        if (fund === 'yes') s.push([who === 'sme' ? 'Incubator or accelerator pathway' : 'Financing & investment attraction', who === 'sme' ? 'Mentorship, partnerships and seed to Series A/B funding.' : 'Introductions to PIF, Saudi banks and private equity investors.']);
+        s.push(['Post-establishment growth', 'Representation, partnerships and performance tracking.']);
+        road.innerHTML = '<h3>Your indicative roadmap <small>' + s.length + ' steps</small></h3><ol>' + s.map(function (x, i) { return '<li style="--k:' + i + '"><b>' + (i + 1) + '</b><div><strong>' + x[0] + '</strong><small>' + x[1] + '</small></div></li>'; }).join('') + '</ol><p class="note">Indicative only — every partner receives a plan tailored to their goals. <a href="#contact" style="color:var(--brand);font-weight:700">Get yours →</a></p>';
+      }
+      form.addEventListener('change', plan); plan();
+
+      // 3D collage follows the pointer
+      var scene = document.getElementById('scene'), col = document.getElementById('collage');
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        scene.addEventListener('pointermove', function (e) {
+          var r = scene.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+          col.style.setProperty('--ry', (-14 + x * 18).toFixed(2) + 'deg'); col.style.setProperty('--rx', (8 - y * 14).toFixed(2) + 'deg');
         });
+        scene.addEventListener('pointerleave', function () { col.style.setProperty('--ry', '-14deg'); col.style.setProperty('--rx', '8deg'); });
       }
-      // Timeline line fills as you scroll through the steps
-      var line = document.querySelector('.timeline'), fill = line.querySelector('.timeline__fill');
-      function update() {
-        var r = line.getBoundingClientRect(), mid = innerHeight * 0.6;
-        var p = Math.max(0, Math.min(1, (mid - r.top) / r.height));
-        fill.style.height = (p * (r.height - 16)) + 'px';
-      }
-      addEventListener('scroll', update, { passive: true });
-      addEventListener('resize', update);
-      update();
     })();
   </script>
 </body>

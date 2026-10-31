@@ -3,363 +3,772 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Model 1 · Editorial | Alliance Investment</title>
+  <title>Gateway · Model 1 | Alliance Investment</title>
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#f6f2ea">
+  <meta name="theme-color" content="#03211a">
   <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
   <link rel="stylesheet" href="../models.css">
+  <script src="../content.js"></script>
   <script src="../models.js" defer></script>
   <style>
-    /* Model 1 — Editorial: light, calm, big serif statements and large figures */
+    /* Model 1 — Gateway (inspired by the Invest Saudi portal): deep green, glass panels,
+       a 3D map with live routes from Riyadh, rotating hero messages and a search-style start */
     :root {
-      --bg: #f6f2ea; --paper: #fffdf8; --ink: #14201b; --muted: #5d6662; --line: #ddd5c6;
-      --gold: #9c7a3c; --gold-soft: #c29b5e; --green: #0b3b2e;
-      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --bg: #03211a; --bg-2: #062c22; --bg-3: #0a3a2d; --line: rgba(255, 255, 255, .1); --line-2: rgba(255, 255, 255, .18);
+      --text: #ecf3ef; --muted: #9fb8ad; --gold: #d8b26a; --gold-2: #f0d39a; --mint: #3fd0a4;
       --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
-      --wrap: min(1240px, 100% - 40px);
+      --wrap: min(1320px, 100% - 48px); --r: 18px;
     }
-    body { background: var(--bg); color: var(--ink); font: 400 16px/1.65 var(--sans); }
+    body { background: var(--bg); color: var(--text); font: 400 16px/1.65 var(--sans); }
     .wrap { width: var(--wrap); margin-inline: auto; }
-    .kicker { font: 600 12px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
-    .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
-    .h2 { font: 400 clamp(2rem, 4.4vw, 3.6rem)/1.08 var(--serif); letter-spacing: -.015em; }
-    .rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
-    .arrow-link { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; border-bottom: 1px solid currentColor; padding-bottom: 4px; transition: gap .3s; }
-    .arrow-link:hover { gap: 16px; }
-    .arrow-link::after { content: "→"; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 700 12px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); }
+    .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 4px rgba(63, 208, 164, .18); }
+    .h2 { font: 700 clamp(2rem, 4.2vw, 3.4rem)/1.08 var(--sans); letter-spacing: -.03em; margin-top: 16px; }
+    .h2 em { font-style: normal; background: linear-gradient(90deg, var(--gold-2), var(--gold) 50%, var(--mint)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { color: var(--muted); font-size: clamp(1rem, 1.25vw, 1.1rem); max-width: 60ch; margin-top: 16px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; font: 700 14px/1 var(--sans); background: var(--gold); color: #13110a; transition: background .3s, box-shadow .3s; }
+    .btn:hover { background: var(--gold-2); box-shadow: 0 10px 30px -8px rgba(216, 178, 106, .6); }
+    .btn--glass { background: rgba(255, 255, 255, .07); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .btn--glass:hover { background: rgba(255, 255, 255, .14); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); }
+    section { position: relative; padding: clamp(80px, 10vw, 140px) 0; }
+    .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; margin-bottom: clamp(36px, 5vw, 60px); }
+    .head > div { max-width: 720px; }
 
-    /* Header */
-    .header { position: sticky; top: 0; z-index: 50; background: rgba(246, 242, 234, .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: box-shadow .3s; }
-    .header.is-scrolled { box-shadow: 0 1px 0 var(--line); }
-    .header__in { display: flex; align-items: center; justify-content: space-between; height: 84px; }
-    .header__logo img { width: 150px; }
-    .nav { display: flex; align-items: center; gap: 34px; font-size: 14px; font-weight: 500; }
-    .nav a:not(.nav__cta) { position: relative; }
-    .nav a:not(.nav__cta)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s; }
-    .nav a:not(.nav__cta):hover::after { transform: scaleX(1); }
-    .nav__cta { padding: 12px 22px; border: 1px solid var(--ink); border-radius: 999px; transition: background .3s, color .3s; }
-    .nav__cta:hover { background: var(--ink); color: var(--bg); }
-    .burger { display: none; width: 44px; height: 44px; position: relative; }
-    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 11px; right: 11px; height: 1.5px; background: var(--ink); transition: transform .3s, opacity .3s; }
-    .burger::before { top: 16px; } .burger span { top: 21.5px; } .burger::after { top: 27px; }
+    /* Top strip + header */
+    .strip { background: #021912; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+    .strip .wrap { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; }
+    .strip a:hover { color: var(--text); }
+    .strip__links { display: flex; gap: 18px; }
+    .header { position: sticky; top: 0; z-index: 60; transition: background .4s, box-shadow .4s; }
+    .header.is-scrolled { background: rgba(3, 33, 26, .86); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); box-shadow: 0 1px 0 var(--line); }
+    .header .wrap { display: flex; align-items: center; gap: 32px; height: 84px; }
+    .logo img { width: 142px; }
+    .nav { display: flex; align-items: center; gap: 4px; margin-inline-start: auto; font: 600 13.5px var(--sans); }
+    .nav > a:not(.btn) { padding: 10px 14px; border-radius: 999px; color: rgba(236, 243, 239, .82); transition: background .25s, color .25s; }
+    .nav > a:not(.btn):hover { background: rgba(255, 255, 255, .07); color: #fff; }
+    .nav .btn { margin-inline-start: 10px; padding: 12px 20px; }
+    .lang { font-size: 12px; padding: 8px 12px !important; border: 1px solid var(--line-2); }
+    .burger { display: none; width: 46px; height: 46px; margin-inline-start: auto; position: relative; z-index: 3; border-radius: 50%; background: rgba(255, 255, 255, .06); }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 14px; right: 14px; height: 1.5px; background: #fff; transition: transform .35s, opacity .35s; }
+    .burger::before { top: 17px; } .burger span { top: 22.5px; } .burger::after { top: 28px; }
     .menu-open .burger::before { transform: translateY(5.5px) rotate(45deg); }
     .menu-open .burger span { opacity: 0; }
     .menu-open .burger::after { transform: translateY(-5.5px) rotate(-45deg); }
 
     /* Hero */
-    .hero { padding: clamp(40px, 8vw, 110px) 0 0; }
-    .hero h1 { font: 400 clamp(2.7rem, 7.6vw, 7.2rem)/.98 var(--serif); letter-spacing: -.03em; max-width: 12ch; }
-    .hero h1 em { font-style: italic; color: var(--gold); }
-    .hero__row { display: grid; grid-template-columns: 1fr minmax(260px, 420px); gap: 40px; align-items: end; margin-top: clamp(28px, 4vw, 48px); }
-    .hero__lead { font-size: clamp(1rem, 1.4vw, 1.15rem); color: var(--muted); max-width: 46ch; }
-    .hero__actions { display: flex; gap: 28px; flex-wrap: wrap; justify-content: flex-end; }
-    .hero__img { margin-top: clamp(40px, 6vw, 72px); border-radius: 4px; overflow: hidden; aspect-ratio: 21 / 9; }
-    .hero__img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 2.4s cubic-bezier(.2,.7,.2,1); }
-    .hero__img.is-in img { transform: none; }
+    .hero { min-height: calc(100svh - 120px); padding: 0; display: grid; overflow: hidden; isolation: isolate; }
+    .hero__gl, .hero__fallback { position: absolute; inset: 0; z-index: -2; }
+    .hero__gl canvas { width: 100% !important; height: 100% !important; }
+    .hero__fallback { display: grid; place-items: center end; padding-right: 2vw; opacity: .7; transition: opacity 1s; }
+    .hero__fallback img { width: min(1000px, 90%); }
+    .gl-ready .hero__fallback { opacity: 0; }
+    .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(120% 90% at 85% 40%, transparent 35%, rgba(3, 33, 26, .6) 70%), linear-gradient(90deg, rgba(3, 33, 26, .92) 0%, rgba(3, 33, 26, .55) 38%, transparent 62%), linear-gradient(0deg, var(--bg) 0%, transparent 28%); }
+    .hero__in { align-self: end; padding: 60px 0 56px; }
+    .slides { position: relative; min-height: 290px; max-width: 760px; }
+    .slide { position: absolute; inset: 0 auto auto 0; opacity: 0; visibility: hidden; transition: opacity .35s, visibility 0s .35s; }
+    .slide.is-active { position: relative; opacity: 1; visibility: visible; transition: opacity .6s .35s, visibility 0s .35s; }
+    .slide .display { font: 800 clamp(2.5rem, 6.4vw, 5.6rem)/.98 var(--sans); letter-spacing: -.045em; }
+    .slide .display .gold { display: block; color: var(--gold); }
+    .slide p { color: rgba(236, 243, 239, .78); max-width: 52ch; margin-top: 22px; font-size: clamp(1rem, 1.3vw, 1.15rem); }
+    .js .slide:not(.is-active) .display .w > span { transform: translateY(110%); }
+    .slide.is-active .display.is-in .w > span { transform: none; }
+    .finder { position: relative; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 34px; max-width: 900px; }
+    .search { position: relative; flex: 1 1 320px; }
+    .search input { width: 100%; padding: 17px 52px 17px 22px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--text); outline: 0; transition: border-color .3s, background .3s; }
+    .search input::placeholder { color: rgba(236, 243, 239, .55); }
+    .search input:focus { border-color: var(--gold); background: rgba(255, 255, 255, .12); }
+    .search .icon { position: absolute; right: 20px; top: 50%; translate: 0 -50%; width: 20px; height: 20px; color: var(--gold); pointer-events: none; }
+    .suggest { position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 5; padding: 8px; border-radius: 18px; background: rgba(6, 44, 34, .97); border: 1px solid var(--line-2); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .6); display: none; }
+    .search.is-open .suggest { display: block; }
+    .suggest a { display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; border-radius: 12px; font-size: 14px; }
+    .suggest a small { color: var(--muted); }
+    .suggest a:hover, .suggest a.is-hot { background: rgba(255, 255, 255, .07); }
+    .bars { display: flex; gap: 10px; margin-top: 38px; max-width: 520px; }
+    .bars button { flex: 1; height: 26px; position: relative; }
+    .bars button::before, .bars i { content: ""; position: absolute; left: 0; right: 0; top: 12px; height: 2px; background: rgba(255, 255, 255, .2); border-radius: 2px; }
+    .bars i { right: auto; width: 0; background: var(--gold); }
+    .bars button.is-active i { animation: bar 6.5s linear forwards; }
+    .bars.is-paused button.is-active i { animation-play-state: paused; }
+    @keyframes bar { to { width: 100%; } }
+    .hero__note { position: absolute; right: max(24px, calc((100vw - 1320px) / 2)); bottom: 56px; display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+    .hero__note b { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 0 rgba(216, 178, 106, .6); animation: ping 2s infinite; }
+    @keyframes ping { 70% { box-shadow: 0 0 0 14px rgba(216, 178, 106, 0); } 100% { box-shadow: 0 0 0 0 rgba(216, 178, 106, 0); } }
 
-    /* Figures */
-    .figures { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
-    .figure { padding: 40px 28px 40px 0; }
-    .figure + .figure { padding-left: 28px; border-left: 1px solid var(--line); }
-    .figure strong { display: block; font: 400 clamp(2.6rem, 5vw, 4.4rem)/1 var(--serif); letter-spacing: -.02em; }
-    .figure span { display: block; margin-top: 12px; font-size: 14px; color: var(--muted); max-width: 22ch; }
+    /* Why: expanding pillars */
+    .pillars { display: flex; gap: 14px; height: 440px; }
+    .pillar { position: relative; flex: 1; min-width: 0; border-radius: 22px; overflow: hidden; padding: 30px 26px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--line-2); transition: flex 0.7s cubic-bezier(.2,.7,.2,1), border-color .4s; isolation: isolate; }
+    .pillar::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--g); opacity: .92; }
+    .pillar::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(80% 60% at 100% 0%, rgba(255, 255, 255, .22), transparent 60%); }
+    .pillar:nth-child(1) { --g: linear-gradient(160deg, #0f5a45, #06301f); }
+    .pillar:nth-child(2) { --g: linear-gradient(160deg, #8a6a32, #3b2c12); }
+    .pillar:nth-child(3) { --g: linear-gradient(160deg, #136b5b, #0a3530); }
+    .pillar:nth-child(4) { --g: linear-gradient(160deg, #2a4f3f, #0d2219); }
+    .pillar:nth-child(5) { --g: linear-gradient(160deg, #6f5326, #231a0b); }
+    .pillar:hover, .pillar:focus-within, .pillar.is-open { flex: 2.4; border-color: rgba(255, 255, 255, .35); }
+    .pillar__num { font: 800 3.4rem/1 var(--sans); letter-spacing: -.05em; color: rgba(255, 255, 255, .22); }
+    .pillar .icon { width: 34px; height: 34px; color: var(--gold-2); margin-bottom: 18px; }
+    .pillar h3 { font: 700 1.2rem/1.25 var(--sans); max-width: 18ch; }
+    .pillar p { color: rgba(255, 255, 255, .78); font-size: 14.5px; margin-top: 12px; max-width: 40ch; max-height: 0; opacity: 0; overflow: hidden; transition: max-height .6s, opacity .5s; }
+    .pillar:hover p, .pillar:focus-within p, .pillar.is-open p { max-height: 200px; opacity: 1; transition-delay: .15s; }
 
-    section { padding: clamp(72px, 10vw, 140px) 0; }
-    .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(40px, 6vw, 72px); }
-    .head .kicker { display: block; margin-bottom: 18px; }
-    .head p { color: var(--muted); max-width: 50ch; justify-self: end; }
+    /* Vision tabs */
+    .vision { display: grid; grid-template-columns: 340px 300px 1fr; gap: 20px; align-items: stretch; }
+    .ceo-card { position: relative; border-radius: 22px; overflow: hidden; background: var(--bg-2); border: 1px solid var(--line); display: flex; flex-direction: column; }
+    .ceo-card img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+    .ceo-card blockquote { padding: 22px 24px 0; font-size: 15px; color: rgba(236, 243, 239, .86); }
+    .ceo-card cite { display: block; padding: 16px 24px 24px; font-style: normal; font-weight: 700; margin-top: auto; }
+    .ceo-card cite span { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+    .vtabs { display: flex; flex-direction: column; gap: 8px; }
+    .vtabs button { text-align: left; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); font-weight: 600; font-size: 15px; transition: background .3s, border-color .3s, color .3s; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .vtabs button::after { content: "→"; color: var(--gold); opacity: 0; transform: translateX(-6px); transition: .3s; }
+    .vtabs button.is-active { background: rgba(216, 178, 106, .12); border-color: rgba(216, 178, 106, .5); }
+    .vtabs button.is-active::after { opacity: 1; transform: none; }
+    .vpanel { border-radius: 22px; padding: clamp(28px, 3.4vw, 44px); background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02)); border: 1px solid var(--line-2); }
+    .vpanel[hidden] { display: none; }
+    .vpanel.is-active { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } }
+    .vpanel h3 { font: 700 clamp(1.4rem, 2.2vw, 1.9rem)/1.2 var(--sans); letter-spacing: -.02em; }
+    .vpanel p { color: rgba(236, 243, 239, .82); margin-top: 16px; }
+    .vpanel ul { margin-top: 22px; display: grid; gap: 12px; }
+    .vpanel li { display: flex; gap: 12px; font-size: 15px; color: rgba(236, 243, 239, .86); }
+    .vpanel li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; background: var(--mint); }
 
-    /* Who we work with */
-    .audience { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .card { background: var(--paper); border: 1px solid var(--line); padding: 36px 32px; display: flex; flex-direction: column; gap: 16px; min-height: 320px; transition: transform .4s, box-shadow .4s; }
-    .card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px rgba(20, 32, 27, .28); }
-    .card__num { font: 400 15px var(--serif); color: var(--gold); }
-    .card h3 { font: 400 1.75rem/1.15 var(--serif); }
-    .card p { color: var(--muted); font-size: 15px; }
-    .card .arrow-link { margin-top: auto; align-self: flex-start; }
+    /* Glance */
+    .glance { background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+    .figs { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .fig { padding: 34px 30px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+    .fig::after { content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: linear-gradient(90deg, var(--gold), var(--mint)); transition: width 1.4s cubic-bezier(.2,.7,.2,1) .3s; }
+    .fig.is-in::after { width: 100%; }
+    .fig strong { display: block; font: 800 clamp(2.6rem, 5vw, 4.2rem)/1 var(--sans); letter-spacing: -.05em; background: linear-gradient(180deg, #fff, #b9cfc5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .fig span { display: block; color: var(--muted); margin-top: 12px; font-size: 14px; max-width: 26ch; }
 
-    /* Sectors: big list with image preview */
-    .sectors { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
-    .sector-list li { border-top: 1px solid var(--line); }
-    .sector-list li:last-child { border-bottom: 1px solid var(--line); }
-    .sector-list button { width: 100%; display: grid; grid-template-columns: 56px 1fr auto; align-items: baseline; gap: 12px; padding: 22px 0; text-align: left; transition: padding .35s, color .35s; }
-    .sector-list .n { font: 400 14px var(--serif); color: var(--gold); }
-    .sector-list .t { font: 400 clamp(1.25rem, 2.2vw, 1.9rem)/1.2 var(--serif); }
-    .sector-list .a { opacity: 0; transform: translateX(-10px); transition: .35s; color: var(--gold); }
-    .sector-list button:hover, .sector-list button[aria-pressed="true"] { padding-left: 14px; }
-    .sector-list button[aria-pressed="true"] .a, .sector-list button:hover .a { opacity: 1; transform: none; }
-    .sector-list button[aria-pressed="false"] .t { color: #3a4541; }
-    .sector-view { position: sticky; top: 110px; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: var(--green); }
-    .sector-view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity .6s, transform 1.2s; }
-    .sector-view img.on { opacity: 1; transform: none; }
-    .sector-view figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 60px 28px 26px; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .6)); font: 400 1.3rem var(--serif); }
+    /* Sectors carousel */
+    .car-nav { display: flex; gap: 10px; }
+    .car-nav button { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; transition: background .3s, border-color .3s; }
+    .car-nav button:hover { background: var(--gold); border-color: var(--gold); color: #13110a; }
+    .track { display: grid; grid-auto-flow: column; grid-auto-columns: min(400px, 78vw); gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px max(24px, calc((100vw - 1320px) / 2)) 24px; scrollbar-width: none; cursor: grab; }
+    .track::-webkit-scrollbar { display: none; }
+    .track.is-drag { cursor: grabbing; scroll-snap-type: none; }
+    .scard { scroll-snap-align: start; position: relative; aspect-ratio: 4 / 5; border-radius: 22px; overflow: hidden; isolation: isolate; user-select: none; }
+    .scard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); pointer-events: none; }
+    .scard::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(3, 33, 26, .1) 30%, rgba(3, 33, 26, .94)); }
+    .scard:hover img { transform: scale(1.08); }
+    .scard__in { position: absolute; inset: auto 0 0; padding: 26px; }
+    .scard__num { position: absolute; top: 22px; left: 24px; font: 700 13px var(--sans); padding: 7px 12px; border-radius: 999px; background: rgba(3, 33, 26, .5); border: 1px solid rgba(255, 255, 255, .2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .scard small { color: var(--gold); font-weight: 700; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+    .scard h3 { font: 700 1.35rem/1.25 var(--sans); margin-top: 8px; }
 
-    /* Approach */
-    .approach { background: var(--green); color: #f2ede3; }
-    .approach .kicker { color: var(--gold-soft); }
-    .approach .head p { color: rgba(242, 237, 227, .72); }
-    .steps { display: grid; grid-template-columns: repeat(5, 1fr); counter-reset: s; }
-    .step { padding: 32px 24px 8px 0; border-top: 1px solid rgba(242, 237, 227, .25); position: relative; }
-    .step::before { counter-increment: s; content: "0" counter(s); display: block; font: 400 2.6rem/1 var(--serif); color: var(--gold-soft); margin-bottom: 26px; }
-    .step::after { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-soft); }
-    .step h3 { font: 400 1.25rem/1.25 var(--serif); margin-bottom: 12px; }
-    .step p { font-size: 14px; color: rgba(242, 237, 227, .7); }
+    /* Network */
+    .network { display: grid; grid-template-columns: 1fr 1.6fr; gap: 48px; align-items: center; }
+    .regions { display: grid; gap: 14px; margin-top: 30px; }
+    .region { border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; background: rgba(255, 255, 255, .03); }
+    .region h4 { font: 700 12px var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .region ul { display: flex; flex-wrap: wrap; gap: 8px; }
+    .region li { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .06); }
+    .region li.hq { background: var(--gold); color: #13110a; font-weight: 700; }
+    .map { border-radius: 26px; border: 1px solid var(--line); background: radial-gradient(80% 80% at 60% 50%, rgba(63, 208, 164, .08), transparent 70%), var(--bg-2); padding: clamp(14px, 2.5vw, 34px); }
 
-    /* Quote */
-    .quote { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
-    .quote img { border-radius: 4px; aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
-    .quote blockquote { font: 400 clamp(1.6rem, 3.2vw, 2.7rem)/1.22 var(--serif); letter-spacing: -.01em; }
-    .quote blockquote::before { content: "“"; display: block; font-size: 4.5rem; line-height: .6; color: var(--gold); margin-bottom: 18px; }
-    .quote cite { display: block; margin-top: 30px; font: 600 14px var(--sans); font-style: normal; }
-    .quote cite span { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; }
+    /* Services + journey */
+    .svc { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .svc article { border-radius: 20px; padding: 26px 22px; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .015)); display: flex; flex-direction: column; gap: 14px; transition: transform .45s cubic-bezier(.2,.7,.2,1), border-color .4s, background .4s; }
+    .svc article:hover { transform: translateY(-8px); border-color: rgba(216, 178, 106, .5); background: linear-gradient(180deg, rgba(216, 178, 106, .14), rgba(255, 255, 255, .02)); }
+    .svc .ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: rgba(63, 208, 164, .12); color: var(--mint); }
+    .svc h3 { font: 700 1.05rem/1.3 var(--sans); }
+    .svc p { color: var(--muted); font-size: 14px; }
+    .journey { margin-top: 18px; border-radius: 26px; border: 1px solid var(--line-2); background: var(--bg-2); padding: clamp(24px, 3.4vw, 44px); display: grid; grid-template-columns: 300px 1fr; gap: clamp(24px, 4vw, 56px); }
+    .jtabs { display: flex; flex-direction: column; gap: 10px; }
+    .jtabs button { text-align: left; display: flex; gap: 16px; align-items: center; padding: 16px; border-radius: 16px; border: 1px solid transparent; transition: background .3s, border-color .3s; }
+    .jtabs button b { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-2); font-size: 14px; flex: none; transition: background .3s, color .3s; }
+    .jtabs button span { font-weight: 700; } .jtabs button small { display: block; color: var(--muted); font-weight: 500; font-size: 12px; }
+    .jtabs button.is-active { background: rgba(255, 255, 255, .05); border-color: var(--line-2); }
+    .jtabs button.is-active b { background: var(--gold); color: #13110a; border-color: var(--gold); }
+    .jpanel[hidden] { display: none; }
+    .jpanel.is-active { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1); }
+    .jpanel h3 { font: 700 clamp(1.4rem, 2.4vw, 2rem)/1.2 var(--sans); }
+    .jpanel > p { color: var(--muted); margin-top: 12px; max-width: 60ch; }
+    .jlist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 26px; }
+    .jlist li { padding: 18px; border-radius: 14px; background: rgba(255, 255, 255, .04); border: 1px solid var(--line); }
+    .jlist strong { display: flex; gap: 10px; align-items: center; font-size: 15px; }
+    .jlist strong .icon { width: 20px; height: 20px; color: var(--gold); }
+    .jlist p { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
 
-    /* Presence */
-    .presence { background: var(--paper); border-block: 1px solid var(--line); }
-    .presence__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
-    .presence__big { font: 400 clamp(5rem, 12vw, 10rem)/.9 var(--serif); letter-spacing: -.04em; color: var(--green); }
-    .presence__big small { font-size: .35em; color: var(--gold); letter-spacing: 0; }
-    .countries { columns: 3 150px; column-gap: 24px; margin-top: 32px; font-size: 14px; }
-    .countries li { padding: 7px 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
-    .countries li:first-child { font-weight: 700; }
-    .map { background: var(--green); padding: clamp(16px, 3vw, 36px); border-radius: 4px; width: 100%; }
+    /* Operating model diagram */
+    .model { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .orbit { position: relative; aspect-ratio: 1; max-width: 560px; margin-inline: auto; width: 100%; }
+    .orbit svg.lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .orbit .ring { fill: none; stroke: rgba(255, 255, 255, .08); }
+    .orbit .flow { fill: none; stroke: var(--gold); stroke-width: 1.4; stroke-dasharray: 4 10; animation: dash 1.6s linear infinite; opacity: .8; }
+    @keyframes dash { to { stroke-dashoffset: -28; } }
+    .orbit .core { position: absolute; left: 50%; top: 50%; width: 34%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #12503f, #052419); border: 1px solid rgba(216, 178, 106, .5); box-shadow: 0 0 0 14px rgba(216, 178, 106, .06), 0 0 80px rgba(216, 178, 106, .25); }
+    .orbit .core img { width: 58%; }
+    .node { position: absolute; width: 33%; translate: -50% -50%; text-align: center; padding: 16px 12px; border-radius: 18px; background: rgba(6, 44, 34, .92); border: 1px solid var(--line-2); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .node small { display: block; color: var(--gold); font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .node strong { display: block; font-size: 14px; margin-top: 6px; line-height: 1.3; }
+    .n1 { left: 50%; top: 9%; } .n2 { left: 13%; top: 80%; } .n3 { left: 87%; top: 80%; }
+    .parties { display: grid; gap: 14px; margin-top: 28px; }
+    .parties li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 18px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); }
+    .parties b { display: grid; place-items: center; width: 56px; height: 56px; border-radius: 14px; background: rgba(216, 178, 106, .12); color: var(--gold); font-size: 18px; }
+    .parties strong { display: block; } .parties small { color: var(--gold); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+    .parties p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+    .paths { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .paths article { padding: 22px; border-radius: 16px; background: linear-gradient(140deg, rgba(63, 208, 164, .12), rgba(255, 255, 255, .02)); border: 1px solid var(--line); }
+    .paths h4 { font-size: 1rem; } .paths p { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+
+    /* Leaders */
+    .leaders { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    .person { position: relative; border-radius: 18px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--bg-2); isolation: isolate; }
+    .person img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform 1s cubic-bezier(.2,.7,.2,1), filter .6s; filter: saturate(.9); }
+    .person::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, transparent 40%, rgba(3, 33, 26, .96)); transition: background .5s; }
+    .person:hover img { transform: scale(1.07); }
+    .person:hover::before { background: linear-gradient(180deg, rgba(3, 33, 26, .35), rgba(3, 33, 26, .97) 70%); }
+    .person div { position: absolute; inset: auto 0 0; padding: 16px; }
+    .person small { color: var(--gold); font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .person strong { display: block; font-size: 14.5px; line-height: 1.3; margin-top: 3px; }
+    .person p { font-size: 12.5px; color: rgba(236, 243, 239, .8); max-height: 0; opacity: 0; overflow: hidden; transition: max-height .5s, opacity .5s, margin .5s; }
+    .person:hover p { max-height: 120px; opacity: 1; margin-top: 8px; }
+    .person--ceo { grid-column: span 3; grid-row: span 2; aspect-ratio: auto; }
+    .person--ceo strong { font-size: 1.4rem; } .person--ceo div { padding: 26px; }
+    .person--ceo p { max-height: none; opacity: 1; font-size: 14px; margin-top: 10px; }
 
     /* Partners */
-    .logos { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-    .logos li { min-width: 0; display: grid; place-items: center; aspect-ratio: 3 / 2; padding: 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); }
-    .logos img { max-height: 54px; width: auto; filter: grayscale(1); opacity: .75; transition: filter .3s, opacity .3s; }
-    .logos li:hover img { filter: none; opacity: 1; }
-    .logos .more { font: 400 1.4rem var(--serif); color: var(--gold); text-align: center; }
+    .marquee { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .marquee + .marquee { margin-top: 14px; }
+    .marquee ul { display: flex; gap: 14px; width: max-content; animation: slide 70s linear infinite; }
+    .marquee--rev ul { animation-direction: reverse; }
+    .marquee:hover ul { animation-play-state: paused; }
+    .marquee li { width: 190px; height: 100px; border-radius: 16px; background: #f5f1e8; display: grid; place-items: center; padding: 18px 22px; flex: none; }
+    .marquee img { max-height: 56px; width: auto; object-fit: contain; }
+    @keyframes slide { to { transform: translateX(-50%); } }
 
-    /* CTA + footer */
-    .cta { text-align: center; }
-    .cta h2 { font: 400 clamp(2.4rem, 6vw, 5.4rem)/1.02 var(--serif); letter-spacing: -.025em; max-width: 16ch; margin: 22px auto 34px; }
-    .cta__links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-    .pill { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; font-weight: 600; font-size: 14px; border: 1px solid var(--ink); transition: background .3s, color .3s; }
-    .pill--solid, .pill:hover { background: var(--ink); color: var(--bg); }
-    footer { border-top: 1px solid var(--line); padding: 48px 0 96px; font-size: 13px; color: var(--muted); }
-    .footer__in { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
-    .footer__in img { width: 130px; }
-    .footer__links { display: flex; gap: 22px; flex-wrap: wrap; }
+    /* FAQ + contact */
+    .faq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .faq details { border-radius: 16px; border: 1px solid var(--line); background: rgba(255, 255, 255, .03); transition: background .3s, border-color .3s; align-self: start; }
+    .faq details[open] { background: rgba(255, 255, 255, .06); border-color: var(--line-2); }
+    .faq summary { list-style: none; display: flex; justify-content: space-between; gap: 18px; padding: 20px 22px; font-weight: 600; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--gold); transition: transform .3s; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq p { padding: 0 22px 22px; color: var(--muted); font-size: 15px; }
+    .contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; border-radius: 28px; overflow: hidden; border: 1px solid var(--line-2); background: radial-gradient(100% 100% at 0% 0%, rgba(216, 178, 106, .2), transparent 55%), var(--bg-2); }
+    .contact__info { padding: clamp(28px, 4vw, 56px); }
+    .contact__list { display: grid; gap: 16px; margin-top: 32px; }
+    .contact__list a, .contact__list div { display: flex; gap: 14px; align-items: center; }
+    .contact__list span.ic { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: rgba(255, 255, 255, .07); color: var(--gold); }
+    .contact__list small { display: block; color: var(--muted); font-size: 12px; }
+    .form { padding: clamp(28px, 4vw, 56px); background: rgba(0, 0, 0, .18); display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: start; }
+    .form label { display: grid; gap: 8px; font-size: 13px; color: var(--muted); }
+    .form .full { grid-column: 1 / -1; }
+    .form input, .form textarea, .form select { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); color: var(--text); outline: 0; transition: border-color .3s; }
+    .form select option { background: var(--bg-2); }
+    .form textarea { min-height: 120px; resize: vertical; }
+    .form input:focus, .form textarea:focus, .form select:focus { border-color: var(--gold); }
+    .form button { justify-self: start; }
 
-    @media (max-width: 1000px) {
-      .figures { grid-template-columns: repeat(2, 1fr); }
-      .figure:nth-child(3) { padding-left: 0; border-left: 0; }
-      .figure:nth-child(n+3) { border-top: 1px solid var(--line); }
-      .audience { grid-template-columns: 1fr; }
-      .card { min-height: 0; }
-      .steps { grid-template-columns: 1fr 1fr; gap: 0 24px; }
-      .logos { grid-template-columns: repeat(4, 1fr); }
-      .presence__grid { grid-template-columns: 1fr; }
+    footer { padding: 72px 0 110px; border-top: 1px solid var(--line); margin-top: 40px; font-size: 14px; color: var(--muted); }
+    .fgrid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 36px; }
+    .fgrid img { width: 150px; margin-bottom: 16px; }
+    .fgrid h4 { color: var(--text); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+    .fgrid li + li { margin-top: 10px; }
+    .fgrid a:hover { color: var(--gold); }
+    .fbottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 48px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13px; }
+
+    @media (max-width: 1180px) {
+      .vision { grid-template-columns: 300px 1fr; }
+      .ceo-card { grid-row: span 2; }
+      .svc { grid-template-columns: repeat(3, 1fr); }
+      .leaders { grid-template-columns: repeat(4, 1fr); }
+      .person--ceo { grid-column: span 2; }
     }
-    @media (max-width: 860px) {
-      .burger { display: block; z-index: 2; }
-      .nav { position: fixed; inset: 0; z-index: 1; flex-direction: column; justify-content: center; gap: 26px; font: 400 1.9rem var(--serif); background: var(--bg); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+    @media (max-width: 980px) {
+      .burger { display: block; }
+      .nav { position: fixed; inset: 0; z-index: 2; flex-direction: column; justify-content: center; gap: 6px; font-size: 20px; background: rgba(3, 33, 26, .98); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .nav .btn { margin: 16px 0 0; font-size: 16px; }
       .menu-open .nav { opacity: 1; visibility: visible; }
       .menu-open { overflow: hidden; }
-      .nav__cta { font: 600 15px var(--sans); }
-      .hero__row, .head, .sectors, .quote { grid-template-columns: 1fr; }
-      .hero__actions { justify-content: flex-start; }
-      .head p { justify-self: start; }
-      .hero__img { aspect-ratio: 4 / 3; }
-      .sector-view { display: none; }
-      .quote img { max-width: 260px; }
+      .strip__links { display: none; }
+      .pillars { flex-direction: column; height: auto; }
+      .pillar { min-height: 0; }
+      .pillar p { max-height: none; opacity: 1; }
+      .pillar__num { font-size: 2.4rem; margin-bottom: 12px; }
+      .vision, .network, .model, .journey, .contact { grid-template-columns: 1fr; }
+      .ceo-card { grid-row: auto; flex-direction: row; } .ceo-card img { width: 38%; aspect-ratio: auto; }
+      .vtabs { flex-direction: row; overflow-x: auto; scrollbar-width: none; } .vtabs button { flex: none; }
+      .figs { grid-template-columns: repeat(2, 1fr); }
+      .jtabs { flex-direction: row; overflow-x: auto; scrollbar-width: none; } .jtabs button { flex: none; }
+      .hero__note { display: none; }
     }
-    @media (max-width: 560px) {
-      .figure, .figure + .figure { padding: 28px 12px 28px 0; }
-      .figure:nth-child(even) { padding-left: 16px; }
-      .steps { grid-template-columns: 1fr; }
-      .logos { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 640px) {
+      :root { --wrap: calc(100% - 32px); }
+      .svc { grid-template-columns: 1fr; }
+      .faq, .jlist, .paths, .form { grid-template-columns: 1fr; }
+      .leaders { grid-template-columns: repeat(2, 1fr); }
+      .person--ceo { grid-column: span 2; grid-row: span 1; aspect-ratio: 4 / 3.6; }
+      .person p { display: none; }
+      .person--ceo p { display: block; }
+      .ceo-card { flex-direction: column; } .ceo-card img { width: 100%; aspect-ratio: 1.2; }
+      .figs { grid-template-columns: 1fr 1fr; } .fig { padding: 24px 16px; }
+      .fgrid { grid-template-columns: 1fr 1fr; }
+      .slides { min-height: 330px; }
+      .node strong { font-size: 12px; } .node { padding: 10px 6px; }
+      .marquee li { width: 150px; height: 84px; }
     }
   </style>
 </head>
 <body>
+  <div class="strip">
+    <div class="wrap">
+      <span>Alliance Investment Holding · Riyadh, Saudi Arabia</span>
+      <span class="strip__links"><a href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a><a href="tel:+966539503000">+966 53 950 3000</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </div>
   <header class="header" data-header>
-    <div class="wrap header__in">
-      <a class="header__logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211"></a>
+    <div class="wrap">
+      <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208"></a>
       <nav class="nav" id="nav" aria-label="Main">
-        <a href="#who">Who We Serve</a>
+        <a href="#why">Why Alliance</a>
         <a href="#sectors">Sectors</a>
-        <a href="#approach">Approach</a>
-        <a href="#presence">Presence</a>
-        <a href="../../ar/" lang="ar">العربية</a>
-        <a class="nav__cta" href="#contact">Contact Us</a>
+        <a href="#services">Services</a>
+        <a href="#network">Network</a>
+        <a href="#leaders">Leadership</a>
+        <a href="#faq">FAQ</a>
+        <a class="lang" href="../../ar/" lang="ar">العربية</a>
+        <a class="btn" href="#contact" data-magnetic>Contact Us</a>
       </nav>
       <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
   </header>
 
   <main>
-    <section class="hero" style="padding-bottom:0">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__fallback" aria-hidden="true"><img src="../../assets/img/world-map.svg" alt="" width="1000" height="383"></div>
+      <div class="hero__gl" aria-hidden="true"></div>
+      <div class="wrap hero__in">
+        <h1 class="sr-only" id="hero-title">Alliance Investment — your strategic partner in the Saudi market</h1>
+        <p class="eyebrow">Aligned with Saudi Vision 2030</p>
+        <div class="slides" style="margin-top:22px">
+          <div class="slide is-active"><p class="display" data-split>Invest in the <span class="gold">Saudi market</span></p><p>Driven by Vision 2030 opportunities and guided by a Saudi partner with an international network across 16 countries.</p></div>
+          <div class="slide"><p class="display" data-split>Enter the Kingdom <span class="gold">with confidence</span></p><p>Market entry strategy, licensing and company setup, local partners and representation — handled end to end.</p></div>
+          <div class="slide"><p class="display" data-split>Build partnerships <span class="gold">that last</span></p><p>Direct access to government, institutional financiers and vetted local partners for sustainable growth.</p></div>
+        </div>
+        <div class="finder">
+          <div class="search" id="search">
+            <label class="sr-only" for="q">Search</label>
+            <input id="q" type="search" placeholder="I am looking for…" autocomplete="off" aria-controls="suggest" aria-expanded="false">
+            <svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#search-chart"/></svg>
+            <div class="suggest" id="suggest" role="listbox"></div>
+          </div>
+          <a class="btn btn--glass" href="#sectors">Explore sectors ↗</a>
+          <a class="btn btn--glass" href="#contact">Contact us ↗</a>
+        </div>
+        <div class="bars" id="bars"><button type="button" aria-label="Message 1"><i></i></button><button type="button" aria-label="Message 2"><i></i></button><button type="button" aria-label="Message 3"><i></i></button></div>
+      </div>
+      <p class="hero__note"><b></b>Riyadh headquarters · live network</p>
+    </section>
+
+    <section id="why">
       <div class="wrap">
-        <p class="kicker" data-reveal>Alliance Investment Holding · Riyadh</p>
-        <h1 data-reveal style="--d:.08s;margin-top:22px">Your strategic partner in <em>the Saudi market.</em></h1>
-        <div class="hero__row">
-          <p class="hero__lead" data-reveal style="--d:.16s">Business setup, investment strategy, local partnerships and Vision 2030-aligned growth — for foreign and local companies building a lasting presence in the Kingdom.</p>
-          <div class="hero__actions" data-reveal style="--d:.24s">
-            <a class="arrow-link" href="#who">How we help</a>
-            <a class="arrow-link" href="#contact">Talk to our team</a>
+        <div class="head">
+          <div><p class="eyebrow" data-reveal>Why Alliance</p><h2 class="h2" data-split>Five reasons partners <em>choose us</em></h2></div>
+          <p class="lead" data-reveal>Complete end-to-end solutions under unified management — from initial studies to final reporting.</p>
+        </div>
+        <div class="pillars" id="pillars" data-reveal></div>
+      </div>
+    </section>
+
+    <section id="about" style="padding-top:0">
+      <div class="wrap">
+        <div class="head">
+          <div><p class="eyebrow" data-reveal>Who we are</p><h2 class="h2" data-split>A partner with a <em>bold vision</em></h2></div>
+        </div>
+        <div class="vision" data-tabs data-tabs-hover>
+          <figure class="ceo-card" data-reveal>
+            <img src="../../assets/img/team-turki-al-qahtani.webp" alt="Eng. Turki Al-Qahtani" width="400" height="400" loading="lazy">
+            <blockquote id="ceo-quote"></blockquote>
+            <cite>Eng. Turki Al-Qahtani<span>Chief Executive Officer</span></cite>
+          </figure>
+          <div class="vtabs" data-reveal style="--d:.08s">
+            <button type="button" data-tab="who">Who we are</button>
+            <button type="button" data-tab="vision">Our vision</button>
+            <button type="button" data-tab="mission">Our mission</button>
+            <button type="button" data-tab="ceo">Leadership</button>
+          </div>
+          <div data-reveal style="--d:.16s">
+            <div class="vpanel" data-panel="who"><h3>Your strategic partner in the Kingdom</h3><p id="about-1"></p><p id="about-2"></p></div>
+            <div class="vpanel" data-panel="vision"><h3>Our vision</h3><p id="vision-text" style="font-size:1.35rem;color:#fff"></p><ul><li>Saudi Arabia as the world’s premier investment hub</li><li>Practical framework of Saudi Vision 2030</li><li>Sustainable expansion for foreign and local companies</li></ul></div>
+            <div class="vpanel" data-panel="mission"><h3>Our mission</h3><p id="mission-text"></p><ul><li>Smart market entry strategies</li><li>Effective business models</li><li>Reliable local execution</li></ul></div>
+            <div class="vpanel" data-panel="ceo"><h3>Led by Eng. Turki Al-Qahtani</h3><p>A seasoned Saudi leadership team supported by global advisors — a rare blend of local insight and international standards.</p><ul id="ceo-bio"></ul></div>
           </div>
         </div>
-        <div class="hero__img" data-reveal style="--d:.2s"><img src="../../assets/img/page-hero.webp" alt="Riyadh business district at dusk" width="1920" height="900" fetchpriority="high"></div>
-        <div class="figures">
-          <div class="figure" data-reveal><strong data-count="10" data-suffix="+">10+</strong><span>Years of presence in the Saudi market</span></div>
-          <div class="figure" data-reveal style="--d:.06s"><strong data-count="16">16</strong><span>Countries in our international network</span></div>
-          <div class="figure" data-reveal style="--d:.12s"><strong data-count="8">8</strong><span>Strategic sectors aligned with Vision 2030</span></div>
-          <div class="figure" data-reveal style="--d:.18s"><strong data-count="41">41</strong><span>Government, giga-project and private partners</span></div>
+      </div>
+    </section>
+
+    <section class="glance">
+      <div class="wrap">
+        <div class="head"><div><p class="eyebrow" data-reveal>Alliance at a glance</p><h2 class="h2" data-split>Where vision <em>becomes investment</em></h2></div></div>
+        <div class="figs">
+          <div class="fig" data-reveal><strong data-count="10" data-suffix="+">10+</strong><span>Years of presence in the Saudi market</span></div>
+          <div class="fig" data-reveal style="--d:.05s"><strong data-count="16">16</strong><span>Countries in our international network</span></div>
+          <div class="fig" data-reveal style="--d:.1s"><strong data-count="8">8</strong><span>Strategic sectors aligned with Vision 2030</span></div>
+          <div class="fig" data-reveal><strong data-count="41">41</strong><span>Government, giga-project and private partners</span></div>
+          <div class="fig" data-reveal style="--d:.05s"><strong>4–6</strong><span>Weeks for a typical business setup</span></div>
+          <div class="fig" data-reveal style="--d:.1s"><strong data-count="5">5</strong><span>International business councils: European, American, Chinese, Korean, French</span></div>
         </div>
       </div>
     </section>
 
-    <section id="who">
+    <section id="sectors">
+      <div class="wrap head">
+        <div><p class="eyebrow" data-reveal>Sectors & opportunities</p><h2 class="h2" data-split>Unlocking opportunity across <em>eight sectors</em></h2><p class="lead" data-reveal>Strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities.</p></div>
+        <div class="car-nav" data-reveal><button type="button" id="prev" aria-label="Previous">←</button><button type="button" id="next" aria-label="Next">→</button></div>
+      </div>
+      <div class="track" id="track" data-reveal></div>
+    </section>
+
+    <section id="network" style="padding-top:0">
+      <div class="wrap network">
+        <div>
+          <p class="eyebrow" data-reveal>Global network</p>
+          <h2 class="h2" data-split>Riyadh at the centre of <em>16 countries</em></h2>
+          <p class="lead" data-reveal>An international network of consultants and partners across the Gulf, Europe, Asia, the Americas and Africa.</p>
+          <div class="regions" data-reveal>
+            <div class="region"><h4>Gulf</h4><ul><li class="hq">Saudi Arabia · HQ</li><li>UAE</li><li>Qatar</li><li>Bahrain</li></ul></div>
+            <div class="region"><h4>Europe</h4><ul><li>United Kingdom</li><li>France</li><li>Germany</li><li>Austria</li><li>Spain</li><li>Türkiye</li></ul></div>
+            <div class="region"><h4>Asia, Americas & Africa</h4><ul><li>China</li><li>Japan</li><li>South Korea</li><li>India</li><li>United States</li><li>South Africa</li></ul></div>
+          </div>
+        </div>
+        <div class="map" data-reveal="scale"><img src="../../assets/img/world-map.svg" alt="World map of the Alliance network connected to Riyadh" width="1000" height="383" loading="lazy"></div>
+      </div>
+    </section>
+
+    <section id="services" style="padding-top:0">
       <div class="wrap">
         <div class="head">
-          <div data-reveal><span class="kicker">Who we serve</span><h2 class="h2">One partner, from first study to full operations.</h2></div>
-          <p data-reveal style="--d:.1s">A Saudi company with an international network of consultants and partners — combining deep local insight with international standards.</p>
+          <div><p class="eyebrow" data-reveal>Services & solutions</p><h2 class="h2" data-split>Seamless services for <em>every stage</em></h2></div>
+          <p class="lead" data-reveal>Business development and investment solutions — from your first market study to long-term growth in the Kingdom.</p>
         </div>
-        <div class="audience">
-          <article class="card" data-reveal>
-            <span class="card__num">01</span>
-            <h3>International companies entering Saudi Arabia</h3>
-            <p>Market analysis, licensing and company setup, local partners and on-the-ground representation — a smooth launch, typically in 4 to 6 weeks.</p>
-            <a class="arrow-link" href="../../business-model/">Entry models</a>
-          </article>
-          <article class="card" data-reveal style="--d:.08s">
-            <span class="card__num">02</span>
-            <h3>Investors seeking high-growth opportunities</h3>
-            <p>Feasibility studies, opportunity analysis and access to institutional funding through the Public Investment Fund, regional banks and private equity.</p>
-            <a class="arrow-link" href="#sectors">Focus sectors</a>
-          </article>
-          <article class="card" data-reveal style="--d:.16s">
-            <span class="card__num">03</span>
-            <h3>Government &amp; public-private partnerships</h3>
-            <p>Registration on procurement platforms, proposal development and structured partnerships between the public and private sectors.</p>
-            <a class="arrow-link" href="#contact">Discuss a project</a>
-          </article>
+        <div class="svc" id="svc"></div>
+        <div class="journey" data-tabs data-reveal>
+          <div class="jtabs" id="jtabs"></div>
+          <div id="jpanels"></div>
         </div>
       </div>
     </section>
 
-    <section id="sectors" style="padding-top:0">
+    <section id="model" style="padding-top:0">
+      <div class="wrap model">
+        <div class="orbit" data-reveal="scale">
+          <svg class="lines" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="ring" cx="50" cy="50" r="44"/><circle class="ring" cx="50" cy="50" r="30"/>
+            <path class="flow" d="M50 9 L50 33"/><path class="flow" d="M13 80 L36 62"/><path class="flow" d="M87 80 L64 62"/>
+            <path class="flow" d="M50 9 Q14 30 13 80" style="animation-duration:3s"/><path class="flow" d="M87 80 Q50 104 13 80" style="animation-duration:3s"/><path class="flow" d="M50 9 Q86 30 87 80" style="animation-duration:3s"/>
+          </svg>
+          <div class="core"><img src="../../assets/img/emblem.webp" alt="Alliance Investment" width="240" height="240"></div>
+          <div class="node n1"><small>Party 01</small><strong>Institutional Financier</strong></div>
+          <div class="node n2"><small>Party 02</small><strong>Local Partner</strong></div>
+          <div class="node n3"><small>Party 03</small><strong>Target Company</strong></div>
+        </div>
+        <div>
+          <p class="eyebrow" data-reveal>Strategic operating model</p>
+          <h2 class="h2" data-split>Three parties, <em>one alliance</em></h2>
+          <p class="lead" data-reveal>Our partnership model is built on three integrated parties, with Alliance Investment at the centre.</p>
+          <ul class="parties" id="parties" data-reveal></ul>
+          <div class="paths" id="paths" data-reveal></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="leaders" style="padding-top:0">
       <div class="wrap">
         <div class="head">
-          <div data-reveal><span class="kicker">Our focus</span><h2 class="h2">Eight sectors shaping the Kingdom’s next decade.</h2></div>
-          <p data-reveal style="--d:.1s">We focus on strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities.</p>
+          <div><p class="eyebrow" data-reveal>Leadership</p><h2 class="h2" data-split>World-class leadership, <em>global reach</em></h2></div>
+          <p class="lead" data-reveal>A seasoned Saudi team supported by board members and advisors from Europe, Asia and the Americas.</p>
         </div>
-        <div class="sectors">
-          <ol class="sector-list" data-reveal>
-            <li><button type="button" data-img="sector-entertainment"><span class="n">01</span><span class="t">Entertainment, Leisure &amp; Sports</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-ict"><span class="n">02</span><span class="t">ICT, Digital, Innovation &amp; Human Capital</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-energy"><span class="n">03</span><span class="t">Energy, Utilities &amp; Environment</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-logistics"><span class="n">04</span><span class="t">Logistics &amp; Supply Chain Services</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-agriculture"><span class="n">05</span><span class="t">Food &amp; Agriculture</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-healthcare"><span class="n">06</span><span class="t">Healthcare, Life Sciences &amp; Pharma</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-real-estate"><span class="n">07</span><span class="t">Real Estate Development &amp; Infrastructure</span><span class="a">→</span></button></li>
-            <li><button type="button" data-img="sector-finance"><span class="n">08</span><span class="t">Financial Services &amp; Investments</span><span class="a">→</span></button></li>
-          </ol>
-          <figure class="sector-view" aria-hidden="true"><figcaption></figcaption></figure>
-        </div>
+        <div class="leaders" id="team"></div>
       </div>
     </section>
 
-    <section class="approach" id="approach">
+    <section id="partners" style="padding-top:0">
+      <div class="wrap head"><div><p class="eyebrow" data-reveal>Trusted network</p><h2 class="h2" data-split>Working alongside <em>leading institutions</em></h2></div></div>
+      <div class="marquee" data-reveal><ul data-marquee id="p1"></ul></div>
+      <div class="marquee marquee--rev" data-reveal><ul data-marquee id="p2"></ul></div>
+    </section>
+
+    <section id="faq" style="padding-top:0">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><span class="kicker">How we work</span><h2 class="h2">A clear, five-stage approach.</h2></div>
-          <p data-reveal style="--d:.1s">From strategy to market entry and operations, every engagement follows the same disciplined path.</p>
-        </div>
-        <ol class="steps">
-          <li class="step" data-reveal><h3>Strategic Analysis &amp; Planning</h3><p>Market research, investment opportunities and customised strategies.</p></li>
-          <li class="step" data-reveal style="--d:.06s"><h3>Operations &amp; Process Management</h3><p>Operational efficiency, cost-effective solutions and higher productivity.</p></li>
-          <li class="step" data-reveal style="--d:.12s"><h3>Long-Term Strategic Partnerships</h3><p>Agreements with local and international partners for sustainable growth.</p></li>
-          <li class="step" data-reveal style="--d:.18s"><h3>High-Growth Investments</h3><p>Promising sectors that generate high investment returns.</p></li>
-          <li class="step" data-reveal style="--d:.24s"><h3>Performance &amp; Sustainability</h3><p>Advanced analytics for data-driven decisions and lasting results.</p></li>
-        </ol>
-        <p data-reveal style="margin-top:56px"><a class="arrow-link" href="../../business-model/">Explore our business model</a></p>
+        <div class="head"><div><p class="eyebrow" data-reveal>FAQ</p><h2 class="h2" data-split>Questions <em>investors ask</em></h2></div></div>
+        <div class="faq" id="faq-list" data-reveal></div>
       </div>
     </section>
 
-    <section>
-      <div class="wrap quote">
-        <img data-reveal src="../../assets/img/team-turki-al-qahtani.webp" alt="Eng. Turki Al-Qahtani" width="400" height="400" loading="lazy">
-        <div data-reveal style="--d:.1s">
-          <blockquote>We are proud of our heritage and excited about the future — focusing on sustainable growth, innovation, value creation and positive social impact.</blockquote>
-          <cite>Eng. Turki Al-Qahtani<span>Chief Executive Officer, Alliance Investment</span></cite>
-        </div>
-      </div>
-    </section>
-
-    <section class="presence" id="presence">
-      <div class="wrap presence__grid">
-        <div data-reveal>
-          <span class="kicker">Global presence</span>
-          <p class="presence__big"><span data-count="16">16</span> <small>countries</small></p>
-          <ul class="countries">
-            <li>Saudi Arabia — HQ</li><li>United Arab Emirates</li><li>Qatar</li><li>Bahrain</li><li>Türkiye</li><li>United Kingdom</li><li>France</li><li>Germany</li><li>Austria</li><li>Spain</li><li>United States</li><li>China</li><li>Japan</li><li>South Korea</li><li>India</li><li>South Africa</li>
-          </ul>
-        </div>
-        <img class="map" data-reveal style="--d:.1s" src="../../assets/img/world-map.svg" alt="World map of the Alliance network" width="1000" height="383" loading="lazy">
-      </div>
-    </section>
-
-    <section id="partners">
+    <section id="contact" style="padding-top:0">
       <div class="wrap">
-        <div class="head">
-          <div data-reveal><span class="kicker">Trusted network</span><h2 class="h2">Working alongside the Kingdom’s leading institutions.</h2></div>
-        </div>
-        <ul class="logos" data-reveal>
-          <li><img src="../../assets/img/partner-pif.webp" alt="Public Investment Fund" width="258" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-neom.webp" alt="NEOM" width="107" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-investment.webp" alt="Ministry of Investment" width="360" height="109" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-red-sea.webp" alt="The Red Sea Development Company" width="270" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-qiddiya.webp" alt="Qiddiya" width="128" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-industry.webp" alt="Ministry of Industry and Mineral Resources" width="360" height="109" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-sport.webp" alt="Ministry of Sport" width="360" height="118" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ministry-of-energy.webp" alt="Ministry of Energy" width="303" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-amcham-saudi.webp" alt="AmCham Saudi Arabia" width="105" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-ecc-ksa.webp" alt="European Chamber of Commerce in Saudi Arabia" width="275" height="120" loading="lazy"></li>
-          <li><img src="../../assets/img/partner-indra.webp" alt="Indra Group" width="360" height="78" loading="lazy"></li>
-          <li><span class="more">+30<br>partners</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="cta" id="contact" style="padding-top:0">
-      <div class="wrap">
-        <span class="kicker" data-reveal>Contact us</span>
-        <h2 data-reveal style="--d:.08s">Let’s discuss your next step in the Saudi market.</h2>
-        <div class="cta__links" data-reveal style="--d:.16s">
-          <a class="pill pill--solid" href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a>
-          <a class="pill" href="tel:+966539503000">+966 53 950 3000</a>
+        <div class="contact" data-reveal>
+          <div class="contact__info">
+            <p class="eyebrow">Contact us</p>
+            <h2 class="h2">Let’s discuss your next step in the <em>Saudi market</em></h2>
+            <p class="lead">Tell us about your organization and objectives — our team will get back to you.</p>
+            <div class="contact__list">
+              <a href="mailto:Ksa@alliance.sa"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#mail"/></svg></span><span><small>Email</small>Ksa@alliance.sa</span></a>
+              <a href="tel:+966539503000"><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#phone"/></svg></span><span><small>Phone</small>+966 53 950 3000</span></a>
+              <div><span class="ic"><svg class="icon" aria-hidden="true"><use href="../../assets/img/icons.svg#pin"/></svg></span><span><small>Location</small>Riyadh, Saudi Arabia</span></div>
+            </div>
+          </div>
+          <form class="form" id="form">
+            <label>Full name<input name="name" required autocomplete="name"></label>
+            <label>Email<input name="email" type="email" required autocomplete="email"></label>
+            <label>Organization<input name="org" autocomplete="organization"></label>
+            <label>Purpose<select name="purpose"><option>Strategic Partnership</option><option>Investment Opportunity</option><option>Business Setup in Saudi Arabia</option><option>Government Collaboration</option><option>Other</option></select></label>
+            <label class="full">Message<textarea name="message" required></textarea></label>
+            <button class="btn full" type="submit" data-magnetic>Send message →</button>
+          </form>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="wrap footer__in">
-      <img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211" loading="lazy">
-      <div class="footer__links"><a href="../../about-us/">About Us</a><a href="../../business-model/">Business Model</a><a href="../../privacy-policy/">Privacy Policy</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></div>
-      <span>© <span data-year>2026</span> Alliance Investment</span>
+    <div class="wrap">
+      <div class="fgrid">
+        <div><img src="../../assets/img/logo-light.webp" alt="Alliance Investment Holding" width="480" height="208" loading="lazy"><p>Your strategic partner for success in the Saudi market — business setup, investment strategy, local partnerships and Vision 2030-aligned growth.</p></div>
+        <div><h4>Company</h4><ul><li><a href="#about">Who we are</a></li><li><a href="#leaders">Leadership</a></li><li><a href="#network">Global network</a></li></ul></div>
+        <div><h4>Services</h4><ul><li><a href="#services">Market entry</a></li><li><a href="#services">Business setup</a></li><li><a href="#model">Operating model</a></li></ul></div>
+        <div><h4>Contact</h4><ul><li><a href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a></li><li><a href="tel:+966539503000">+966 53 950 3000</a></li><li>Riyadh, Saudi Arabia</li></ul></div>
+      </div>
+      <div class="fbottom"><span>© <span data-year>2026</span> Alliance Investment. All rights reserved.</span><a href="../../privacy-policy/">Privacy Policy</a></div>
     </div>
   </footer>
 
   <script>
-    // Sectors: the list drives the large image beside it
     (function () {
-      var view = document.querySelector('.sector-view'), cap = view.querySelector('figcaption');
-      var buttons = document.querySelectorAll('.sector-list button');
-      buttons.forEach(function (b) {
-        var img = new Image();
-        img.src = '../../assets/img/' + b.dataset.img + '.webp'; img.alt = ''; img.loading = 'lazy';
-        view.insertBefore(img, cap); b._img = img;
-        var show = function () {
-          buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); x._img.classList.toggle('on', x === b); });
-          cap.textContent = b.querySelector('.t').textContent;
-        };
-        b.addEventListener('mouseenter', show); b.addEventListener('focus', show); b.addEventListener('click', show);
+      var A = ALLIANCE, $ = A$;
+      $.fill('#pillars', A.why.map(function (w, i) {
+        return '<article class="pillar" tabindex="0"><span class="pillar__num">' + $.pad(i + 1) + '</span><div>' + $.icon(w.icon) + '<h3>' + w.t + '</h3><p>' + w.d + '</p></div></article>';
+      }).join(''));
+      $.fill('#ceo-quote', '“' + A.ceo.quote.split('. ')[0] + '.”');
+      $.fill('#about-1', A.about[0]); $.fill('#about-2', A.about[1]);
+      $.fill('#vision-text', A.vision); $.fill('#mission-text', A.mission);
+      $.fill('#ceo-bio', A.ceo.bio.map(function (b) { return '<li>' + b + '</li>'; }).join(''));
+      $.fill('#track', A.sectors.map(function (s, i) {
+        return '<article class="scard"><img src="' + $.img(s.img) + '.webp" alt="" loading="lazy" draggable="false"><span class="scard__num">' + $.pad(i + 1) + ' / 08</span><div class="scard__in"><small>Vision 2030 sector</small><h3>' + $.esc(s.t) + '</h3></div></article>';
+      }).join(''));
+      $.fill('#svc', A.solutions.map(function (s, i) {
+        return '<article data-reveal style="--d:' + (i * 0.06) + 's"><span class="ic">' + $.icon(s.icon) + '</span><h3>' + $.esc(s.t) + '</h3><p>' + s.d + '</p></article>';
+      }).join(''));
+      var groups = [[A.entry[0], A.entry[1], A.solutions[1]], [A.entry[2], A.solutions[0], A.solutions[3]], [A.entry[3], A.entry[4], A.solutions[2]]];
+      $.fill('#jtabs', A.phases.map(function (p, i) {
+        return '<button type="button" data-tab="p' + i + '"><b>' + $.pad(i + 1) + '</b><span>' + p.t + '<small>Phase ' + ['one', 'two', 'three'][i] + '</small></span></button>';
+      }).join(''));
+      $.fill('#jpanels', A.phases.map(function (p, i) {
+        return '<div class="jpanel" data-panel="p' + i + '"><h3>' + p.t + '</h3><p>' + p.d + '</p><ul class="jlist">' + groups[i].map(function (g) {
+          return '<li><strong>' + $.icon(g.icon) + $.esc(g.t) + '</strong><p>' + g.d + '</p></li>';
+        }).join('') + '</ul></div>';
+      }).join(''));
+      $.fill('#parties', A.parties.map(function (p, i) {
+        return '<li><b>' + $.pad(i + 1) + '</b><div><small>' + p.tag + '</small><strong>' + p.t + '</strong><p>' + p.d + '</p></div></li>';
+      }).join(''));
+      $.fill('#paths', A.pathways.map(function (p) { return '<article><h4>' + p.t + '</h4><p>' + p.d + '</p></article>'; }).join(''));
+      $.fill('#team', '<article class="person person--ceo" data-reveal><img src="' + $.img(A.ceo.img) + '" alt="" loading="lazy"><div><small>Chief Executive Officer</small><strong>' + A.ceo.name + '</strong><p>' + A.ceo.bio[0] + '.</p></div></article>' +
+        A.team.map(function (p, i) {
+          return '<article class="person" data-reveal style="--d:' + ((i % 4) * 0.05) + 's"><img src="' + $.img(p.img) + '" alt="" loading="lazy"><div><small>' + (p.group === 'Board' ? 'Board member' : 'Advisor') + '</small><strong>' + p.name + '</strong><p>' + p.focus + '</p></div></article>';
+        }).join(''));
+      var logo = function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; };
+      $.fill('#p1', A.partners.slice(0, 21).map(logo).join(''));
+      $.fill('#p2', A.partners.slice(21).map(logo).join(''));
+      $.fill('#faq-list', A.faq.map(function (f, i) { return '<details' + (i === 0 ? ' open' : '') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join(''));
+
+      // Hero messages rotate with progress bars
+      var slides = document.querySelectorAll('.slide'), bars = document.querySelectorAll('#bars button'), at = 0, timer;
+      function go(n) {
+        at = (n + slides.length) % slides.length;
+        slides.forEach(function (s, i) { s.classList.toggle('is-active', i === at); });
+        bars.forEach(function (b, i) { b.classList.remove('is-active'); void b.offsetWidth; b.classList.toggle('is-active', i === at); });
+        clearTimeout(timer); timer = setTimeout(function () { go(at + 1); }, 6500);
+      }
+      bars.forEach(function (b, i) { b.addEventListener('click', function () { go(i); }); });
+      go(0);
+
+      // "I am looking for…" finder
+      var DEST = [
+        ['Market entry strategy', 'Services', '#services'], ['Company setup & licensing', 'Journey', '#services'], ['Feasibility studies', 'Services', '#services'],
+        ['Funding & investors', 'Services', '#services'], ['Public-private partnerships', 'Services', '#services'], ['Local partner', 'Operating model', '#model'],
+        ['Investment sectors', 'Sectors', '#sectors'], ['Startups & SMEs', 'Pathways', '#model'], ['Leadership team', 'Leadership', '#leaders'],
+        ['Global network', 'Network', '#network'], ['Questions', 'FAQ', '#faq'], ['Talk to the team', 'Contact', '#contact'],
+      ];
+      var box = document.getElementById('search'), q = document.getElementById('q'), list = document.getElementById('suggest'), hot = 0;
+      function render() {
+        var v = q.value.trim().toLowerCase(), hits = DEST.filter(function (d) { return !v || (d[0] + ' ' + d[1]).toLowerCase().indexOf(v) > -1; });
+        hot = Math.min(hot, Math.max(0, hits.length - 1));
+        list.innerHTML = hits.length ? hits.slice(0, 7).map(function (d, i) { return '<a role="option" href="' + d[2] + '"' + (i === hot ? ' class="is-hot"' : '') + '>' + d[0] + '<small>' + d[1] + '</small></a>'; }).join('') : '<a href="#contact">Ask our team directly<small>Contact</small></a>';
+      }
+      function open(on) { box.classList.toggle('is-open', on); q.setAttribute('aria-expanded', String(on)); }
+      q.addEventListener('focus', function () { render(); open(true); });
+      q.addEventListener('input', function () { hot = 0; render(); open(true); });
+      q.addEventListener('keydown', function (e) {
+        var items = list.querySelectorAll('a');
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); hot = (hot + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length; items.forEach(function (a, i) { a.classList.toggle('is-hot', i === hot); }); }
+        if (e.key === 'Enter' && items[hot]) { e.preventDefault(); items[hot].click(); q.blur(); open(false); }
+        if (e.key === 'Escape') { q.blur(); open(false); }
       });
-      buttons[0].dispatchEvent(new Event('click'));
+      list.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      list.addEventListener('click', function () { open(false); q.blur(); });
+      q.addEventListener('blur', function () { setTimeout(function () { open(false); }, 120); });
+
+      // Sector carousel: arrows + drag
+      var track = document.getElementById('track');
+      function step(dir) { var card = track.querySelector('.scard'); track.scrollBy({ left: dir * (card.offsetWidth + 18), behavior: 'smooth' }); }
+      document.getElementById('prev').addEventListener('click', function () { step(-1); });
+      document.getElementById('next').addEventListener('click', function () { step(1); });
+      var down = false, sx = 0, sl = 0, moved = 0;
+      track.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = 0; sx = e.clientX; sl = track.scrollLeft; track.classList.add('is-drag'); });
+      addEventListener('pointermove', function (e) { if (!down) return; moved = Math.abs(e.clientX - sx); track.scrollLeft = sl - (e.clientX - sx); });
+      addEventListener('pointerup', function () { if (!down) return; down = false; track.classList.remove('is-drag'); });
+
+      // Mobile: tap a pillar to open it
+      document.querySelectorAll('.pillar').forEach(function (p) { p.addEventListener('click', function () { document.querySelectorAll('.pillar').forEach(function (o) { o.classList.toggle('is-open', o === p); }); }); });
+
+      // Contact form opens the visitor's email app with the message filled in
+      document.getElementById('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var f = e.target, body = 'Name: ' + f.name.value + '\nEmail: ' + f.email.value + '\nOrganization: ' + f.org.value + '\nPurpose: ' + f.purpose.value + '\n\n' + f.message.value;
+        location.href = 'mailto:' + A.email + '?subject=' + encodeURIComponent('Enquiry: ' + f.purpose.value) + '&body=' + encodeURIComponent(body);
+      });
     })();
+  </script>
+
+  <script type="module">
+    // 3D map: dotted world on a tilted plane, Saudi Arabia in gold, light routes from Riyadh to the network
+    import * as THREE from 'three';
+    import { land, network, HQ, NETWORK } from '../geo.js';
+
+    const host = document.querySelector('.hero__gl');
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+    if (renderer) {
+      const small = innerWidth < 760;
+      renderer.setPixelRatio(Math.min(devicePixelRatio, small ? 1.5 : 2));
+      host.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x03211a, 26, 64);
+      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200);
+
+      const S = 0.16; // degrees → scene units
+      const P = (lon, lat, y = 0) => new THREE.Vector3(lon * S, y, -lat * S);
+      const hq = P(HQ.lon, HQ.lat);
+
+      // Rough outline of Saudi Arabia (lon, lat) to colour its dots gold
+      const KSA = [[36.5, 29.4], [37.9, 31.4], [39.2, 32.1], [42.1, 31.1], [44.7, 29.2], [46.5, 29.1], [47.6, 28.6], [48.6, 27.8], [50.0, 26.4], [50.8, 25.0], [51.6, 24.3], [52.6, 22.9], [55.6, 22.0], [55.2, 20.0], [52.0, 19.0], [49.0, 18.6], [46.6, 17.3], [44.5, 17.4], [43.2, 16.7], [42.6, 17.4], [41.4, 19.0], [39.6, 20.9], [38.9, 22.5], [37.6, 24.3], [36.5, 26.0], [35.2, 28.0], [34.6, 28.2]];
+      const inKSA = (x, y) => { let c = false; for (let i = 0, j = KSA.length - 1; i < KSA.length; j = i++) { const [xi, yi] = KSA[i], [xj, yj] = KSA[j]; if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) c = !c; } return c; };
+      const netSet = new Set(network().map(([lo, la]) => lo.toFixed(2) + ',' + la.toFixed(2)));
+
+      // Dots: base land, network countries brighter, KSA gold
+      const pts = land(), pos = new Float32Array(pts.length * 3), col = new Float32Array(pts.length * 3), siz = new Float32Array(pts.length);
+      const cBase = new THREE.Color(0x86c2ae), cNet = new THREE.Color(0xd9ead9), cKsa = new THREE.Color(0xf0c674);
+      pts.forEach(([lo, la], i) => {
+        const v = P(lo, la); pos.set([v.x, 0, v.z], i * 3);
+        const k = inKSA(lo, la), n = netSet.has(lo.toFixed(2) + ',' + la.toFixed(2));
+        (k ? cKsa : n ? cNet : cBase).toArray(col, i * 3);
+        siz[i] = k ? 6.4 : n ? 5.0 : 4.0;
+      });
+      const dotGeo = new THREE.BufferGeometry();
+      dotGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      dotGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      dotGeo.setAttribute('size', new THREE.BufferAttribute(siz, 1));
+      const uniforms = { uTime: { value: 0 }, uScale: { value: 1 }, uHQ: { value: hq } };
+      const dotMat = new THREE.ShaderMaterial({
+        uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: `attribute float size; attribute vec3 color; varying vec3 vColor; varying float vGlow; uniform float uTime, uScale; uniform vec3 uHQ;
+          void main() { vec3 p = position; float d = distance(p.xz, uHQ.xz);
+            float wave = smoothstep(1.4, 0.0, abs(d - mod(uTime * 4.0, 34.0)));   // ripple travelling out from Riyadh
+            p.y += wave * 0.18; vGlow = wave; vColor = color;
+            vec4 mv = modelViewMatrix * vec4(p, 1.0); gl_PointSize = size * uScale * (1.0 + wave * 0.9) * (18.0 / -mv.z); gl_Position = projectionMatrix * mv; }`,
+        fragmentShader: `varying vec3 vColor; varying float vGlow;
+          void main() { float r = length(gl_PointCoord - 0.5); if (r > 0.5) discard; float a = smoothstep(0.5, 0.1, r);
+            gl_FragColor = vec4(vColor * (0.75 + vGlow * 0.9), a * (0.7 + vGlow * 0.3)); }`,
+      });
+      scene.add(new THREE.Points(dotGeo, dotMat));
+
+      // Routes: arcs with a light running along them
+      const arcMat = new THREE.ShaderMaterial({
+        uniforms: { uTime: uniforms.uTime }, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+        vertexShader: `attribute float t; attribute float seed; varying float vT; varying float vSeed; void main() { vT = t; vSeed = seed; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `varying float vT; varying float vSeed; uniform float uTime;
+          void main() { float head = fract(uTime * 0.22 + vSeed); float tail = smoothstep(head - 0.28, head, vT) * step(vT, head);
+            vec3 c = mix(vec3(0.85, 0.7, 0.42), vec3(1.0, 0.93, 0.75), tail); gl_FragColor = vec4(c, 0.16 + tail * 0.9); }`,
+      });
+      const comets = [];
+      NETWORK.forEach((n, k) => {
+        const to = P(n.lon, n.lat), dist = hq.distanceTo(to);
+        const mid = hq.clone().lerp(to, 0.5); mid.y = Math.min(9, 0.6 + dist * 0.32);
+        const curve = new THREE.QuadraticBezierCurve3(hq, mid, to), N = 90;
+        const g = new THREE.BufferGeometry().setFromPoints(curve.getPoints(N));
+        g.setAttribute('t', new THREE.BufferAttribute(Float32Array.from({ length: N + 1 }, (_, i) => i / N), 1));
+        g.setAttribute('seed', new THREE.BufferAttribute(new Float32Array(N + 1).fill(k / NETWORK.length), 1));
+        scene.add(new THREE.Line(g, arcMat));
+        comets.push({ curve, seed: k / NETWORK.length });
+        // landing ring
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.12, 0.17, 32), new THREE.MeshBasicMaterial({ color: 0xf0d39a, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false }));
+        ring.rotation.x = -Math.PI / 2; ring.position.copy(to).setY(0.02); scene.add(ring); ring.userData.base = Math.random() * 6; comets.push({ ring });
+      });
+
+      // Riyadh beacon: beam + pulsing rings
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.09, 4, 16, 1, true), new THREE.ShaderMaterial({
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+        vertexShader: `varying float vY; void main() { vY = uv.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `varying float vY; void main() { gl_FragColor = vec4(1.0, 0.85, 0.55, (1.0 - vY) * 0.85); }`,
+      }));
+      beam.position.copy(hq).setY(1.5); beam.scale.y = 0.75; scene.add(beam);
+      const pulses = [0, 1, 2].map((i) => {
+        const m = new THREE.Mesh(new THREE.RingGeometry(0.2, 0.26, 48), new THREE.MeshBasicMaterial({ color: 0xf0c674, transparent: true, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
+        m.rotation.x = -Math.PI / 2; m.position.copy(hq).setY(0.03); m.userData.o = i / 3; scene.add(m); return m;
+      });
+
+      // Travelling sparks
+      const sparkGeo = new THREE.BufferGeometry();
+      const sparkPos = new Float32Array(NETWORK.length * 3);
+      sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+      const sparkMat = new THREE.PointsMaterial({ color: 0xfff1cc, size: 0.32, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, map: (() => {
+        const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+        g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.3, 'rgba(255,220,150,.7)'); g.addColorStop(1, 'rgba(255,200,120,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+      })() });
+      scene.add(new THREE.Points(sparkGeo, sparkMat));
+
+      // Camera framing: Riyadh slightly right of centre, the world stretching behind it
+      const target = new THREE.Vector3(hq.x - 1.5, 0, hq.z - 2.5);
+      let mouseX = 0, mouseY = 0, scrollT = 0;
+      addEventListener('pointermove', (e) => { mouseX = e.clientX / innerWidth - 0.5; mouseY = e.clientY / innerHeight - 0.5; }, { passive: true });
+      function resize() {
+        const w = host.clientWidth, h = host.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h;
+        camera.fov = w < 760 ? 52 : 36; camera.updateProjectionMatrix(); uniforms.uScale.value = renderer.getPixelRatio() * (h / 900);
+        target.x = hq.x - (w < 760 ? 0 : 2.2);
+      }
+      resize(); addEventListener('resize', resize);
+
+      let visible = true, t0 = performance.now();
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(host);
+      const cam = new THREE.Vector3();
+      function tick(now) {
+        requestAnimationFrame(tick);
+        if (!visible) return;
+        const t = calm ? 3 : (now - t0) / 1000;
+        uniforms.uTime.value = t;
+        scrollT = Math.min(1, scrollY / innerHeight);
+        const orbit = calm ? 0 : Math.sin(t * 0.08) * 0.25 + mouseX * 0.35;
+        cam.set(target.x + Math.sin(orbit) * 18, 16 - mouseY * 1.5 + scrollT * 6, target.z + Math.cos(orbit) * 18 + 4);
+        camera.position.lerp(cam, 0.05);
+        camera.lookAt(target.x, 0, target.z - scrollT * 3);
+        comets.forEach((c, i) => {
+          if (c.curve) { const h = (t * 0.22 + c.seed) % 1; const p = c.curve.getPoint(h); sparkPos.set([p.x, p.y, p.z], (i / 2) * 3); }
+          else { const s = 1 + ((t * 0.8 + c.ring.userData.base) % 1.5); c.ring.scale.setScalar(s); c.ring.material.opacity = Math.max(0, 1 - (s - 1) / 1.5) * 0.8; }
+        });
+        sparkGeo.attributes.position.needsUpdate = true;
+        pulses.forEach((m) => { const k = (t * 0.45 + m.userData.o) % 1; m.scale.setScalar(1 + k * 4); m.material.opacity = (1 - k) * 0.6; });
+        renderer.render(scene, camera);
+      }
+      requestAnimationFrame(tick);
+      document.documentElement.classList.add('gl-ready');
+    }
   </script>
 </body>
 </html>
