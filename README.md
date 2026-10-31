@@ -36,7 +36,7 @@ Don't double-click the HTML files: the team section and icons need a web server.
 | Images (all WebP, optimized) | `assets/img/` |
 | Icons | `assets/img/icons.svg` |
 | World map | `assets/img/world-map.svg` |
-| Design models for review (6 alternative one-page sites, hidden from Google) | `models/` — open `models/` to compare them. 1–3 are inspired by Invest Saudi, ADIO and AstroLabs; 4–6 are original 3D concepts. Shared content: `models/content.js`; shared effects: `models/models.js` / `models.css`; map data: `models/geo.js`; preview images: `models/img/`. The 3D models load three.js from cdn.jsdelivr.net. |
+| Design models for review (6 alternative one-page sites, hidden from Google) | `models/` — open `models/` to compare them. 1–3 are inspired by Invest Saudi, ADIO and AstroLabs; 4–6 are original 3D concepts. Shared content: `models/content.js`; shared effects: `models/models.js` / `models.css`; map data: `models/geo.js`; preview images: `models/img/`. The 3D models load three.js from cdn.jsdelivr.net. Each model opens with its own intro (`<div class="intro" data-intro="ms">`, click or any key to skip; add `?poster` to the URL to skip it). |
 
 The header and footer are repeated in each of the 24 HTML files (4 pages × 6 languages).
 If you change the phone number, email or menu, change it in all of them.
@@ -46,12 +46,16 @@ If you change the phone number, email or menu, change it in all of them.
 `sw.js` keeps a copy of the site in each visitor's browser, so repeat visits
 open instantly and the site still works offline.
 
-- **Pages (HTML)** always load from the network first, so text changes appear right away.
-- **Files (CSS, JS, images, fonts)** come from the cache and refresh in the background.
+- **Pages, CSS, JavaScript and data** always check with the server first, so every upload shows
+  on the next visit (the cached copy is only used offline). This also gets around GitHub Pages
+  telling browsers to keep files for 10 minutes.
+- **Images and fonts** come from the cache and refresh in the background.
 - **To force everyone onto the new version**, open `sw.js` **in the repo root** and change
-  `const VERSION = 'v5';` → `'v6'` (then `'v7'`, …), and upload. Browsers detect the change,
-  download everything fresh and delete the old cache. (Only the root `sw.js` counts —
-  a copy inside another folder is ignored.)
+  `const VERSION = 'v6';` → `'v7'` (then `'v8'`, …), and upload. Browsers detect the change,
+  download everything fresh, delete the old cache and reload the page once. (Only the root
+  `sw.js` counts — a copy inside another folder is ignored.)
+- After uploading, GitHub Pages needs about 1–2 minutes to publish. Visitors who still have the
+  old service worker (v5 or older) get the new behaviour after one reload.
 
 On `localhost` the service worker is switched off, so your edits show up immediately.
 To test it locally, open any page with `?sw` (e.g. http://localhost:8080/?sw).

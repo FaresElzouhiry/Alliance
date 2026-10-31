@@ -313,9 +313,47 @@
       .node strong { font-size: 12px; } .node { padding: 10px 6px; }
       .marquee li { width: 150px; height: 84px; }
     }
+
+    /* Intro: routes shoot out from Riyadh to the network, then a gateway opens from the centre */
+    @property --hole { syntax: '<length>'; inherits: false; initial-value: 0px; }
+    .intro { background: radial-gradient(70% 70% at 50% 50%, #0b3d2f, #021912 72%); color: var(--text); --hole: 0px; -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px)); mask: radial-gradient(circle at 50% 50%, transparent var(--hole), #000 calc(var(--hole) + 1px)); transition: --hole 1.2s cubic-bezier(.7,0,.2,1), opacity .6s .9s; }
+    .intro.is-out { --hole: 150vmax; opacity: 0; }
+    .i1 { position: relative; width: min(600px, 88vw); aspect-ratio: 1; display: grid; place-items: center; transition: transform 1.2s cubic-bezier(.7,0,.2,1); }
+    .intro.is-out .i1 { transform: scale(1.25); }
+    .i1 svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .i1 path { fill: none; stroke: var(--gold); stroke-width: .55; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: i1draw 1s cubic-bezier(.6,0,.2,1) forwards; animation-delay: calc(.55s + var(--k) * 45ms); }
+    .i1 .end { fill: var(--gold-2); transform-box: fill-box; transform-origin: center; transform: scale(0); animation: i1pop .45s cubic-bezier(.3,1.7,.5,1) forwards; animation-delay: calc(1.35s + var(--k) * 45ms); }
+    .i1 .ring { fill: none; stroke: var(--gold); stroke-width: .4; transform-box: fill-box; transform-origin: center; opacity: 0; animation: i1ring 2.2s .3s ease-out infinite; }
+    .i1 img { width: 22%; position: relative; border-radius: 50%; box-shadow: 0 0 0 10px rgba(216, 178, 106, .1), 0 0 70px rgba(216, 178, 106, .55); transform: scale(0) rotate(-120deg); animation: i1core 1s .1s cubic-bezier(.3,1.4,.5,1) forwards; }
+    .i1-coord { position: absolute; left: 0; right: 0; bottom: 9%; text-align: center; font: 600 11px/2 ui-monospace, Menlo, Consolas, monospace; letter-spacing: .3em; color: var(--muted); opacity: 0; animation: i1fade .8s 1.4s forwards; }
+    .i1-coord b { color: var(--gold); font-weight: 600; }
+    @keyframes i1draw { to { stroke-dashoffset: 0; } }
+    @keyframes i1pop { to { transform: scale(1); } }
+    @keyframes i1ring { 0% { transform: scale(.3); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }
+    @keyframes i1core { to { transform: none; } }
+    @keyframes i1fade { to { opacity: 1; } }
   </style>
 </head>
 <body>
+  <div class="intro" data-intro="3000" aria-hidden="true">
+    <div class="i1">
+      <svg viewBox="-100 -100 200 200" id="i1-svg"><circle class="ring" r="13"/><circle class="ring" r="13" style="animation-delay:1.2s"/></svg>
+      <img src="../../assets/img/emblem.webp" alt="" width="240" height="240">
+    </div>
+    <p class="i1-coord">RIYADH · <b>24.71° N</b> · <b>46.67° E</b><br>CONNECTING 16 COUNTRIES</p>
+    <span class="intro__skip">Click to skip</span>
+  </div>
+  <script>
+    // fifteen curved routes, one per network country
+    (function () {
+      var h = '';
+      for (var k = 0; k < 15; k++) {
+        var a = (k * 24 + 8) * Math.PI / 180, r = 60 + (k % 3) * 13, x = Math.cos(a) * r, y = Math.sin(a) * r;
+        h += '<path style="--k:' + k + '" pathLength="100" d="M0 0Q' + (x / 2 - y * 0.28).toFixed(1) + ' ' + (y / 2 + x * 0.28).toFixed(1) + ' ' + x.toFixed(1) + ' ' + y.toFixed(1) + '"/><circle class="end" style="--k:' + k + '" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="1.7"/>';
+      }
+      document.getElementById('i1-svg').insertAdjacentHTML('afterbegin', h);
+    })();
+  </script>
   <div class="strip">
     <div class="wrap">
       <span>Alliance Investment Holding · Riyadh, Saudi Arabia</span>
@@ -586,7 +624,7 @@
         clearTimeout(timer); timer = setTimeout(function () { go(at + 1); }, 6500);
       }
       bars.forEach(function (b, i) { b.addEventListener('click', function () { go(i); }); });
-      go(0);
+      addEventListener('introdone', function () { go(0); }, { once: true }); // start the rotation once the intro has gone
 
       // "I am looking for…" finder
       var DEST = [

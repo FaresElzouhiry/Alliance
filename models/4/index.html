@@ -37,16 +37,22 @@
     .btn--solid { background: var(--gold); color: #120d04; border-color: var(--gold); }
     .btn--solid:hover { background: var(--gold-2); }
 
-    /* Loader */
-    .loader { position: fixed; inset: 0; z-index: 300; background: var(--bg); display: grid; place-items: center; transition: opacity 1s .2s, visibility 1s .2s; }
-    .loader.is-done { opacity: 0; visibility: hidden; }
-    .loader div { text-align: center; }
-    .loader img { width: 74px; margin: 0 auto 22px; animation: breathe 1.8s ease-in-out infinite; }
-    @keyframes breathe { 50% { transform: scale(.9); opacity: .6; } }
-    .loader span { display: block; width: 160px; height: 1px; background: rgba(255, 255, 255, .15); position: relative; overflow: hidden; }
-    .loader span::after { content: ""; position: absolute; inset: 0; background: var(--gold); transform: translateX(-100%); animation: load 1.6s ease-in-out infinite; }
-    @keyframes load { to { transform: translateX(100%); } }
-    .loader p { font: 600 11px var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-top: 16px; }
+    /* Intro: eight stars (the sectors) light up and connect around the emblem, then the particle field takes over */
+    .intro { background: radial-gradient(70% 70% at 50% 50%, #06231a, var(--bg) 70%); color: var(--ink); transition: opacity 1s, filter 1s, transform 1.3s cubic-bezier(.7,0,.2,1); }
+    .intro.is-out { opacity: 0; filter: blur(10px); transform: scale(1.12); }
+    .i4 { position: relative; width: min(440px, 82vw); aspect-ratio: 1; display: grid; place-items: center; }
+    .i4 svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .i4 .st { fill: var(--gold-2); transform-box: fill-box; transform-origin: center; transform: scale(0); animation: i4star .5s cubic-bezier(.3,1.8,.5,1) forwards; animation-delay: calc(var(--k) * 80ms + .1s); filter: drop-shadow(0 0 3px var(--gold)); }
+    .i4 line { stroke: rgba(224, 183, 108, .75); stroke-width: .45; stroke-dasharray: 100; stroke-dashoffset: 100; animation: i4draw .7s ease forwards; animation-delay: calc(var(--k) * 60ms + .8s); }
+    .i4 line.r { stroke: rgba(224, 183, 108, .45); animation-delay: calc(var(--k) * 60ms + 1.3s); }
+    .i4 .tw { fill: #fff; opacity: 0; animation: i4tw 2.4s ease-in-out infinite; animation-delay: var(--t); }
+    .i4 img { width: 24%; opacity: 0; transform: scale(.3) rotate(-60deg); filter: drop-shadow(0 0 30px rgba(224, 183, 108, .65)); animation: i4em 1s 1.55s cubic-bezier(.3,1.3,.5,1) forwards; }
+    .i4-word { position: absolute; left: 0; right: 0; bottom: 13%; text-align: center; font: 600 12px var(--sans); letter-spacing: .6em; color: var(--gold); opacity: 0; animation: i4word 1.2s 1.9s cubic-bezier(.2,.7,.2,1) forwards; }
+    @keyframes i4star { to { transform: scale(1); } }
+    @keyframes i4draw { to { stroke-dashoffset: 0; } }
+    @keyframes i4tw { 50% { opacity: .8; } }
+    @keyframes i4em { to { opacity: 1; transform: none; } }
+    @keyframes i4word { from { letter-spacing: 1.4em; } to { opacity: 1; letter-spacing: .6em; } }
 
     /* Header */
     .header { position: fixed; inset: 0 0 auto; z-index: 50; transition: background .4s; }
@@ -175,7 +181,23 @@
   </style>
 </head>
 <body data-cursor>
-  <div class="loader" id="loader"><div><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"><span></span><p>Alliance Investment</p></div></div>
+  <div class="intro" data-intro="3100" aria-hidden="true">
+    <div class="i4"><svg viewBox="0 0 200 200" id="i4-svg"></svg><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"></div>
+    <p class="i4-word">ALLIANCE INVESTMENT</p>
+    <span class="intro__skip" style="color:var(--muted)">Click to skip</span>
+  </div>
+  <script>
+    // eight sector stars on a ring, spokes to the centre, the ring itself, and a sprinkle of background stars
+    (function () {
+      var h = '', P = [];
+      for (var i = 0; i < 40; i++) h += '<circle class="tw" style="--t:' + (Math.random() * 2.4).toFixed(2) + 's" cx="' + (Math.random() * 260 - 30).toFixed(1) + '" cy="' + (Math.random() * 260 - 30).toFixed(1) + '" r="' + (0.3 + Math.random() * 0.5).toFixed(2) + '"/>';
+      for (var k = 0; k < 8; k++) { var a = k * Math.PI / 4 - Math.PI / 2; P.push([100 + Math.cos(a) * 74, 100 + Math.sin(a) * 74]); }
+      P.forEach(function (p, k) { h += '<line style="--k:' + k + '" pathLength="100" x1="100" y1="100" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '"/>'; });
+      P.forEach(function (p, k) { var q = P[(k + 1) % 8]; h += '<line class="r" style="--k:' + k + '" pathLength="100" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>'; });
+      P.forEach(function (p, k) { h += '<circle class="st" style="--k:' + k + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="2.6"/>'; });
+      document.getElementById('i4-svg').innerHTML = h;
+    })();
+  </script>
   <canvas id="gl" aria-hidden="true"></canvas>
   <img class="fallback" src="../../assets/img/emblem.webp" alt="" width="240" height="240">
 
@@ -305,9 +327,7 @@
         A.team.map(function (p, i) { return '<article class="member glass" data-reveal style="--d:' + ((i % 4) * 0.05) + 's"><img src="' + $.img(p.img) + '" alt="" loading="lazy"><div><strong>' + p.name + '</strong><small>' + (p.group === 'Board' ? 'Board member' : 'Advisor') + '</small></div><p>' + p.focus + '</p></article>'; }).join(''));
       $.fill('#logos', A.partners.map(function (p) { return '<li><img src="' + $.img(p[0]) + '.webp" alt="' + $.esc(p[1]) + '" width="' + p[2] + '" height="' + p[3] + '" loading="lazy"></li>'; }).join(''));
       $.fill('#faq', A.faq.map(function (f, i) { return '<details class="glass"' + (i ? '' : ' open') + '><summary>' + f[0] + '</summary><p>' + f[1] + '</p></details>'; }).join(''));
-      setTimeout(function () { document.getElementById('loader').classList.add('is-done'); }, 4000);
-      if (/poster/.test(location.search)) { // for preview screenshots: no loader, everything already in place
-        document.getElementById('loader').style.display = 'none';
+      if (/poster/.test(location.search)) { // for preview screenshots: everything already in place
         document.querySelectorAll('[data-reveal], [data-split]').forEach(function (el) { el.classList.add('is-in'); });
       }
     })();
@@ -318,7 +338,6 @@
     import { land, toXYZ, HQ } from '../geo.js';
 
     const canvas = document.getElementById('gl');
-    const loader = document.getElementById('loader');
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const mobile = innerWidth < 860;
     const N = mobile ? 9000 : 18000;
@@ -405,7 +424,7 @@
     }
 
     let renderer;
-    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' }); } catch (e) { renderer = null; loader.classList.add('is-done'); }
+    try { renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
     const emblem = new Image();
     if (renderer) {
       emblem.src = '../../assets/img/emblem.webp';
@@ -494,14 +513,16 @@
         });
         holds[0][0] = Math.min(holds[0][0], 0);
       }
-      let spin = 0, last = performance.now(), introStart = /poster/.test(location.search) ? last - 9000 : last, chapter = 0;
+      // the particles assemble into the emblem once the opening intro has gone
+      let spin = 0, last = performance.now(), introStart = /poster/.test(location.search) ? last - 9000 : window.Models && Models.introDone ? last : Infinity, chapter = 0;
+      addEventListener('introdone', () => { introStart = performance.now(); }, { once: true });
       const ease = (x) => x * x * (3 - 2 * x);
       function tick(now) {
         requestAnimationFrame(tick);
         const dt = Math.min(0.05, (now - last) / 1000); last = now;
         const t = now / 1000;
         uniforms.uTime.value = calm ? 0 : t;
-        uniforms.uIntro.value = Math.min(1, (now - introStart) / 900);
+        uniforms.uIntro.value = Math.max(0, Math.min(1, (now - introStart) / 900));
 
         // where are we in the story? c = chapter index + progress to the next one.
         // Each chapter "holds" its shape while it fills the screen, and morphs in the gap to the next.
@@ -511,7 +532,7 @@
           if (s >= holds[i][0]) c = s <= holds[i][1] ? i : (i + 1 < holds.length ? i + Math.min(1, (s - holds[i][1]) / Math.max(1, holds[i + 1][0] - holds[i][1])) : i);
         }
         const from = Math.floor(c), to = Math.min(SEQ.length - 1, from + 1), f = c - from;
-        const introMix = Math.min(1, (now - introStart) / 2600);
+        const introMix = Math.max(0, Math.min(1, (now - introStart) / 2600));
         if (introMix < 1 && c < 0.5) { uniforms.uFrom.value = 7; uniforms.uTo.value = 0; uniforms.uMix.value = calm ? 1 : ease(introMix); }
         else { uniforms.uFrom.value = SEQ[from]; uniforms.uTo.value = SEQ[to]; uniforms.uMix.value = ease(Math.min(1, Math.max(0, (f - 0.2) / 0.6))); }
         const k = Math.round(c); if (k !== chapter) { chapter = k; index.forEach((a, i) => a.classList.toggle('is-on', i === k)); }
@@ -532,7 +553,6 @@
       }
       requestAnimationFrame(tick);
       document.documentElement.classList.add('gl-ready');
-      loader.classList.add('is-done');
     }
   </script>
 </body>

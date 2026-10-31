@@ -1,12 +1,14 @@
 /* Alliance Investment — service worker
  *
  * TO PUSH AN UPDATE TO EVERY VISITOR: change VERSION below (v1 → v2 → v3 …) and upload the site.
- * Browsers notice the change, download everything fresh and delete the old cache.
+ * Browsers notice the change, download everything fresh, delete the old cache and reload the page once.
  *
- * Pages (HTML) always try the network first, so text changes show up right away.
- * Files (CSS, JS, images, fonts) load instantly from the cache and refresh quietly in the background.
+ * Pages, CSS, JavaScript and data always ask the server first ("is there a newer copy?"), so every
+ * upload shows on the next visit — even though GitHub Pages tells browsers to keep files for 10 minutes.
+ * The cached copy is only used when the visitor is offline.
+ * Images and fonts load instantly from the cache and refresh quietly in the background.
  */
-const VERSION = 'v5';
+const VERSION = 'v6';
 const CACHE = `alliance-${VERSION}`;
 
 // Downloaded on install so the site also opens offline
@@ -66,23 +68,29 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return; // analytics and other sites go straight to the network
 
   if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request, url));
+    event.respondWith(networkFirst(request, url, true));
+  } else if (/\.(?:css|m?js|json|svg)$/.test(url.pathname)) {
+    event.respondWith(networkFirst(request, url, false)); // code and data: always the latest upload
   } else {
-    event.respondWith(staleWhileRevalidate(event, request));
+    event.respondWith(staleWhileRevalidate(event, request)); // images and fonts
   }
 });
 
-async function networkFirst(request, url) {
+async function networkFirst(request, url, isPage) {
   const cache = await caches.open(CACHE);
   try {
-    const response = await fetch(request);
+    // 'no-cache' = check with the server every time (a quick "not modified" when nothing changed),
+    // instead of trusting the browser's own 10-minute copy
+    const response = await fetch(request, { cache: 'no-cache' });
     if (response.status === 200) cache.put(request, response.clone());
     return response;
   } catch {
-    // offline: the cached copy of this page, or the home page in the same language
+    const cached = await cache.match(request, { ignoreSearch: isPage });
+    if (cached || !isPage) return cached || Response.error();
+    // offline page that was never cached: the home page in the same language
     const lang = (url.pathname.match(/\/(ar|es|ja|zh|ko)\//) || [])[1];
     const home = new URL(lang ? `./${lang}/` : './', self.registration.scope);
-    return (await cache.match(request, { ignoreSearch: true })) || (await cache.match(home.href)) || Response.error();
+    return (await cache.match(home.href)) || Response.error();
   }
 }
 

@@ -323,8 +323,18 @@
     if (local && !testing) {
       navigator.serviceWorker.getRegistrations().then((regs) => regs.forEach((r) => r.unregister()));
     } else {
+      // When a new version (a bumped VERSION in sw.js) takes over, reload once so the visitor sees it now
+      const hadWorker = !!navigator.serviceWorker.controller;
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadWorker || reloaded) return;
+        reloaded = true;
+        window.location.reload();
+      });
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register(new URL('sw.js', SITE_ROOT), { scope: SITE_ROOT.pathname }).catch(() => {});
+        navigator.serviceWorker.register(new URL('sw.js', SITE_ROOT), { scope: SITE_ROOT.pathname })
+          .then((reg) => reg.update())
+          .catch(() => {});
       }, { once: true });
     }
   }

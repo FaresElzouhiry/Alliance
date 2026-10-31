@@ -163,9 +163,52 @@
       .tiles { gap: 10px; }
       .numbers div { padding: 18px 12px; }
     }
+
+    /* Intro: night falls on the skyline, the windows light up one by one, then the camera dives into the city */
+    .intro { background: radial-gradient(80% 60% at 50% 100%, #2a1606 0%, transparent 60%), linear-gradient(180deg, #010407, #06121a 70%, #0b1a1f); color: var(--ink); transform-origin: 50% 85%; transition: transform 1.3s cubic-bezier(.7,0,.2,1), opacity .9s .35s; }
+    .intro.is-out { transform: scale(2.6); opacity: 0; }
+    .i5-hud { position: absolute; z-index: 2; top: 26px; left: 28px; right: 28px; display: flex; justify-content: space-between; gap: 16px; font: 600 11px ui-monospace, Menlo, Consolas, monospace; letter-spacing: .14em; color: var(--muted); opacity: 0; animation: i5fade .6s .2s forwards; }
+    .i5-hud b { color: var(--gold-2); font-weight: 600; }
+    .i5-title { position: absolute; z-index: 2; top: 24%; left: 0; right: 0; text-align: center; }
+    .i5-title strong { display: block; font: 800 clamp(3rem, 12vw, 9rem)/1 var(--sans); letter-spacing: .28em; padding-left: .28em; color: #fff; text-shadow: 0 0 40px rgba(240, 192, 110, .55); }
+    .i5-title strong span { display: inline-block; opacity: 0; transform: translateY(30px); animation: i5up .8s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(.35s + var(--k) * 80ms); }
+    .i5-title small { display: block; margin-top: 16px; font: 600 12px var(--sans); letter-spacing: .42em; color: var(--gold); opacity: 0; animation: i5fade .8s 1.3s forwards; }
+    .i5-sky { position: absolute; left: 0; right: 0; bottom: 0; height: 52%; display: flex; align-items: flex-end; gap: 3px; padding: 0 1vw; }
+    .i5-sky i { flex: 1 1 0; height: var(--h); background: #04090c; position: relative; box-shadow: inset 0 1px 0 rgba(240, 192, 110, .12); transform: translateY(100%); animation: i5rise .9s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: var(--r); }
+    .i5-sky i::after { content: ""; position: absolute; inset: 10px 4px 4px; background: repeating-linear-gradient(0deg, rgba(255, 196, 110, .95) 0 4px, transparent 4px 10px); -webkit-mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 9px); mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 9px); opacity: 0; filter: brightness(var(--b)); animation: i5lit .5s steps(3) forwards; animation-delay: var(--d); }
+    .i5-sky i.tw { flex-grow: 2.4; background: none; box-shadow: none; }
+    .i5-sky i.tw::after { display: none; }
+    .i5-sky svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .i5-sky svg path { fill: #04090c; stroke: var(--gold); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; animation: i5draw 1.6s .9s cubic-bezier(.6,0,.2,1) forwards; filter: drop-shadow(0 0 6px rgba(240, 192, 110, .7)); }
+    .i5-sky svg rect { fill: #ffd89a; opacity: 0; animation: i5fade .3s 2.2s forwards; filter: drop-shadow(0 0 8px #f0c06e); }
+    @keyframes i5fade { to { opacity: 1; } }
+    @keyframes i5up { to { opacity: 1; transform: none; } }
+    @keyframes i5rise { to { transform: none; } }
+    @keyframes i5lit { to { opacity: 1; } }
+    @keyframes i5draw { to { stroke-dashoffset: 0; } }
   </style>
 </head>
 <body data-cursor>
+  <div class="intro" data-intro="3200" aria-hidden="true">
+    <div class="i5-hud"><span>RIYADH · <b>24.7136° N</b> · <b>46.6753° E</b></span><span>LOCAL TIME <b id="i5-time">20:30</b></span></div>
+    <div class="i5-title"><strong><span style="--k:0">R</span><span style="--k:1">I</span><span style="--k:2">Y</span><span style="--k:3">A</span><span style="--k:4">D</span><span style="--k:5">H</span></strong><small>LIGHTING UP THE KINGDOM</small></div>
+    <div class="i5-sky" id="i5-sky"></div>
+    <span class="intro__skip" style="color:var(--muted)">Click to skip</span>
+  </div>
+  <script>
+    // a skyline of random towers around a landmark with a sky bridge; windows switch on at random
+    (function () {
+      var sky = document.getElementById('i5-sky'), n = innerWidth < 700 ? 16 : 30, mid = Math.floor(n / 2), h = '';
+      for (var i = 0; i < n; i++) {
+        if (i === mid) { h += '<i class="tw" style="--h:100%;--r:.6s"><svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMax meet"><path pathLength="1" d="M18 200 L18 70 Q20 25 40 6 Q50 40 60 6 Q80 25 82 70 L82 200 Z"/><rect x="40" y="26" width="20" height="4"/></svg></i>'; continue; }
+        var near = 1 - Math.abs(i - mid) / mid;
+        h += '<i style="--h:' + Math.round(18 + Math.random() * 38 + near * 30) + '%;--r:' + (Math.random() * 0.5).toFixed(2) + 's;--d:' + (0.7 + Math.random() * 1.5).toFixed(2) + 's;--b:' + (0.5 + Math.random() * 0.6).toFixed(2) + '"></i>';
+      }
+      sky.innerHTML = h;
+      var t = document.getElementById('i5-time');
+      try { t.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Riyadh', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date()); } catch (e) {}
+    })();
+  </script>
   <div class="fallback" aria-hidden="true"></div>
   <canvas id="city" aria-hidden="true"></canvas>
   <div class="vignette" aria-hidden="true"></div>

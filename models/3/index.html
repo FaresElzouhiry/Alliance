@@ -234,9 +234,40 @@
       .fgrid { grid-template-columns: 1fr 1fr; }
       .seg { display: flex; } .seg button { flex: 1 1 40%; padding: 10px; }
     }
+
+    /* Intro: a setup checklist ticks itself off, then the screen lifts away */
+    .intro { background: radial-gradient(45% 45% at 28% 30%, rgba(14, 107, 79, .14), transparent 70%), radial-gradient(40% 40% at 76% 72%, rgba(194, 155, 94, .2), transparent 70%), #fff; color: var(--ink); transition: transform 1.05s cubic-bezier(.7,0,.2,1), border-radius 1.05s; }
+    .intro.is-out { transform: translateY(-104%); border-radius: 0 0 50% 50% / 0 0 140px 140px; }
+    .i3 { width: min(430px, 88vw); background: #fff; border: 1px solid var(--line); border-radius: 26px; padding: 30px 30px 26px; box-shadow: 0 50px 90px -40px rgba(12, 26, 21, .45); opacity: 0; transform: translateY(30px) scale(.96); animation: i3in .7s .1s cubic-bezier(.2,.8,.2,1) forwards; }
+    .i3 > img { width: 124px; margin-bottom: 20px; }
+    .i3 ul li { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid var(--line); font-weight: 600; font-size: 15px; }
+    .i3 ul li i { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; font-style: normal; color: #fff; font-size: 14px; flex: none; animation: i3tick .3s forwards; animation-delay: var(--d); }
+    .i3 ul li i::after { content: "✓"; opacity: 0; animation: i3fade .2s forwards; animation-delay: var(--d); }
+    .i3 ul li span { flex: 1; }
+    .i3 ul li small { color: var(--brand); font-size: 12px; opacity: 0; animation: i3fade .3s forwards; animation-delay: var(--d); }
+    .i3-bar { height: 6px; border-radius: 99px; background: var(--soft); overflow: hidden; margin-top: 16px; }
+    .i3-bar b { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--brand), var(--gold)); animation: i3bar 1.9s .5s cubic-bezier(.4,0,.2,1) forwards; }
+    .i3-ready { text-align: center; margin-top: 18px; font: 700 1.05rem var(--sans); color: var(--brand); opacity: 0; transform: translateY(6px); animation: i3in .5s 2.25s forwards; }
+    @keyframes i3in { to { opacity: 1; transform: none; } }
+    @keyframes i3tick { to { background: var(--brand); border-color: var(--brand); transform: scale(1.08); } }
+    @keyframes i3fade { to { opacity: 1; } }
+    @keyframes i3bar { to { width: 100%; } }
   </style>
 </head>
 <body>
+  <div class="intro" data-intro="3000" aria-hidden="true">
+    <div class="i3">
+      <img src="../../assets/img/logo.webp" alt="" width="480" height="211">
+      <ul>
+        <li><i style="--d:.7s"></i><span>Market &amp; feasibility study</span><small style="--d:.7s">Done</small></li>
+        <li><i style="--d:1.2s"></i><span>Entity, licences &amp; setup</span><small style="--d:1.2s">Done</small></li>
+        <li><i style="--d:1.7s"></i><span>Local partner &amp; funding</span><small style="--d:1.7s">Done</small></li>
+      </ul>
+      <div class="i3-bar"><b></b></div>
+      <p class="i3-ready">Ready to expand in Saudi Arabia →</p>
+    </div>
+    <span class="intro__skip" style="color:var(--muted)">Click to skip</span>
+  </div>
   <header class="header" data-header>
     <div class="wrap">
       <a class="logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211"></a>

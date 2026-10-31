@@ -252,9 +252,53 @@
       .stage { height: 420px; }
       .util .wrap > span:first-child { display: none; }
     }
+
+    /* Intro: a gold coin flips while the indicators count up, then the screen lifts away in shutters */
+    .intro { color: var(--ink); }
+    .i2-shut { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(6, 1fr); }
+    .i2-shut i { background: #f4f4f6; box-shadow: inset -1px 0 0 #e7e7ed; transition: transform .95s cubic-bezier(.7,0,.2,1); transition-delay: calc(var(--k) * 60ms); }
+    .intro.is-out .i2-shut i { transform: translateY(-101%); }
+    .i2-corner { position: absolute; z-index: 2; top: 24px; left: 28px; right: 28px; display: flex; justify-content: space-between; color: var(--muted); transition: opacity .3s; }
+    .i2 { position: relative; z-index: 2; text-align: center; transition: opacity .35s, transform .5s cubic-bezier(.7,0,.2,1); }
+    .intro.is-out .i2, .intro.is-out .i2-corner { opacity: 0; transform: translateY(-24px); }
+    .i2-coin { width: 132px; height: 132px; margin: 0 auto 30px; perspective: 700px; }
+    .i2-coin div { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; animation: i2flip 2.5s cubic-bezier(.45,0,.15,1) forwards; }
+    .i2-coin img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 24px 40px -14px rgba(185, 138, 62, .7); }
+    .i2-coin img + img { transform: rotateY(180deg); }
+    .i2-coin::after { content: ""; display: block; width: 70%; height: 10px; margin: 18px auto 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(15, 26, 22, .18), transparent); }
+    .i2-num { font: 700 clamp(4.2rem, 12vw, 8rem)/1 var(--sans); letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+    .i2-num small { font-size: .32em; color: var(--gold); vertical-align: top; margin-left: 4px; }
+    .i2-bar { width: min(340px, 70vw); height: 2px; background: #e2e2e8; margin: 20px auto 14px; overflow: hidden; }
+    .i2-bar b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--green), var(--gold-2)); animation: i2bar 2.4s cubic-bezier(.3,0,.2,1) forwards; }
+    @keyframes i2flip { 0% { transform: rotateY(0) scale(.3); } 35% { transform: rotateY(540deg) scale(1.06); } 100% { transform: rotateY(1080deg) scale(1); } }
+    @keyframes i2bar { to { width: 100%; } }
   </style>
 </head>
 <body>
+  <div class="intro" data-intro="3000" aria-hidden="true">
+    <div class="i2-shut"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i></div>
+    <div class="i2-corner mono"><span>Alliance Investment Holding</span><span>Riyadh · Investor gateway</span></div>
+    <div class="i2">
+      <div class="i2-coin"><div><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"><img src="../../assets/img/emblem.webp" alt="" width="240" height="240"></div></div>
+      <div class="i2-num"><span id="i2-n">0</span><small>%</small></div>
+      <div class="i2-bar"><b></b></div>
+      <p class="mono" id="i2-feed" style="color:var(--muted)">Connecting to Riyadh</p>
+    </div>
+    <span class="intro__skip">Click to skip</span>
+  </div>
+  <script>
+    // count to 100 while the live indicators flick past
+    (function () {
+      var n = document.getElementById('i2-n'), feed = document.getElementById('i2-feed'), t0 = performance.now();
+      var lines = ['Connecting to Riyadh', '10+ years in the Kingdom', '16 countries online', '8 strategic sectors', '41 partners ready', 'Welcome'];
+      (function tick(now) {
+        var p = Math.min(1, (now - t0) / 2400), e = 1 - Math.pow(1 - p, 3);
+        n.textContent = Math.round(e * 100);
+        feed.textContent = lines[Math.min(lines.length - 1, Math.floor(p * lines.length))];
+        if (p < 1 && document.contains(n)) requestAnimationFrame(tick);
+      })(t0);
+    })();
+  </script>
   <div class="util mono">
     <div class="wrap">
       <span>Alliance Investment Holding</span>

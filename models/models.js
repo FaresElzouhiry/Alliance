@@ -87,20 +87,50 @@
   }
 
   // ---- Reveal on scroll
+  function reveal(el) {
+    el.classList.add('is-in');
+    if (el.dataset.count) count(el);
+    el.querySelectorAll('[data-count]').forEach(function (c) { if (!c.closest('[data-reveal]:not(.is-in)')) count(c); });
+  }
   var seen = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      var el = entry.target;
-      el.classList.add('is-in');
-      if (el.dataset.count) count(el);
-      el.querySelectorAll('[data-count]').forEach(function (c) { if (!c.closest('[data-reveal]:not(.is-in)')) count(c); });
-      seen.unobserve(el);
+      reveal(entry.target);
+      seen.unobserve(entry.target);
     });
   }, { rootMargin: '0px 0px -10% 0px' });
-  document.querySelectorAll('[data-reveal], [data-split], [data-count]').forEach(function (el) {
-    if (el.hasAttribute('data-count') && el.closest('[data-reveal]') && el.closest('[data-reveal]') !== el) return; // counted with its parent
-    seen.observe(el);
-  });
+  // What is already on screen reveals straight away; the rest waits until it scrolls into view
+  function startReveals() {
+    var vh = innerHeight;
+    document.querySelectorAll('[data-reveal], [data-split], [data-count]').forEach(function (el) {
+      if (el.hasAttribute('data-count') && el.closest('[data-reveal]') && el.closest('[data-reveal]') !== el) return; // counted with its parent
+      var r = el.getBoundingClientRect();
+      if (r.top < vh * 0.9 && r.bottom > 0 && r.width > 0) reveal(el);
+      else seen.observe(el);
+    });
+  }
+
+  // ---- Opening intro: <div class="intro" data-intro="3000"> plays on every visit; a click or any key skips it.
+  // The page's own reveal animations wait until it has gone, and 'introdone' fires on window.
+  var intro = document.querySelector('[data-intro]');
+  Models.introDone = false;
+  function introDone(instant) {
+    if (Models.introDone) return;
+    Models.introDone = true;
+    root.classList.remove('intro-on');
+    if (Models.lenis) Models.lenis.start();
+    if (intro && !instant) { intro.classList.add('is-out'); setTimeout(function () { intro.remove(); }, 1800); }
+    else if (intro) intro.remove();
+    setTimeout(startReveals, instant ? 0 : 280);
+    window.dispatchEvent(new Event('introdone'));
+  }
+  if (!intro || calm || /[?&]poster\b/.test(location.search)) introDone(true);
+  else {
+    root.classList.add('intro-on');
+    setTimeout(introDone, +intro.dataset.intro || 3000);
+    intro.addEventListener('click', function () { introDone(); });
+    addEventListener('keydown', function () { introDone(); }, { once: true });
+  }
 
   // ---- Scroll-linked effects (one rAF per frame)
   var header = document.querySelector('[data-header]');
@@ -174,6 +204,7 @@
   if (fine && !calm && !document.body.hasAttribute('data-no-smooth')) {
     import('https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs').then(function (mod) {
       var lenis = Models.lenis = new mod.default({ lerp: 0.1, wheelMultiplier: 1 });
+      if (!Models.introDone) lenis.stop();
       lenis.on('scroll', request);
       (function raf(t) { lenis.raf(t); requestAnimationFrame(raf); })(performance.now());
     }).catch(function () {});
