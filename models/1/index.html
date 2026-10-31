@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model 1 · Editorial | Alliance Investment</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f6f2ea">
+  <link rel="icon" href="../../assets/img/favicon-32.png" sizes="32x32">
+  <link rel="stylesheet" href="../models.css">
+  <script src="../models.js" defer></script>
+  <style>
+    /* Model 1 — Editorial: light, calm, big serif statements and large figures */
+    :root {
+      --bg: #f6f2ea; --paper: #fffdf8; --ink: #14201b; --muted: #5d6662; --line: #ddd5c6;
+      --gold: #9c7a3c; --gold-soft: #c29b5e; --green: #0b3b2e;
+      --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+      --sans: Montserrat, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --wrap: min(1240px, 100% - 40px);
+    }
+    body { background: var(--bg); color: var(--ink); font: 400 16px/1.65 var(--sans); }
+    .wrap { width: var(--wrap); margin-inline: auto; }
+    .kicker { font: 600 12px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+    .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
+    .h2 { font: 400 clamp(2rem, 4.4vw, 3.6rem)/1.08 var(--serif); letter-spacing: -.015em; }
+    .rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+    .arrow-link { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; border-bottom: 1px solid currentColor; padding-bottom: 4px; transition: gap .3s; }
+    .arrow-link:hover { gap: 16px; }
+    .arrow-link::after { content: "→"; }
+
+    /* Header */
+    .header { position: sticky; top: 0; z-index: 50; background: rgba(246, 242, 234, .86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); transition: box-shadow .3s; }
+    .header.is-scrolled { box-shadow: 0 1px 0 var(--line); }
+    .header__in { display: flex; align-items: center; justify-content: space-between; height: 84px; }
+    .header__logo img { width: 150px; }
+    .nav { display: flex; align-items: center; gap: 34px; font-size: 14px; font-weight: 500; }
+    .nav a:not(.nav__cta) { position: relative; }
+    .nav a:not(.nav__cta)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s; }
+    .nav a:not(.nav__cta):hover::after { transform: scaleX(1); }
+    .nav__cta { padding: 12px 22px; border: 1px solid var(--ink); border-radius: 999px; transition: background .3s, color .3s; }
+    .nav__cta:hover { background: var(--ink); color: var(--bg); }
+    .burger { display: none; width: 44px; height: 44px; position: relative; }
+    .burger span, .burger::before, .burger::after { content: ""; position: absolute; left: 11px; right: 11px; height: 1.5px; background: var(--ink); transition: transform .3s, opacity .3s; }
+    .burger::before { top: 16px; } .burger span { top: 21.5px; } .burger::after { top: 27px; }
+    .menu-open .burger::before { transform: translateY(5.5px) rotate(45deg); }
+    .menu-open .burger span { opacity: 0; }
+    .menu-open .burger::after { transform: translateY(-5.5px) rotate(-45deg); }
+
+    /* Hero */
+    .hero { padding: clamp(40px, 8vw, 110px) 0 0; }
+    .hero h1 { font: 400 clamp(2.7rem, 7.6vw, 7.2rem)/.98 var(--serif); letter-spacing: -.03em; max-width: 12ch; }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero__row { display: grid; grid-template-columns: 1fr minmax(260px, 420px); gap: 40px; align-items: end; margin-top: clamp(28px, 4vw, 48px); }
+    .hero__lead { font-size: clamp(1rem, 1.4vw, 1.15rem); color: var(--muted); max-width: 46ch; }
+    .hero__actions { display: flex; gap: 28px; flex-wrap: wrap; justify-content: flex-end; }
+    .hero__img { margin-top: clamp(40px, 6vw, 72px); border-radius: 4px; overflow: hidden; aspect-ratio: 21 / 9; }
+    .hero__img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 2.4s cubic-bezier(.2,.7,.2,1); }
+    .hero__img.is-in img { transform: none; }
+
+    /* Figures */
+    .figures { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+    .figure { padding: 40px 28px 40px 0; }
+    .figure + .figure { padding-left: 28px; border-left: 1px solid var(--line); }
+    .figure strong { display: block; font: 400 clamp(2.6rem, 5vw, 4.4rem)/1 var(--serif); letter-spacing: -.02em; }
+    .figure span { display: block; margin-top: 12px; font-size: 14px; color: var(--muted); max-width: 22ch; }
+
+    section { padding: clamp(72px, 10vw, 140px) 0; }
+    .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(40px, 6vw, 72px); }
+    .head .kicker { display: block; margin-bottom: 18px; }
+    .head p { color: var(--muted); max-width: 50ch; justify-self: end; }
+
+    /* Who we work with */
+    .audience { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: var(--paper); border: 1px solid var(--line); padding: 36px 32px; display: flex; flex-direction: column; gap: 16px; min-height: 320px; transition: transform .4s, box-shadow .4s; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 24px 50px -24px rgba(20, 32, 27, .28); }
+    .card__num { font: 400 15px var(--serif); color: var(--gold); }
+    .card h3 { font: 400 1.75rem/1.15 var(--serif); }
+    .card p { color: var(--muted); font-size: 15px; }
+    .card .arrow-link { margin-top: auto; align-self: flex-start; }
+
+    /* Sectors: big list with image preview */
+    .sectors { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: start; }
+    .sector-list li { border-top: 1px solid var(--line); }
+    .sector-list li:last-child { border-bottom: 1px solid var(--line); }
+    .sector-list button { width: 100%; display: grid; grid-template-columns: 56px 1fr auto; align-items: baseline; gap: 12px; padding: 22px 0; text-align: left; transition: padding .35s, color .35s; }
+    .sector-list .n { font: 400 14px var(--serif); color: var(--gold); }
+    .sector-list .t { font: 400 clamp(1.25rem, 2.2vw, 1.9rem)/1.2 var(--serif); }
+    .sector-list .a { opacity: 0; transform: translateX(-10px); transition: .35s; color: var(--gold); }
+    .sector-list button:hover, .sector-list button[aria-pressed="true"] { padding-left: 14px; }
+    .sector-list button[aria-pressed="true"] .a, .sector-list button:hover .a { opacity: 1; transform: none; }
+    .sector-list button[aria-pressed="false"] .t { color: #3a4541; }
+    .sector-view { position: sticky; top: 110px; aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: var(--green); }
+    .sector-view img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.05); transition: opacity .6s, transform 1.2s; }
+    .sector-view img.on { opacity: 1; transform: none; }
+    .sector-view figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 60px 28px 26px; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .6)); font: 400 1.3rem var(--serif); }
+
+    /* Approach */
+    .approach { background: var(--green); color: #f2ede3; }
+    .approach .kicker { color: var(--gold-soft); }
+    .approach .head p { color: rgba(242, 237, 227, .72); }
+    .steps { display: grid; grid-template-columns: repeat(5, 1fr); counter-reset: s; }
+    .step { padding: 32px 24px 8px 0; border-top: 1px solid rgba(242, 237, 227, .25); position: relative; }
+    .step::before { counter-increment: s; content: "0" counter(s); display: block; font: 400 2.6rem/1 var(--serif); color: var(--gold-soft); margin-bottom: 26px; }
+    .step::after { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-soft); }
+    .step h3 { font: 400 1.25rem/1.25 var(--serif); margin-bottom: 12px; }
+    .step p { font-size: 14px; color: rgba(242, 237, 227, .7); }
+
+    /* Quote */
+    .quote { display: grid; grid-template-columns: 300px 1fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+    .quote img { border-radius: 4px; aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+    .quote blockquote { font: 400 clamp(1.6rem, 3.2vw, 2.7rem)/1.22 var(--serif); letter-spacing: -.01em; }
+    .quote blockquote::before { content: "“"; display: block; font-size: 4.5rem; line-height: .6; color: var(--gold); margin-bottom: 18px; }
+    .quote cite { display: block; margin-top: 30px; font: 600 14px var(--sans); font-style: normal; }
+    .quote cite span { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; }
+
+    /* Presence */
+    .presence { background: var(--paper); border-block: 1px solid var(--line); }
+    .presence__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+    .presence__big { font: 400 clamp(5rem, 12vw, 10rem)/.9 var(--serif); letter-spacing: -.04em; color: var(--green); }
+    .presence__big small { font-size: .35em; color: var(--gold); letter-spacing: 0; }
+    .countries { columns: 3 150px; column-gap: 24px; margin-top: 32px; font-size: 14px; }
+    .countries li { padding: 7px 0; border-bottom: 1px solid var(--line); break-inside: avoid; }
+    .countries li:first-child { font-weight: 700; }
+    .map { background: var(--green); padding: clamp(16px, 3vw, 36px); border-radius: 4px; width: 100%; }
+
+    /* Partners */
+    .logos { display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .logos li { min-width: 0; display: grid; place-items: center; aspect-ratio: 3 / 2; padding: 22px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); }
+    .logos img { max-height: 54px; width: auto; filter: grayscale(1); opacity: .75; transition: filter .3s, opacity .3s; }
+    .logos li:hover img { filter: none; opacity: 1; }
+    .logos .more { font: 400 1.4rem var(--serif); color: var(--gold); text-align: center; }
+
+    /* CTA + footer */
+    .cta { text-align: center; }
+    .cta h2 { font: 400 clamp(2.4rem, 6vw, 5.4rem)/1.02 var(--serif); letter-spacing: -.025em; max-width: 16ch; margin: 22px auto 34px; }
+    .cta__links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .pill { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 999px; font-weight: 600; font-size: 14px; border: 1px solid var(--ink); transition: background .3s, color .3s; }
+    .pill--solid, .pill:hover { background: var(--ink); color: var(--bg); }
+    footer { border-top: 1px solid var(--line); padding: 48px 0 96px; font-size: 13px; color: var(--muted); }
+    .footer__in { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+    .footer__in img { width: 130px; }
+    .footer__links { display: flex; gap: 22px; flex-wrap: wrap; }
+
+    @media (max-width: 1000px) {
+      .figures { grid-template-columns: repeat(2, 1fr); }
+      .figure:nth-child(3) { padding-left: 0; border-left: 0; }
+      .figure:nth-child(n+3) { border-top: 1px solid var(--line); }
+      .audience { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 0 24px; }
+      .logos { grid-template-columns: repeat(4, 1fr); }
+      .presence__grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .burger { display: block; z-index: 2; }
+      .nav { position: fixed; inset: 0; z-index: 1; flex-direction: column; justify-content: center; gap: 26px; font: 400 1.9rem var(--serif); background: var(--bg); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+      .menu-open .nav { opacity: 1; visibility: visible; }
+      .menu-open { overflow: hidden; }
+      .nav__cta { font: 600 15px var(--sans); }
+      .hero__row, .head, .sectors, .quote { grid-template-columns: 1fr; }
+      .hero__actions { justify-content: flex-start; }
+      .head p { justify-self: start; }
+      .hero__img { aspect-ratio: 4 / 3; }
+      .sector-view { display: none; }
+      .quote img { max-width: 260px; }
+    }
+    @media (max-width: 560px) {
+      .figure, .figure + .figure { padding: 28px 12px 28px 0; }
+      .figure:nth-child(even) { padding-left: 16px; }
+      .steps { grid-template-columns: 1fr; }
+      .logos { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="header" data-header>
+    <div class="wrap header__in">
+      <a class="header__logo" href="./" aria-label="Alliance Investment – home"><img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211"></a>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="#who">Who We Serve</a>
+        <a href="#sectors">Sectors</a>
+        <a href="#approach">Approach</a>
+        <a href="#presence">Presence</a>
+        <a href="../../ar/" lang="ar">العربية</a>
+        <a class="nav__cta" href="#contact">Contact Us</a>
+      </nav>
+      <button class="burger" type="button" data-menu-toggle aria-controls="nav" aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="padding-bottom:0">
+      <div class="wrap">
+        <p class="kicker" data-reveal>Alliance Investment Holding · Riyadh</p>
+        <h1 data-reveal style="--d:.08s;margin-top:22px">Your strategic partner in <em>the Saudi market.</em></h1>
+        <div class="hero__row">
+          <p class="hero__lead" data-reveal style="--d:.16s">Business setup, investment strategy, local partnerships and Vision 2030-aligned growth — for foreign and local companies building a lasting presence in the Kingdom.</p>
+          <div class="hero__actions" data-reveal style="--d:.24s">
+            <a class="arrow-link" href="#who">How we help</a>
+            <a class="arrow-link" href="#contact">Talk to our team</a>
+          </div>
+        </div>
+        <div class="hero__img" data-reveal style="--d:.2s"><img src="../../assets/img/page-hero.webp" alt="Riyadh business district at dusk" width="1920" height="900" fetchpriority="high"></div>
+        <div class="figures">
+          <div class="figure" data-reveal><strong data-count="10" data-suffix="+">10+</strong><span>Years of presence in the Saudi market</span></div>
+          <div class="figure" data-reveal style="--d:.06s"><strong data-count="16">16</strong><span>Countries in our international network</span></div>
+          <div class="figure" data-reveal style="--d:.12s"><strong data-count="8">8</strong><span>Strategic sectors aligned with Vision 2030</span></div>
+          <div class="figure" data-reveal style="--d:.18s"><strong data-count="41">41</strong><span>Government, giga-project and private partners</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="who">
+      <div class="wrap">
+        <div class="head">
+          <div data-reveal><span class="kicker">Who we serve</span><h2 class="h2">One partner, from first study to full operations.</h2></div>
+          <p data-reveal style="--d:.1s">A Saudi company with an international network of consultants and partners — combining deep local insight with international standards.</p>
+        </div>
+        <div class="audience">
+          <article class="card" data-reveal>
+            <span class="card__num">01</span>
+            <h3>International companies entering Saudi Arabia</h3>
+            <p>Market analysis, licensing and company setup, local partners and on-the-ground representation — a smooth launch, typically in 4 to 6 weeks.</p>
+            <a class="arrow-link" href="../../business-model/">Entry models</a>
+          </article>
+          <article class="card" data-reveal style="--d:.08s">
+            <span class="card__num">02</span>
+            <h3>Investors seeking high-growth opportunities</h3>
+            <p>Feasibility studies, opportunity analysis and access to institutional funding through the Public Investment Fund, regional banks and private equity.</p>
+            <a class="arrow-link" href="#sectors">Focus sectors</a>
+          </article>
+          <article class="card" data-reveal style="--d:.16s">
+            <span class="card__num">03</span>
+            <h3>Government &amp; public-private partnerships</h3>
+            <p>Registration on procurement platforms, proposal development and structured partnerships between the public and private sectors.</p>
+            <a class="arrow-link" href="#contact">Discuss a project</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sectors" style="padding-top:0">
+      <div class="wrap">
+        <div class="head">
+          <div data-reveal><span class="kicker">Our focus</span><h2 class="h2">Eight sectors shaping the Kingdom’s next decade.</h2></div>
+          <p data-reveal style="--d:.1s">We focus on strategic sectors aligned with Vision 2030 and high-growth sectors with promising investment opportunities.</p>
+        </div>
+        <div class="sectors">
+          <ol class="sector-list" data-reveal>
+            <li><button type="button" data-img="sector-entertainment"><span class="n">01</span><span class="t">Entertainment, Leisure &amp; Sports</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-ict"><span class="n">02</span><span class="t">ICT, Digital, Innovation &amp; Human Capital</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-energy"><span class="n">03</span><span class="t">Energy, Utilities &amp; Environment</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-logistics"><span class="n">04</span><span class="t">Logistics &amp; Supply Chain Services</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-agriculture"><span class="n">05</span><span class="t">Food &amp; Agriculture</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-healthcare"><span class="n">06</span><span class="t">Healthcare, Life Sciences &amp; Pharma</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-real-estate"><span class="n">07</span><span class="t">Real Estate Development &amp; Infrastructure</span><span class="a">→</span></button></li>
+            <li><button type="button" data-img="sector-finance"><span class="n">08</span><span class="t">Financial Services &amp; Investments</span><span class="a">→</span></button></li>
+          </ol>
+          <figure class="sector-view" aria-hidden="true"><figcaption></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="approach" id="approach">
+      <div class="wrap">
+        <div class="head">
+          <div data-reveal><span class="kicker">How we work</span><h2 class="h2">A clear, five-stage approach.</h2></div>
+          <p data-reveal style="--d:.1s">From strategy to market entry and operations, every engagement follows the same disciplined path.</p>
+        </div>
+        <ol class="steps">
+          <li class="step" data-reveal><h3>Strategic Analysis &amp; Planning</h3><p>Market research, investment opportunities and customised strategies.</p></li>
+          <li class="step" data-reveal style="--d:.06s"><h3>Operations &amp; Process Management</h3><p>Operational efficiency, cost-effective solutions and higher productivity.</p></li>
+          <li class="step" data-reveal style="--d:.12s"><h3>Long-Term Strategic Partnerships</h3><p>Agreements with local and international partners for sustainable growth.</p></li>
+          <li class="step" data-reveal style="--d:.18s"><h3>High-Growth Investments</h3><p>Promising sectors that generate high investment returns.</p></li>
+          <li class="step" data-reveal style="--d:.24s"><h3>Performance &amp; Sustainability</h3><p>Advanced analytics for data-driven decisions and lasting results.</p></li>
+        </ol>
+        <p data-reveal style="margin-top:56px"><a class="arrow-link" href="../../business-model/">Explore our business model</a></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap quote">
+        <img data-reveal src="../../assets/img/team-turki-al-qahtani.webp" alt="Eng. Turki Al-Qahtani" width="400" height="400" loading="lazy">
+        <div data-reveal style="--d:.1s">
+          <blockquote>We are proud of our heritage and excited about the future — focusing on sustainable growth, innovation, value creation and positive social impact.</blockquote>
+          <cite>Eng. Turki Al-Qahtani<span>Chief Executive Officer, Alliance Investment</span></cite>
+        </div>
+      </div>
+    </section>
+
+    <section class="presence" id="presence">
+      <div class="wrap presence__grid">
+        <div data-reveal>
+          <span class="kicker">Global presence</span>
+          <p class="presence__big"><span data-count="16">16</span> <small>countries</small></p>
+          <ul class="countries">
+            <li>Saudi Arabia — HQ</li><li>United Arab Emirates</li><li>Qatar</li><li>Bahrain</li><li>Türkiye</li><li>United Kingdom</li><li>France</li><li>Germany</li><li>Austria</li><li>Spain</li><li>United States</li><li>China</li><li>Japan</li><li>South Korea</li><li>India</li><li>South Africa</li>
+          </ul>
+        </div>
+        <img class="map" data-reveal style="--d:.1s" src="../../assets/img/world-map.svg" alt="World map of the Alliance network" width="1000" height="383" loading="lazy">
+      </div>
+    </section>
+
+    <section id="partners">
+      <div class="wrap">
+        <div class="head">
+          <div data-reveal><span class="kicker">Trusted network</span><h2 class="h2">Working alongside the Kingdom’s leading institutions.</h2></div>
+        </div>
+        <ul class="logos" data-reveal>
+          <li><img src="../../assets/img/partner-pif.webp" alt="Public Investment Fund" width="258" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-neom.webp" alt="NEOM" width="107" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-ministry-of-investment.webp" alt="Ministry of Investment" width="360" height="109" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-red-sea.webp" alt="The Red Sea Development Company" width="270" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-qiddiya.webp" alt="Qiddiya" width="128" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-ministry-of-industry.webp" alt="Ministry of Industry and Mineral Resources" width="360" height="109" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-ministry-of-sport.webp" alt="Ministry of Sport" width="360" height="118" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-ministry-of-energy.webp" alt="Ministry of Energy" width="303" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-amcham-saudi.webp" alt="AmCham Saudi Arabia" width="105" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-ecc-ksa.webp" alt="European Chamber of Commerce in Saudi Arabia" width="275" height="120" loading="lazy"></li>
+          <li><img src="../../assets/img/partner-indra.webp" alt="Indra Group" width="360" height="78" loading="lazy"></li>
+          <li><span class="more">+30<br>partners</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="cta" id="contact" style="padding-top:0">
+      <div class="wrap">
+        <span class="kicker" data-reveal>Contact us</span>
+        <h2 data-reveal style="--d:.08s">Let’s discuss your next step in the Saudi market.</h2>
+        <div class="cta__links" data-reveal style="--d:.16s">
+          <a class="pill pill--solid" href="mailto:Ksa@alliance.sa">Ksa@alliance.sa</a>
+          <a class="pill" href="tel:+966539503000">+966 53 950 3000</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer__in">
+      <img src="../../assets/img/logo.webp" alt="Alliance Investment Holding" width="480" height="211" loading="lazy">
+      <div class="footer__links"><a href="../../about-us/">About Us</a><a href="../../business-model/">Business Model</a><a href="../../privacy-policy/">Privacy Policy</a><a href="https://www.linkedin.com/company/alliance-investment-as/" target="_blank" rel="noopener">LinkedIn</a></div>
+      <span>© <span data-year>2026</span> Alliance Investment</span>
+    </div>
+  </footer>
+
+  <script>
+    // Sectors: the list drives the large image beside it
+    (function () {
+      var view = document.querySelector('.sector-view'), cap = view.querySelector('figcaption');
+      var buttons = document.querySelectorAll('.sector-list button');
+      buttons.forEach(function (b) {
+        var img = new Image();
+        img.src = '../../assets/img/' + b.dataset.img + '.webp'; img.alt = ''; img.loading = 'lazy';
+        view.insertBefore(img, cap); b._img = img;
+        var show = function () {
+          buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); x._img.classList.toggle('on', x === b); });
+          cap.textContent = b.querySelector('.t').textContent;
+        };
+        b.addEventListener('mouseenter', show); b.addEventListener('focus', show); b.addEventListener('click', show);
+      });
+      buttons[0].dispatchEvent(new Event('click'));
+    })();
+  </script>
+</body>
+</html>

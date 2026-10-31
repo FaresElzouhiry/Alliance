@@ -36,6 +36,7 @@ Don't double-click the HTML files: the team section and icons need a web server.
 | Images (all WebP, optimized) | `assets/img/` |
 | Icons | `assets/img/icons.svg` |
 | World map | `assets/img/world-map.svg` |
+| Design models for review (3 alternative home pages, hidden from Google) | `models/` — open `models/` to compare them; `models/1/`, `models/2/`, `models/3/` |
 
 The header and footer are repeated in each of the 24 HTML files (4 pages × 6 languages).
 If you change the phone number, email or menu, change it in all of them.
