@@ -6,7 +6,7 @@
  * Pages (HTML) always try the network first, so text changes show up right away.
  * Files (CSS, JS, images, fonts) load instantly from the cache and refresh quietly in the background.
  */
-const VERSION = 'v6';
+const VERSION = 'v7';
 const CACHE = `alliance-${VERSION}`;
 
 // Downloaded on install so the site also opens offline
